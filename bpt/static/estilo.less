@@ -1,0 +1,51 @@
+@base: #f938ab;
+@fundo: #222;
+@fundo_jog: #242;
+
+body {
+  background-color: @fundo;
+  display: table;
+  table-layout: fixed;
+}
+
+.centro {
+  width: 2800px;
+}
+
+.jogador {
+  background-color: @fundo_jog;
+  display: inline-table;
+  width: 500px;
+  height: 200px;
+  padding: 10px;
+  margin: 5px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: darken(@fundo_jog,20%);
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px #888;
+
+  .nome {
+    text-align: left;
+  }
+  
+  .dinheiro {
+    text-align: right;
+  }
+}
+
+
+
+.box-shadow(@style, @c) when (iscolor(@c)) {
+  box-shadow:         @style @c;
+  -webkit-box-shadow: @style @c;
+  -moz-box-shadow:    @style @c;
+}
+.box-shadow(@style, @alpha: 50%) when (isnumber(@alpha)) {
+  .box-shadow(@style, rgba(0, 0, 0, @alpha));
+}
+.box { 
+  color: saturate(@base, 5%);
+  border-color: lighten(@base, 30%);
+  div { .box-shadow(0 0 5px, 30%) }
+}

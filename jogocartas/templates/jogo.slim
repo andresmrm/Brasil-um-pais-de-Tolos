@@ -1,0 +1,13 @@
+-extends "base.slim"
+
+-block central
+  -for j in jogadores
+    .jogador
+      dl
+        dt.nome = j.nome
+        dd.dinheiro $=j.dinheiro
+      -for c in j.mao
+        .carta
+          p C
+  -else
+    li No user found.
