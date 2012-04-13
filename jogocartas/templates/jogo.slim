@@ -6,8 +6,14 @@
       dl
         dt.nome = j.nome
         dd.dinheiro $=j.dinheiro
+      -for naipe in j.mesa
+        .naipe
+          -for carta in j.mesa[naipe]
+            span class="carta =naipe"
+              p.num =carta
+              p.nome Nome
       -for c in j.mao
         .carta
-          p C
+          p C=c
   -else
     li No user found.
