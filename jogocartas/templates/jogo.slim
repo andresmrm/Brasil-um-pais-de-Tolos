@@ -3,17 +3,16 @@
 -block central
   -for j in jogadores
     .jogador
-      dl
-        dt.nome = j.nome
+      dl.info_jog
+        dt.nome_jog = j.nome
         dd.dinheiro $=j.dinheiro
       -for naipe in j.mesa
         .naipe
           -for carta in j.mesa[naipe]
             span class="carta =naipe"
-              p.num =carta
-              p.nome Nome
-      -for c in j.mao
-        .carta
-          p C=c
-  -else
-    li No user found.
+              p.num_carta =carta
+              p.nome_carta Nome
+      -else
+        %div.naipe
+  .menu_mao
+    p fwefw

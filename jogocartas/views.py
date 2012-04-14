@@ -35,6 +35,7 @@ def index(request):
     j2.nome = "Tolo2"
     j3 = Jogador()
     j3.nome = "Tolo3"
+    j3.mesa = { 'vermelho':[1,2,9],}
     j4 = Jogador()
     j4.nome = "Tolo4"
     j5 = Jogador()
