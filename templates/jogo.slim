@@ -1,0 +1,18 @@
+-extends "base.slim"
+
+-block central
+  -for j in jogadores
+    .jogador
+      dl.info_jog
+        dt.nome_jog = j.nome
+        dd.dinheiro $=j.dinheiro
+      -for naipe in j.mesa
+        .naipe
+          -for carta in j.mesa[naipe]
+            span class="carta =naipe"
+              p.num_carta =carta
+              p.nome_carta Nome
+      -else
+        %div.naipe
+  .menu_mao
+    p fwefw
