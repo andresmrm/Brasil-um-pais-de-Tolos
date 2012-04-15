@@ -1,5 +1,6 @@
 @fundo: #222;
 @fundo_jog: #242;
+@fundo_mao: #666;
 
 @largura_carta: 100px;
 
@@ -18,13 +19,13 @@ body {
 }
 
 .centro {
-  width: ((@largura_carta+20)*5+40)*5;
+  width: ((@largura_carta+20)*6+40)*5;
 }
 
 .jogador {
   background-color: @fundo_jog;
   display: inline-block;
-  width: (@largura_carta+20)*5;
+  width: (@largura_carta+20)*6;
   height: 400px;
   padding: 10px;
   margin: 5px;
@@ -65,7 +66,7 @@ body {
 
   .carta {
     width: @largura_carta;
-    height: 120px;
+    height: 123px;
     padding: 5px;
     display: inline-block;
     border-radius: 7px;
@@ -97,6 +98,11 @@ body {
       background-color: @carta_vermelho;
       border-color: darken(@carta_vermelho, @carta_dark); 
     }
+    @carta_laranja: hsl(30, @carta_sat, @carta_light);
+    &.laranja {
+      background-color: @carta_laranja;
+      border-color: darken(@carta_laranja, @carta_dark); 
+    }
     @carta_amarelo: hsl(60, @carta_sat, @carta_light);
     &.amarelo {
       background-color: @carta_amarelo;
@@ -117,16 +123,22 @@ body {
       background-color: @carta_roxo;
       border-color: darken(@carta_roxo, @carta_dark); 
     }
+
+	&:hover {
+      border-color: #aaa;
+	  position: relative;
+	  z-index: 10;
+	}
   }
 }
 
 .menu_mao {
-  background-color: @fundo_jog;
+  background-color: @fundo_mao;
   position: fixed;
-  display: block;
   height: 200px;
-  width: auto;
-  top: 470px;
-  margin-left: auto;
-  margin-right: auto;
+  width: 100%;
+  top: 500px;
+  left: -2px;
+  border-style: solid;
+  border-width: 2px;
 }

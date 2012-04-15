@@ -21,6 +21,7 @@ def hello_slim():
                 'azul':[1,2],
                 'amarelo': [1],
                 'verde': [1],
+                'laranja': [1,4,6,8],
                 'roxo':[1]} 
     j2 = Jogador()
     j2.nome = "Tolo2"
