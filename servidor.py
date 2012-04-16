@@ -5,18 +5,19 @@ from slimish_jinja import SlimishExtension
 from jogo import *
 
 
-class MyApp(Flask):
+class BPT(Flask):
     jinja_options = Flask.jinja_options
     jinja_options['extensions'].append(SlimishExtension)
 
-app = MyApp(__name__)
+app = BPT(__name__)
 app.debug = True
 
 @app.route('/')
-def hello_slim():
+def rodar_jogo():
     j1 = Jogador()
     j1.nome = "Tolo1"
     j1.mao = [1,2,3,4]
+    j1.pegar_dinheiro()
     j1.mesa = { 'vermelho':[1,2,3,4,5,6,7,8,9],
                 'azul':[1,2],
                 'amarelo': [1],
@@ -34,8 +35,13 @@ def hello_slim():
     j5.nome = "Tolo5"
     jogadores = [ j.__dict__ for j in [j1, j2, j3, j4, j5]]
 
+    print render_template('jogo.slim',jogadores=jogadores)
     return render_template('jogo.slim',jogadores=jogadores)
 
+
+@app.route('/teste')
+def teste():
+    return "TESTE!"
 
 if __name__  == '__main__':
     app.run()
