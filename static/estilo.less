@@ -3,6 +3,9 @@
 @fundo_mao: #666;
 
 @largura_carta: 100px;
+@carta_sat: 80%;
+@carta_dark: 10%;
+@carta_light: 25%;
 
 .texto {
   color: #fff;
@@ -11,6 +14,9 @@
   border-radius: 10px;
 }
 
+.sombra {
+  box-shadow: 2px 2px 2px #000;
+}
 
 
 body {
@@ -23,6 +29,7 @@ body {
 }
 
 .jogador {
+  .sombra;
   background-color: @fundo_jog;
   display: inline-block;
   width: (@largura_carta+20)*6;
@@ -33,7 +40,6 @@ body {
   border-width: 2px;
   border-color: darken(@fundo_jog,20%);
   border-radius: 10px;
-  box-shadow: 2px 2px 2px #000;
 
   .info_jog {
     margin: 0px 5px 10px 5px;
@@ -75,7 +81,7 @@ body {
   border-width: 2px;
   border-style: solid;
   margin: -105px 0px;
-  box-shadow: 2px 2px 2px #000;
+  .sombra;
 
   .num_carta {
     .texto;
@@ -92,9 +98,6 @@ body {
     display: inline;
     padding: 0px 5px;
   }
-  @carta_sat: 80%;
-  @carta_dark: 10%;
-  @carta_light: 25%;
   @carta_pol: hsl(0, @carta_sat, @carta_light);
   &.pol {
     background-color: @carta_pol;
@@ -142,4 +145,26 @@ body {
   left: -2px;
   border-style: solid;
   border-width: 2px;
+}
+
+@cor_din: #bb2;
+.mais_din {
+  .texto;
+  .sombra;
+  font-size: 150%;
+  display: inline;
+  text-align: right;
+  float: right;
+  padding: 0px 30px;
+  margin: 20px;
+  background-color: @cor_din;
+  border-color: darken(@cor_din, @carta_dark); 
+  border-radius: 7px;
+  border-width: 2px;
+  border-style: solid;
+  &:hover {
+    border-color: #aaa;
+    position: relative;
+    z-index: 10;
+  }
 }

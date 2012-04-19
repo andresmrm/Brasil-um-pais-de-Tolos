@@ -34,7 +34,11 @@ html
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":id})
               .success(function(data) { alert("sucesso!"+data); })
               .error(function() { alert("erro!"+data); });
-                alert(cartas[0]["custo"]);
+            });
+            $(".mais_din").click(function() {
+              $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"D1"})
+              .success(function(data) { alert("sucesso!"+data); })
+              .error(function() { alert("erro!"+data); });
             });
 
     .rodape

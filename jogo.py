@@ -35,6 +35,7 @@ class Jogo():
         self.baralho = {}
         self.jogadores = {}
         self.monte = []
+        self.jogador_atual = None
 
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
@@ -69,8 +70,11 @@ class Jogo():
         self.monte = list(self.baralho.keys())
         random.shuffle(self.monte)
         self.distribuir_cartas()
+        self.jogador_atual = self.jogadores.keys()[0]
+        print self.jogador_atual
 
     def executar(self,nome_jog, cod, jogada):
+        """Exucuta uma jogada de um jogador"""
         jog = self.jogadores.get(nome_jog)
         if jog == None:
             return "ERRO: Jogador nao encontrado!"
@@ -78,15 +82,28 @@ class Jogo():
         if jog.cod != cod:
             return "ERRO: Codigo nao bate!"
 
+        if jog.nome != self.jogador_atual:
+            return "ERRO: Nao e a sua vez de jogar!"
+
         if len(jogada) < 2:
             return "ERRO: Jogada muito curta para processar!"
 
         tipo, iden = jogada[0], jogada[1:]
         if tipo == 'C':
             return jog.jogar_carta(iden)
+        if tipo == 'D':
+            return jog.pegar_dinheiro()
 
         return "ERRO: Jogada nao identificada!" 
 
+    def prox_jogador(self):
+        """Passa a vez de jogar para o proximo jogador"""
+        nomes = self.jogadores.keys()
+        if self.jogador_atual == nomes[-1]:
+            self.jogador_atual = nomes[0]
+        else:
+            num = nomes.index(self.jogador_atual)
+            self.jogador_atual = nomes[num+1]
 
 
 class Jogador():
@@ -129,12 +146,14 @@ class Jogador():
         if self.mesa.get(carta.naipe) == None:
             self.mesa[carta.naipe] = []
         self.mesa[carta.naipe] += [iden]
+        self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
             
-
     def pegar_dinheiro(self):
         """Pega dinheiro da banca"""
         self.dinheiro += 2
+        self.jogo.prox_jogador()
+        return "Ok! Jogada feita!"
 
 class Carta():
     """Uma carta"""

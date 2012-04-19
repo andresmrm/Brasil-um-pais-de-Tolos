@@ -47,7 +47,6 @@ def rodar_jogo():
     j3 = Jogador("Tolo3", j)
 
     j.iniciar()
-    j1.pegar_dinheiro()
     j1.mesa = { 'pol':[1,2,3,4,5,6,7,8,9],
                 'fic':[1,2],
                 'ent': [1],
