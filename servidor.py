@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template
+from flask import request
 from slimish_jinja import SlimishExtension
 
 from jogo import *
@@ -35,13 +36,14 @@ def rodar_jogo():
     j5.nome = "Tolo5"
     jogadores = [ j.__dict__ for j in [j1, j2, j3, j4, j5]]
 
-    print render_template('jogo.slim',jogadores=jogadores)
     return render_template('jogo.slim',jogadores=jogadores)
 
 
-@app.route('/teste')
+@app.route('/jogada', methods=['POST'])
 def teste():
-    return "TESTE!"
+    print request.form
+    print request.form["nome"]
+    return "Aceita!"
 
 if __name__  == '__main__':
     app.run()
