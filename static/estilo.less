@@ -64,80 +64,81 @@ body {
     vertical-align: top;
   }
 
-  .carta {
-    width: @largura_carta;
-    height: 123px;
-    padding: 5px;
+}
+
+.carta {
+  width: @largura_carta;
+  height: 123px;
+  padding: 5px;
+  display: inline-block;
+  border-radius: 7px;
+  border-width: 2px;
+  border-style: solid;
+  margin: -105px 0px;
+  box-shadow: 2px 2px 2px #000;
+
+  .num_carta {
+    .texto;
     display: inline-block;
-    border-radius: 7px;
-    border-width: 2px;
-    border-style: solid;
-    margin: -105px 0px;
-    box-shadow: 2px 2px 2px #000;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: center;
+    margin: 0px;
+  }
+  .nome_carta {
+    .texto;
+    display: inline;
+    padding: 0px 5px;
+  }
+  @carta_sat: 80%;
+  @carta_dark: 10%;
+  @carta_light: 25%;
+  @carta_pol: hsl(0, @carta_sat, @carta_light);
+  &.pol {
+    background-color: @carta_pol;
+    border-color: darken(@carta_pol, @carta_dark); 
+  }
+  @carta_esp: hsl(30, @carta_sat, @carta_light);
+  &.esp {
+    background-color: @carta_esp;
+    border-color: darken(@carta_esp, @carta_dark); 
+  }
+  @carta_ent: hsl(60, @carta_sat, @carta_light);
+  &.ent {
+    background-color: @carta_ent;
+    border-color: darken(@carta_ent, @carta_dark); 
+  }
+  @carta_soc: hsl(120, @carta_sat, @carta_light);
+  &.soc {
+    background-color: @carta_soc;
+    border-color: darken(@carta_soc, @carta_dark); 
+  }
+  @carta_fic: hsl(210, @carta_sat, @carta_light);
+  &.fic {
+    background-color: @carta_fic;
+    border-color: darken(@carta_fic, @carta_dark); 
+  }
+  @carta_lit: hsl(270, @carta_sat, @carta_light);
+  &.lit {
+    background-color: @carta_lit;
+    border-color: darken(@carta_lit, @carta_dark); 
+  }
 
-    .num_carta {
-      .texto;
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      text-align: center;
-      vertical-align: center;
-      margin: 0px;
-    }
-    .nome_carta {
-      .texto;
-      display: inline;
-      padding: 0px 5px;
-    }
-    @carta_sat: 80%;
-    @carta_dark: 10%;
-    @carta_light: 25%;
-    @carta_vermelho: hsl(0, @carta_sat, @carta_light);
-    &.vermelho {
-      background-color: @carta_vermelho;
-      border-color: darken(@carta_vermelho, @carta_dark); 
-    }
-    @carta_laranja: hsl(30, @carta_sat, @carta_light);
-    &.laranja {
-      background-color: @carta_laranja;
-      border-color: darken(@carta_laranja, @carta_dark); 
-    }
-    @carta_amarelo: hsl(60, @carta_sat, @carta_light);
-    &.amarelo {
-      background-color: @carta_amarelo;
-      border-color: darken(@carta_amarelo, @carta_dark); 
-    }
-    @carta_verde: hsl(120, @carta_sat, @carta_light);
-    &.verde {
-      background-color: @carta_verde;
-      border-color: darken(@carta_verde, @carta_dark); 
-    }
-    @carta_azul: hsl(210, @carta_sat, @carta_light);
-    &.azul {
-      background-color: @carta_azul;
-      border-color: darken(@carta_azul, @carta_dark); 
-    }
-    @carta_roxo: hsl(270, @carta_sat, @carta_light);
-    &.roxo {
-      background-color: @carta_roxo;
-      border-color: darken(@carta_roxo, @carta_dark); 
-    }
-
-	&:hover {
-      border-color: #aaa;
-	  position: relative;
-	  z-index: 10;
-	}
+  &:hover {
+    border-color: #aaa;
+    position: relative;
+    z-index: 10;
   }
 }
 
-.menu_mao {
+.menu_jogadas {
   background-color: @fundo_mao;
   position: fixed;
   height: 200px;
   width: 100%;
-  top: 500px;
+  top: 470px;
   left: -2px;
   border-style: solid;
   border-width: 2px;

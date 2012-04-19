@@ -9,11 +9,14 @@
       -for naipe in j.mesa
         .naipe
           -for carta in j.mesa[naipe]
-            span class="carta =naipe"
-              p.num_carta =carta
+            span class="carta =naipe" id="C=carta"
+              p.num_carta =(baralho[carta].num)
               p.nome_carta Nome
       -else
         %div.naipe
-  .menu_mao
-    p fwefw
-
+  .menu_jogadas
+    .menu_mao
+      -for carta in jogadores[0].mao
+        span class="carta =baralho[carta].naipe" id="C=carta"
+          p.num_carta =(baralho[carta].num)
+          p.nome_carta Nome

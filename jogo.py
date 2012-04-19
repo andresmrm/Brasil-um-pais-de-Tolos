@@ -33,12 +33,12 @@ class Jogo():
 
     def __init__(self):
         self.baralho = {}
-        self.jogadores = []
+        self.jogadores = {}
         self.monte = []
 
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
-        self.jogadores.append(jog)
+        self.jogadores[jog.nome] = jog
 
     def montar_baralho(self):
         """Carrega as cartas e monta o monte inicial de cartas"""
@@ -53,13 +53,13 @@ class Jogo():
                 c = Carta(nome=atributos['nome'],
                           num=atributos['num'],
                           naipe=atributos['naipe'],
-                          custo=atributos['custo'],
+                          custo=int(atributos['custo']),
                           efeito=atributos['efeito'])
                 self.baralho[len(self.baralho)] = c
 
     def distribuir_cartas(self):
         """Da as primeiras cartas para cada jogador"""
-        for j in self.jogadores:
+        for j in self.jogadores.values():
             for n in range(NUM_CARTAS_INICIAIS):
                 j.adi_carta(self.monte.pop())
 
@@ -70,21 +70,67 @@ class Jogo():
         random.shuffle(self.monte)
         self.distribuir_cartas()
 
+    def executar(self,nome_jog, cod, jogada):
+        jog = self.jogadores.get(nome_jog)
+        if jog == None:
+            return "ERRO: Jogador nao encontrado!"
+
+        if jog.cod != cod:
+            return "ERRO: Codigo nao bate!"
+
+        if len(jogada) < 2:
+            return "ERRO: Jogada muito curta para processar!"
+
+        tipo, iden = jogada[0], jogada[1:]
+        if tipo == 'C':
+            return jog.jogar_carta(iden)
+
+        return "ERRO: Jogada nao identificada!" 
+
+
 
 class Jogador():
     """Um jogador"""
 
-    def __init__(self):
-        self.nome = "Tolo"
+    def __init__(self, nome, jogo):
+        self.nome = nome
         self.dinheiro = DINHEIRO_INICIAL
         self.mao = []
         self.mesa = {}
         self.pontos = 0
+        self.cod = "teste"
+        self.jogo = jogo
+        jogo.adi_jogador(self)
 
     def adi_carta(self, carta):
         """Adiciona uma carta a mao do jogador"""
         if len(self.mao) < MAX_CARTAS_MAO:
             self.mao.append(carta)
+
+    def jogar_carta(self, iden):
+        """Joga uma carta da mao para a mesa"""
+        try:
+            iden = int(iden)
+        except:
+            return "ERRO: Identificador da carta nao e numero valido!"
+
+        if iden not in self.mao:
+            return "ERRO: Jogador nao tem essa carta na mao!"
+
+        carta = self.jogo.baralho.get(iden)
+        if carta == None:
+            return "ERRO: Carta nao existe no baralho!"
+
+        if self.dinheiro < carta.custo:
+            return "ERRO: Dinheiro insuficiente para baixar carta!"
+        self.dinheiro -= carta.custo
+
+        self.mao.remove(iden)
+        if self.mesa.get(carta.naipe) == None:
+            self.mesa[carta.naipe] = []
+        self.mesa[carta.naipe] += [iden]
+        return "Ok! Jogada feita!"
+            
 
     def pegar_dinheiro(self):
         """Pega dinheiro da banca"""
@@ -103,13 +149,9 @@ class Carta():
 
 if __name__  == '__main__':
     j = Jogo()
-    j1 = Jogador()
-    j2 = Jogador()
-    j3 = Jogador()
-
-    j.adi_jogador(j1)
-    j.adi_jogador(j2)
-    j.adi_jogador(j3)
+    j1 = Jogador("Tolo1",j)
+    j2 = Jogador("Tolo2",j)
+    j3 = Jogador("Tolo3",j)
 
     j.iniciar()
     j1.pegar_dinheiro()
