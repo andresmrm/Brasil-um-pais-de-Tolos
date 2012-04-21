@@ -14,6 +14,7 @@ html
         | 
           var meu_nome \= "Tolo1";
           var meu_cod \= "teste";
+          var num_jogada \= 0;
           var cartas \= {};
           $.getJSON("baralho", function(data){
             cartas \= data;
@@ -40,6 +41,17 @@ html
               .success(function(data) { alert("sucesso!"+data); })
               .error(function() { alert("erro!"+data); });
             });
+            $(".mais_carta").click(function() {
+              $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"M1"})
+              .success(function(data) { alert("sucesso!"+data); })
+              .error(function() { alert("erro!"+data); });
+            });
+            function atualizar(){
+              $.getJSON("atualizar", {"jogador":meu_nome,"cod":meu_cod,"num_jogada":num_jogada}, function(data){
+                cartas \= data;
+              });
+            }
+            setInterval('atualizar()', 3000);
 
     .rodape
       footer Fim

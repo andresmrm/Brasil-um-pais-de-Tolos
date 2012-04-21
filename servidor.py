@@ -1,3 +1,23 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+#-----------------------------------------------------------------------------
+# Copyright 2012 Qerereque
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <http://www.gnu.org/licenses/>
+#-----------------------------------------------------------------------------
+
 from flask import Flask
 from flask import render_template
 from flask import request
@@ -53,6 +73,7 @@ def rodar_jogo():
                 'soc': [1],
                 'esp': [1,4,6,8],
                 'lit':[1]} 
+
     jogadores = [ jog.__dict__ for jog in j.jogadores.values()]
 
     return render_template('jogo.slim',jogadores=jogadores,baralho=j.baralho)
@@ -65,10 +86,19 @@ def jogada():
     jogada = request.form["jogada"]
     return J.executar(jogador, cod, jogada)
 
-#DELETAR ESSA FUNCAO
 @app.route('/baralho', methods=['GET'])
 def enviar_baralho():
-    cartas = { c:J.baralho[c].__dict__ for c in J.baralho}
+    cartas = {} 
+    for c in J.baralho:
+        cartas[c]  = J.baralho[c].__dict__ 
+    return jsonify(cartas)
+
+@app.route('/atualizar', methods=['GET'])
+def enviar_atualizacao():
+    jogador = request.form["jogador"]
+    cod = request.form["cod"]
+    num = request.form["num_jogada"]
+    self.jogo.ret_atualizacao(jogador, cod, num)
     return jsonify(cartas)
 
 if __name__  == '__main__':

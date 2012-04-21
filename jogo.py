@@ -36,6 +36,7 @@ class Jogo():
         self.jogadores = {}
         self.monte = []
         self.jogador_atual = None
+        self.num_jogada = 0
 
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
@@ -71,16 +72,41 @@ class Jogo():
         random.shuffle(self.monte)
         self.distribuir_cartas()
         self.jogador_atual = self.jogadores.keys()[0]
-        print self.jogador_atual
 
-    def executar(self,nome_jog, cod, jogada):
-        """Exucuta uma jogada de um jogador"""
+    def validar_jogador(self):
+        """Verifica se um jogador existe e se seu codigo bate"""
         jog = self.jogadores.get(nome_jog)
         if jog == None:
             return "ERRO: Jogador nao encontrado!"
 
         if jog.cod != cod:
             return "ERRO: Codigo nao bate!"
+
+        return True
+
+    def ret_atualizacao(self, nome_jog, cod, num):
+        """Retorna dicionario com atualizacoes a serem feitas na interface"""
+        if num == self.num_jogada:
+            return None
+
+        resposta = self.validar_jogador()
+        if resposta != True:
+            return resposta
+
+        dicio = {}
+        dicio["num_jogada"] = self.num_jogada
+        dicio["mao"] = self.jogadores[nome_jog].mao
+        dicio["mesas"] = None
+
+
+
+
+
+    def executar(self,nome_jog, cod, jogada):
+        """Exucuta uma jogada de um jogador"""
+        resposta = self.validar_jogador()
+        if resposta != True:
+            return resposta
 
         if jog.nome != self.jogador_atual:
             return "ERRO: Nao e a sua vez de jogar!"
@@ -93,8 +119,17 @@ class Jogo():
             return jog.jogar_carta(iden)
         if tipo == 'D':
             return jog.pegar_dinheiro()
+        if tipo == 'M':
+            return jog.mais_carta()
 
         return "ERRO: Jogada nao identificada!" 
+
+    def pegar_carta_monte(self):
+        """Tira uma carta no monte"""
+        if len(self.monte) == 0:
+            return None
+
+        return self.monte.pop()
 
     def prox_jogador(self):
         """Passa a vez de jogar para o proximo jogador"""
@@ -104,6 +139,7 @@ class Jogo():
         else:
             num = nomes.index(self.jogador_atual)
             self.jogador_atual = nomes[num+1]
+        self.num_jogada += 1
 
 
 class Jogador():
@@ -152,6 +188,19 @@ class Jogador():
     def pegar_dinheiro(self):
         """Pega dinheiro da banca"""
         self.dinheiro += 2
+        self.jogo.prox_jogador()
+        return "Ok! Jogada feita!"
+
+    def mais_carta(self):
+        """Pega uma carta do monte"""
+        if len(self.mao) >= 5:
+            return "ERRO: Mao cheia!"
+
+        carta = self.jogo.pegar_carta_monte()
+        if carta == None:
+            return "ERRO: O monte acabou!"
+
+        self.mao.append(carta)
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
 

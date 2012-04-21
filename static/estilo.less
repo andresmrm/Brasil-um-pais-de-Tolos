@@ -151,12 +151,12 @@ body {
 .mais_din {
   .texto;
   .sombra;
+  padding: 15px;
+  width: 40px;
   font-size: 150%;
-  display: inline;
-  text-align: right;
+  text-align: center;
   float: right;
-  padding: 0px 30px;
-  margin: 20px;
+  margin: 10px;
   background-color: @cor_din;
   border-color: darken(@cor_din, @carta_dark); 
   border-radius: 7px;
@@ -167,4 +167,11 @@ body {
     position: relative;
     z-index: 10;
   }
+}
+
+@cor_maiscarta: #22b;
+.mais_carta {
+  .mais_din;
+  background-color: @cor_maiscarta;
+  border-color: darken(@cor_maiscarta, @carta_dark); 
 }
