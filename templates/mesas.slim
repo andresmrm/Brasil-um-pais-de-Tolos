@@ -1,0 +1,14 @@
+-for j in jogadores
+  .jogador
+    dl.info_jog
+      dt.nome_jog = j.nome
+      dd.dinheiro $=j.dinheiro
+    -for naipe in j.mesa
+      .naipe
+        -for carta in j.mesa[naipe]
+          span class="carta =naipe" id="C=carta"
+            p.num_carta =(baralho[carta].num)
+            p.nome_carta =(baralho[carta].nome)
+            p.custo_carta =(baralho[carta].custo)
+    -else
+      %div.naipe

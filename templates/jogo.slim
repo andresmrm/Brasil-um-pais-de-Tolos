@@ -1,24 +1,10 @@
 -extends "base.slim"
 
 -block central
-  -for j in jogadores
-    .jogador
-      dl.info_jog
-        dt.nome_jog = j.nome
-        dd.dinheiro $=j.dinheiro
-      -for naipe in j.mesa
-        .naipe
-          -for carta in j.mesa[naipe]
-            span class="carta =naipe" id="C=carta"
-              p.num_carta =(baralho[carta].num)
-              p.nome_carta Nome
-      -else
-        %div.naipe
+  .mesas
+    -include "mesas.slim"
   .menu_jogadas
     .menu_mao
-      -for carta in jogadores[0].mao
-        span class="carta =baralho[carta].naipe" id="C=carta"
-          p.num_carta =(baralho[carta].num)
-          p.nome_carta Nome
+      -include "mao.slim"
     span class="mais_din" $ 
     span class="mais_carta" +1 

@@ -105,6 +105,8 @@ def enviar_atualizacao():
         jogadores = [ jog.__dict__ for jog in J.jogadores.values()]
         pa = render_template('mao.slim',jogadores=jogadores,baralho=J.baralho)
         ret["mao"] = pa
+        pa = render_template('mesas.slim',jogadores=jogadores,baralho=J.baralho)
+        ret["mesas"] = pa
         return jsonify(ret)
 
 if __name__  == '__main__':

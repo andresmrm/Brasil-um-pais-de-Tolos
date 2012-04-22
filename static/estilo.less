@@ -37,7 +37,7 @@ body {
   background-color: @fundo_jog;
   display: inline-block;
   width: (@largura_carta+20)*6;
-  height: 400px;
+  height: 460px;
   padding: 10px;
   margin: 5px;
   border-style: solid;
@@ -67,7 +67,7 @@ body {
   }
 
   .naipe {
-    margin: 20px 2px 2px 2px;
+    margin: 120px 2px 2px 2px;
     display: inline-block;
     width: @largura_carta+10;
     height: 500px;
@@ -84,7 +84,7 @@ body {
   border-radius: 7px;
   border-width: 2px;
   border-style: solid;
-  margin: -105px 0px;
+  margin: -100px 0px;
   .sombra;
   .nao_selecionavel;
 
@@ -98,10 +98,16 @@ body {
     vertical-align: center;
     margin: 0px;
   }
+  .custo_carta {
+    .num_carta;
+    display: block;
+    margin: 85px 0px 0px 80px;
+  }
   .nome_carta {
     .texto;
     display: inline;
     padding: 0px 5px;
+    font-size: 75%;
   }
   @carta_pol: hsl(0, @carta_sat, @carta_light);
   &.pol {
@@ -150,6 +156,11 @@ body {
   left: -2px;
   border-style: solid;
   border-width: 2px;
+}
+
+.menu_mao {
+  display: inline-block;
+  margin: 100px auto auto auto;
 }
 
 @cor_din: #bb2;
