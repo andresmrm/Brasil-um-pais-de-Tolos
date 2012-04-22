@@ -163,7 +163,13 @@ class Jogador():
 
     def jogada_automatica(self):
         """Faz uma jogada automatica"""
-        self.pegar_dinheiro()
+        if self.dinheiro < 5:
+            self.pegar_dinheiro()
+        elif len(self.mao) < 1:
+            self.mais_carta()
+        else:
+            self.jogar_carta(self.mao[0])
+
 
 class Carta():
     """Uma carta"""

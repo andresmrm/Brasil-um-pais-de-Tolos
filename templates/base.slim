@@ -33,22 +33,35 @@ html
             function carta_clicada() {
               var id \= $(this).attr('id');
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":id})
-              .success(function(data) { alert("sucesso!"+data); })
+              //.success(function(data) { alert("sucesso!"+data); })
+              .success(tratar_erro)
               .error(function(data) { alert("erro!"+data); });
               atualizar();
             }
             $(".mais_din").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"D1"})
-              .success(function(data) { alert("sucesso!"+data); })
+              .success(tratar_erro)
               .error(function(data) { alert("erro!"+data); });
               atualizar();
             });
             $(".mais_carta").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"M1"})
-              .success(function(data) { alert("sucesso!"+data); })
+              .success(tratar_erro)
               .error(function(data) { alert("erro!"+data); });
               atualizar();
             });
+            $(".reiniciar").click(function() {
+              $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"R1"})
+              .success(tratar_erro)
+              .error(function(data) { alert("erro!"+data); });
+              num_jogada \= -1;
+              atualizar();
+            });
+            function tratar_erro(msg) {
+              if(msg.split(":")[0] \=\= "ERRO") {
+                alert(msg);
+              }
+            }
             function atualizar() {
               $.post("atualizar", {"jogador":meu_nome,"cod":meu_cod,"num_jogada":num_jogada}, function(data){
                 if(data!\="0"){

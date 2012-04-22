@@ -41,6 +41,10 @@ class Controlador():
     """Contrala e faz o jogo rodar"""
 
     def __init__(self):
+        self.jogo = None
+        self.inicializar()
+
+    def inicializar(self):
         self.jogo = Jogo()
         j = self.jogo
         j1 = Jogador("Tolo1", j)
@@ -94,6 +98,13 @@ class Controlador():
 
     def executar(self,nome_jog, cod, jogada):
         """Exucuta uma jogada de um jogador"""
+        try:
+            if jogada[0] == 'R':
+                self.inicializar()
+                return "Ok"
+        except:
+            pass
+
         resposta = self.validar_jogador(nome_jog, cod)
         if resposta != True:
             return resposta
