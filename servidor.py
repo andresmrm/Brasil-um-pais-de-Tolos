@@ -31,83 +31,135 @@ class BPT(Flask):
     jinja_options = Flask.jinja_options
     jinja_options['extensions'].append(SlimishExtension)
 
+
+CONTROLADOR = None
 app = BPT(__name__)
 app.debug = True
 
-J = None
+
+class Controlador():
+    """Contrala e faz o jogo rodar"""
+
+    def __init__(self):
+        self.jogo = Jogo()
+        j = self.jogo
+        j1 = Jogador("Tolo1", j)
+        j2 = Jogador("Tolo2", j)
+        j2.automatico = True
+        j3 = Jogador("Tolo3", j)
+        j3.automatico = True
+
+        j.iniciar()
+        #j1.mesa = { 'pol':[1,2,3,4,5,6,7,8,9],
+        #            'fic':[1,2],
+        #            'ent': [1],
+        #            'soc': [1],
+        #            'esp': [1,4,6,8],
+        #            'lit':[1]} 
+
+    def ret_jogadores(self):
+        """Retorna uma lista com os dados dos jogadores em dicionarios"""
+        return [ jog.__dict__ for jog in self.jogo.jogadores.values()]
+
+    def ret_atualizacao(self, nome_jog, cod, num):
+        """Retorna dicionario com atualizacoes a serem feitas na interface"""
+        try:
+            num = int(num)
+        except:
+            return "ERRO: Numero da jogada nao e numero valido!"
+
+        if num == self.jogo.num_jogada:
+            return "0"
+
+        resposta = self.validar_jogador(nome_jog, cod)
+        if resposta != True:
+            return resposta
+
+        dicio = {}
+        dicio["num_jogada"] = self.jogo.num_jogada
+        dicio["mao"] = self.jogo.jogadores[nome_jog].mao
+        dicio["mesas"] = "A"
+        return dicio
+
+    def validar_jogador(self, nome_jog, cod):
+        """Verifica se um jogador existe e se seu codigo bate"""
+        jog = self.jogo.jogadores.get(nome_jog)
+        if jog == None:
+            return "ERRO: Jogador nao encontrado!"
+
+        if jog.cod != cod:
+            return "ERRO: Codigo nao bate!"
+
+        return True
+
+    def executar(self,nome_jog, cod, jogada):
+        """Exucuta uma jogada de um jogador"""
+        resposta = self.validar_jogador(nome_jog, cod)
+        if resposta != True:
+            return resposta
+        jog = self.jogo.jogadores.get(nome_jog)
+
+        if jog.nome != self.jogo.jogador_atual:
+            return "ERRO: Nao e a sua vez de jogar!"
+
+        if len(jogada) < 2:
+            return "ERRO: Jogada muito curta para processar!"
+
+        tipo, iden = jogada[0], jogada[1:]
+        if tipo == 'C':
+            return jog.jogar_carta(iden)
+        if tipo == 'D':
+            return jog.pegar_dinheiro()
+        if tipo == 'M':
+            return jog.mais_carta()
+
+        return "ERRO: Jogada nao identificada!" 
+
+    def nova_pagina(self):
+        jogadores = self.ret_jogadores()
+        baralho = self.jogo.baralho
+        return render_template('jogo.slim',jogadores=jogadores,baralho=baralho)
+
+    def nova_atualizacao(self, jogador, cod, num):
+        ret = self.ret_atualizacao(jogador, cod, num)
+        if ret == "0":
+            return ret
+        else:
+            j = self.ret_jogadores()
+            b = self.jogo.baralho
+            pa = render_template('mao.slim',jogadores=j,baralho=b)
+            ret["mao"] = pa
+            pa = render_template('mesas.slim',jogadores=j,baralho=b)
+            ret["mesas"] = pa
+            return jsonify(ret)
+
+
+CONTROLADOR = Controlador()
 
 @app.route('/')
-def rodar_jogo():
-    #j1 = Jogador()
-    #j1.nome = "Tolo1"
-    #j1.mao = [1,2,3,4]
-    #j1.pegar_dinheiro()
-    #j1.mesa = { 'vermelho':[1,2,3,4,5,6,7,8,9],
-    #            'azul':[1,2],
-    #            'amarelo': [1],
-    #            'verde': [1],
-    #            'laranja': [1,4,6,8],
-    #            'roxo':[1]} 
-    #j2 = Jogador()
-    #j2.nome = "Tolo2"
-    #j3 = Jogador()
-    #j3.nome = "Tolo3"
-    #j3.mesa = { 'vermelho':[1,2,9],}
-    #j4 = Jogador()
-    #j4.nome = "Tolo4"
-    #j5 = Jogador()
-    #j5.nome = "Tolo5"
-    #jogadores = [ j.__dict__ for j in [j1, j2, j3, j4, j5]]
-
-    j = Jogo()
-    global J
-    J = j
-    j1 = Jogador("Tolo1", j)
-    j2 = Jogador("Tolo2", j)
-    j3 = Jogador("Tolo3", j)
-
-    j.iniciar()
-    j1.mesa = { 'pol':[1,2,3,4,5,6,7,8,9],
-                'fic':[1,2],
-                'ent': [1],
-                'soc': [1],
-                'esp': [1,4,6,8],
-                'lit':[1]} 
-
-    jogadores = [ jog.__dict__ for jog in j.jogadores.values()]
-
-    return render_template('jogo.slim',jogadores=jogadores,baralho=j.baralho)
-
+def nova_pagina():
+    return CONTROLADOR.nova_pagina()
 
 @app.route('/jogada', methods=['POST'])
-def jogada():
+def nova_jogada():
     jogador = request.form["jogador"]
     cod = request.form["cod"]
     jogada = request.form["jogada"]
-    return J.executar(jogador, cod, jogada)
-
-@app.route('/baralho', methods=['GET'])
-def enviar_baralho():
-    cartas = {} 
-    for c in J.baralho:
-        cartas[c]  = J.baralho[c].__dict__ 
-    return jsonify(cartas)
+    return CONTROLADOR.executar(jogador, cod, jogada)
 
 @app.route('/atualizar', methods=['POST'])
 def enviar_atualizacao():
     jogador = request.form["jogador"]
     cod = request.form["cod"]
     num = request.form["num_jogada"]
-    ret = J.ret_atualizacao(jogador, cod, num)
-    if ret == "0":
-        return ret
-    else:
-        jogadores = [ jog.__dict__ for jog in J.jogadores.values()]
-        pa = render_template('mao.slim',jogadores=jogadores,baralho=J.baralho)
-        ret["mao"] = pa
-        pa = render_template('mesas.slim',jogadores=jogadores,baralho=J.baralho)
-        ret["mesas"] = pa
-        return jsonify(ret)
+    return CONTROLADOR.nova_atualizacao(jogador, cod, num)
+
+@app.route('/baralho', methods=['GET'])
+def enviar_baralho():
+    cartas = {} 
+    for c in CONTROLADOR.jogo.baralho:
+        cartas[c]  = CONTROLADOR.jogo.baralho[c].__dict__ 
+    return jsonify(cartas)
 
 if __name__  == '__main__':
     app.run()

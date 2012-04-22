@@ -29,7 +29,7 @@ DINHEIRO_INICIAL = 5
 
 
 class Jogo():
-    """Reune e centraliza o jogo"""
+    """Reune e centraliza os elementos do jogo"""
 
     def __init__(self):
         self.baralho = {}
@@ -73,60 +73,6 @@ class Jogo():
         self.distribuir_cartas()
         self.jogador_atual = self.jogadores.keys()[0]
 
-    def validar_jogador(self, nome_jog, cod):
-        """Verifica se um jogador existe e se seu codigo bate"""
-        jog = self.jogadores.get(nome_jog)
-        if jog == None:
-            return "ERRO: Jogador nao encontrado!"
-
-        if jog.cod != cod:
-            return "ERRO: Codigo nao bate!"
-
-        return True
-
-    def ret_atualizacao(self, nome_jog, cod, num):
-        """Retorna dicionario com atualizacoes a serem feitas na interface"""
-        try:
-            num = int(num)
-        except:
-            return "ERRO: Numero da jogada nao e numero valido!"
-
-        if num == self.num_jogada:
-            return "0"
-
-        resposta = self.validar_jogador(nome_jog, cod)
-        if resposta != True:
-            return resposta
-
-        dicio = {}
-        dicio["num_jogada"] = self.num_jogada
-        dicio["mao"] = self.jogadores[nome_jog].mao
-        dicio["mesas"] = "A"
-        return dicio
-
-    def executar(self,nome_jog, cod, jogada):
-        """Exucuta uma jogada de um jogador"""
-        resposta = self.validar_jogador(nome_jog, cod)
-        if resposta != True:
-            return resposta
-        jog = self.jogadores.get(nome_jog)
-
-        if jog.nome != self.jogador_atual:
-            return "ERRO: Nao e a sua vez de jogar!"
-
-        if len(jogada) < 2:
-            return "ERRO: Jogada muito curta para processar!"
-
-        tipo, iden = jogada[0], jogada[1:]
-        if tipo == 'C':
-            return jog.jogar_carta(iden)
-        if tipo == 'D':
-            return jog.pegar_dinheiro()
-        if tipo == 'M':
-            return jog.mais_carta()
-
-        return "ERRO: Jogada nao identificada!" 
-
     def pegar_carta_monte(self):
         """Tira uma carta no monte"""
         if len(self.monte) == 0:
@@ -144,6 +90,13 @@ class Jogo():
             self.jogador_atual = nomes[num+1]
         self.num_jogada += 1
 
+        # Roda IA caso jogador esteja em modo automatico
+        j = self.jogadores[self.jogador_atual]
+        if j.automatico == True:
+            j.jogada_automatica()
+
+
+
 
 class Jogador():
     """Um jogador"""
@@ -156,6 +109,7 @@ class Jogador():
         self.pontos = 0
         self.cod = "teste"
         self.jogo = jogo
+        self.automatico = False
         jogo.adi_jogador(self)
 
     def adi_carta(self, carta):
@@ -206,6 +160,10 @@ class Jogador():
         self.mao.append(carta)
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
+
+    def jogada_automatica(self):
+        """Faz uma jogada automatica"""
+        self.pegar_dinheiro()
 
 class Carta():
     """Uma carta"""

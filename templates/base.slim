@@ -21,8 +21,8 @@ html
           });
 
   body
-    .cabeca
-      header Comeco
+    /.cabeca
+    /  header Comeco
     .centro
       -block central
         h1 HAHAHAHA! Alguem devia ter colocado algo aqui!
@@ -30,36 +30,37 @@ html
       script type="text/javascript"
         -block codigo2
           | 
-            $(".carta").click(function() {
+            function carta_clicada() {
               var id \= $(this).attr('id');
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":id})
-              //.success(function(data) { alert("sucesso!"+data); })
-              .error(function() { alert("erro!"+data); });
+              .success(function(data) { alert("sucesso!"+data); })
+              .error(function(data) { alert("erro!"+data); });
               atualizar();
-            });
+            }
             $(".mais_din").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"D1"})
-              .error(function() { alert("erro!"+data); });
-              //.success(function(data) { alert("sucesso!"+data); })
+              .success(function(data) { alert("sucesso!"+data); })
+              .error(function(data) { alert("erro!"+data); });
               atualizar();
             });
             $(".mais_carta").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"M1"})
-              //.success(function(data) { alert("sucesso!"+data); })
-              .error(function() { alert("erro!"+data); });
+              .success(function(data) { alert("sucesso!"+data); })
+              .error(function(data) { alert("erro!"+data); });
               atualizar();
             });
-            function atualizar(){
+            function atualizar() {
               $.post("atualizar", {"jogador":meu_nome,"cod":meu_cod,"num_jogada":num_jogada}, function(data){
                 if(data!\="0"){
                   num_jogada \= data["num_jogada"];
                   $('.menu_mao').html(data["mao"]);
                   $('.mesas').html(data["mesas"]);
+                  $(".carta").click(carta_clicada);
                 }
               });
             }
             setInterval('atualizar()', 3000);
+            $(".carta").click(carta_clicada);
 
     .rodape
       footer Fim
-
