@@ -14,6 +14,10 @@
   border-radius: 10px;
 }
 
+.nao_selecionavel {
+  -webkit-user-select: none;
+}
+
 .sombra {
   box-shadow: 2px 2px 2px #000;
 }
@@ -82,6 +86,7 @@ body {
   border-style: solid;
   margin: -105px 0px;
   .sombra;
+  .nao_selecionavel;
 
   .num_carta {
     .texto;
@@ -139,9 +144,9 @@ body {
 .menu_jogadas {
   background-color: @fundo_mao;
   position: fixed;
-  height: 200px;
+  height: 130px;
   width: 100%;
-  top: 470px;
+  bottom: 0px;
   left: -2px;
   border-style: solid;
   border-width: 2px;
@@ -151,6 +156,7 @@ body {
 .mais_din {
   .texto;
   .sombra;
+  .nao_selecionavel;
   padding: 15px;
   width: 40px;
   font-size: 150%;

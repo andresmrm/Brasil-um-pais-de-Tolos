@@ -93,13 +93,19 @@ def enviar_baralho():
         cartas[c]  = J.baralho[c].__dict__ 
     return jsonify(cartas)
 
-@app.route('/atualizar', methods=['GET'])
+@app.route('/atualizar', methods=['POST'])
 def enviar_atualizacao():
     jogador = request.form["jogador"]
     cod = request.form["cod"]
     num = request.form["num_jogada"]
-    self.jogo.ret_atualizacao(jogador, cod, num)
-    return jsonify(cartas)
+    ret = J.ret_atualizacao(jogador, cod, num)
+    if ret == "0":
+        return ret
+    else:
+        jogadores = [ jog.__dict__ for jog in J.jogadores.values()]
+        pa = render_template('mao.slim',jogadores=jogadores,baralho=J.baralho)
+        ret["mao"] = pa
+        return jsonify(ret)
 
 if __name__  == '__main__':
     app.run()

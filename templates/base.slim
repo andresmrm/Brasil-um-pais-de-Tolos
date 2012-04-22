@@ -33,22 +33,28 @@ html
             $(".carta").click(function() {
               var id \= $(this).attr('id');
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":id})
-              .success(function(data) { alert("sucesso!"+data); })
+              //.success(function(data) { alert("sucesso!"+data); })
               .error(function() { alert("erro!"+data); });
+              atualizar();
             });
             $(".mais_din").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"D1"})
-              .success(function(data) { alert("sucesso!"+data); })
               .error(function() { alert("erro!"+data); });
+              //.success(function(data) { alert("sucesso!"+data); })
+              atualizar();
             });
             $(".mais_carta").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"M1"})
-              .success(function(data) { alert("sucesso!"+data); })
+              //.success(function(data) { alert("sucesso!"+data); })
               .error(function() { alert("erro!"+data); });
+              atualizar();
             });
             function atualizar(){
-              $.getJSON("atualizar", {"jogador":meu_nome,"cod":meu_cod,"num_jogada":num_jogada}, function(data){
-                cartas \= data;
+              $.post("atualizar", {"jogador":meu_nome,"cod":meu_cod,"num_jogada":num_jogada}, function(data){
+                if(data!\="0"){
+                  num_jogada \= data["num_jogada"];
+                  $('.menu_mao').html(data["mao"]);
+                }
               });
             }
             setInterval('atualizar()', 3000);

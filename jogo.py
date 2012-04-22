@@ -73,7 +73,7 @@ class Jogo():
         self.distribuir_cartas()
         self.jogador_atual = self.jogadores.keys()[0]
 
-    def validar_jogador(self):
+    def validar_jogador(self, nome_jog, cod):
         """Verifica se um jogador existe e se seu codigo bate"""
         jog = self.jogadores.get(nome_jog)
         if jog == None:
@@ -86,27 +86,30 @@ class Jogo():
 
     def ret_atualizacao(self, nome_jog, cod, num):
         """Retorna dicionario com atualizacoes a serem feitas na interface"""
-        if num == self.num_jogada:
-            return None
+        try:
+            num = int(num)
+        except:
+            return "ERRO: Numero da jogada nao e numero valido!"
 
-        resposta = self.validar_jogador()
+        if num == self.num_jogada:
+            return "0"
+
+        resposta = self.validar_jogador(nome_jog, cod)
         if resposta != True:
             return resposta
 
         dicio = {}
         dicio["num_jogada"] = self.num_jogada
         dicio["mao"] = self.jogadores[nome_jog].mao
-        dicio["mesas"] = None
-
-
-
-
+        dicio["mesas"] = "A"
+        return dicio
 
     def executar(self,nome_jog, cod, jogada):
         """Exucuta uma jogada de um jogador"""
-        resposta = self.validar_jogador()
+        resposta = self.validar_jogador(nome_jog, cod)
         if resposta != True:
             return resposta
+        jog = self.jogadores.get(nome_jog)
 
         if jog.nome != self.jogador_atual:
             return "ERRO: Nao e a sua vez de jogar!"
