@@ -38,19 +38,19 @@ html
               .error(function(data) { alert("erro!"+data); });
               atualizar();
             }
-            $(".mais_din").click(function() {
+            $("#mais_din").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"D1"})
               .success(tratar_erro)
               .error(function(data) { alert("erro!"+data); });
               atualizar();
             });
-            $(".mais_carta").click(function() {
+            $("#mais_carta").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"M1"})
               .success(tratar_erro)
               .error(function(data) { alert("erro!"+data); });
               atualizar();
             });
-            $(".reiniciar").click(function() {
+            $("#reiniciar").click(function() {
               $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"R1"})
               .success(tratar_erro)
               .error(function(data) { alert("erro!"+data); });

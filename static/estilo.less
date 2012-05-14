@@ -57,7 +57,7 @@ body {
     display: inline-block;
   }
   
-  .dinheiro {
+  .infos {
     .texto;
     font-size: 150%;
     display: inline;
@@ -101,13 +101,18 @@ body {
   .custo_carta {
     .num_carta;
     display: block;
-    margin: 85px 0px 0px 80px;
+    margin: 55px 0px 0px 80px;
   }
   .nome_carta {
     .texto;
-    display: inline;
+    margin: 0px 0px 10px 0px;
+    text-align: center;
+    width: 90px;
+    white-space: nowrap;
     padding: 0px 5px;
     font-size: 75%;
+    overflow:hidden;
+    text-overflow:ellipsis;
   }
   @carta_pol: hsl(0, @carta_sat, @carta_light);
   &.pol {
@@ -164,7 +169,7 @@ body {
 }
 
 @cor_din: #222;
-.mais_din {
+.botao_menu {
   .texto;
   .sombra;
   .nao_selecionavel;
@@ -186,13 +191,52 @@ body {
   }
 }
 
-@cor_maiscarta: #222;
-.mais_carta {
-  .mais_din;
-  background-color: @cor_maiscarta;
-  border-color: darken(@cor_maiscarta, @carta_dark); 
+.login {
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: middle;
+  display: table-cell;
+  background-color: #fff;
+  height: 300px;
 }
 
-.reiniciar {
-  .mais_carta;
+.maioria {
+  width: 17px;
+  height: 17px;
+  display: inline-block;
+  border-radius: 10px;
+  border-width: 1px;
+  border-style: solid;
+  .nao_selecionavel;
+
+  @carta_pol: hsl(0, @carta_sat, @carta_light);
+  &.pol {
+    background-color: @carta_pol;
+    border-color: darken(@carta_pol, @carta_dark); 
+  }
+  @carta_esp: hsl(30, @carta_sat, @carta_light);
+  &.esp {
+    background-color: @carta_esp;
+    border-color: darken(@carta_esp, @carta_dark); 
+  }
+  @carta_ent: hsl(60, @carta_sat, @carta_light);
+  &.ent {
+    background-color: @carta_ent;
+    border-color: darken(@carta_ent, @carta_dark); 
+  }
+  @carta_soc: hsl(120, @carta_sat, @carta_light);
+  &.soc {
+    background-color: @carta_soc;
+    border-color: darken(@carta_soc, @carta_dark); 
+  }
+  @carta_fic: hsl(210, @carta_sat, @carta_light);
+  &.fic {
+    background-color: @carta_fic;
+    border-color: darken(@carta_fic, @carta_dark); 
+  }
+  @carta_lit: hsl(270, @carta_sat, @carta_light);
+  &.lit {
+    background-color: @carta_lit;
+    border-color: darken(@carta_lit, @carta_dark); 
+  }
 }

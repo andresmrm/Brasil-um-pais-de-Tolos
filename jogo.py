@@ -34,6 +34,7 @@ class Jogo():
     def __init__(self):
         self.baralho = {}
         self.jogadores = {}
+        self.maiorias = {}
         self.monte = []
         self.jogador_atual = None
         self.num_jogada = 0
@@ -46,18 +47,37 @@ class Jogo():
         """Carrega as cartas e monta o monte inicial de cartas"""
         nomes_arqs = os.listdir(DIR_CARTAS)
         for nome in nomes_arqs:
-            with open(os.path.join(DIR_CARTAS, nome)) as arq:
-                linhas = arq.read().splitlines()
-                atributos = {}
-                for linha in linhas:
-                    tipo, valor = linha.split(":")
-                    atributos[tipo.strip()] = valor.strip()
-                c = Carta(nome=atributos['nome'],
-                          num=atributos['num'],
-                          naipe=atributos['naipe'],
-                          custo=int(atributos['custo']),
-                          efeito=atributos['efeito'])
-                self.baralho[len(self.baralho)] = c
+            if nome[0] != ".":
+                with open(os.path.join(DIR_CARTAS, nome)) as arq:
+                    linhas = arq.read().splitlines()
+                    for linha in linhas:
+                        if len(linha) > 0:
+                            linha = linha.decode('utf-8')
+                            try:
+                                atribs = linha.split('\t')
+                                naipe,valor,custo,tipo,nome,frase,efeito = atribs
+                                c = Carta(nome=nome,
+                                          naipe=naipe[0:3].lower(),
+                                            valor=int(valor),
+                                            custo=int(custo),
+                                            tipo=tipo,
+                                            frase=frase.encode('ascii','xmlcharrefreplace'),
+                                            efeito=efeito.encode('ascii','xmlcharrefreplace'))
+                                self.baralho[len(self.baralho)] = c
+                            except:
+                                print("Carta nao pode ser lida: "+linha)
+    #                atributos = {}
+    #                for linha in linhas:
+    #                    tipo, valor = linha.split(":")
+    #                    atributos[tipo.strip()] = valor.strip()
+    #                c = Carta(nome=atributos['nome'],
+    #                          num=atributos['valor'],
+    #                          naipe=atributos['naipe'],
+    #                          naipe=atributos['tipo'],
+    #                          custo=int(atributos['custo']),
+    #                          efeito=atributos['efeito']),
+    #                          frase=atributos['frase'])
+    #                self.baralho[len(self.baralho)] = c
 
     def distribuir_cartas(self):
         """Da as primeiras cartas para cada jogador"""
@@ -72,6 +92,28 @@ class Jogo():
         random.shuffle(self.monte)
         self.distribuir_cartas()
         self.jogador_atual = self.jogadores.keys()[0]
+
+    def verificar_maiorias(self):
+        """Verifica e marca em cada jogador quais maiorias de naipe ele tem"""
+        self.maiorias = {}
+        for j in self.jogadores.values():
+            for naipe in j.mesa.keys():
+                quant = len(j.mesa[naipe])
+                atual = self.maiorias.get(naipe)
+                if atual == None or atual[0] < quant:
+                    self.maiorias[naipe] = (quant, [j.nome])
+                elif atual[0] == quant:
+                    atual[1].append(j.nome)
+        for j in self.jogadores.values():
+            j.maiorias = []
+        for naipe in self.maiorias.keys():
+            for nome_jog in self.maiorias[naipe][1]:
+                self.jogadores[nome_jog].maiorias.append(naipe)
+
+    def calc_pontos(self):
+        """Calcula os pontos de cada jogador"""
+        for j in self.jogadores.values():
+            j.calc_pontos()
 
     def pegar_carta_monte(self):
         """Tira uma carta no monte"""
@@ -88,6 +130,8 @@ class Jogo():
         else:
             num = nomes.index(self.jogador_atual)
             self.jogador_atual = nomes[num+1]
+        self.verificar_maiorias()
+        self.calc_pontos()
         self.num_jogada += 1
 
         # Roda IA caso jogador esteja em modo automatico
@@ -109,6 +153,7 @@ class Jogador():
         self.pontos = 0
         self.cod = "teste"
         self.jogo = jogo
+        self.maiorias = []
         self.automatico = False
         jogo.adi_jogador(self)
 
@@ -116,6 +161,15 @@ class Jogador():
         """Adiciona uma carta a mao do jogador"""
         if len(self.mao) < MAX_CARTAS_MAO:
             self.mao.append(carta)
+
+    def calc_pontos(self):
+        """Calcula os pontos desse jogador"""
+        self.pontos = 0
+        for naipe in self.mesa.values():
+            for carta in naipe:
+                valor = self.jogo.baralho[carta].valor
+                if valor%2 == 1:
+                    self.pontos += valor
 
     def jogar_carta(self, iden):
         """Joga uma carta da mao para a mesa"""
@@ -155,6 +209,7 @@ class Jogador():
 
         carta = self.jogo.pegar_carta_monte()
         if carta == None:
+            print("O MONTE ACABOU!!!")
             return "ERRO: O monte acabou!"
 
         self.mao.append(carta)
@@ -163,7 +218,7 @@ class Jogador():
 
     def jogada_automatica(self):
         """Faz uma jogada automatica"""
-        if self.dinheiro < 5:
+        if self.dinheiro < 10:
             self.pegar_dinheiro()
         elif len(self.mao) < 1:
             self.mais_carta()
@@ -174,11 +229,14 @@ class Jogador():
 class Carta():
     """Uma carta"""
 
-    def __init__(self, nome="Boba", num=1, naipe="Azul", custo=1, efeito=None):
+    def __init__(self, nome="Boba", valor=1, naipe="Azul", tipo="Normal",
+                 custo=1, frase="Ahhhhh", efeito=None):
         self.nome = nome
-        self.num = num
+        self.valor = valor
         self.naipe = naipe
+        self.tipo = tipo
         self.custo = custo
+        self.frase = frase
         self.efeito = efeito
 
 

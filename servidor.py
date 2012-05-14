@@ -22,7 +22,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import jsonify
-from slimish_jinja import SlimishExtension
+from slimish_jinjaBR import SlimishExtension
 
 from jogo import *
 
@@ -38,17 +38,18 @@ app.debug = True
 
 
 class Controlador():
-    """Contrala e faz o jogo rodar"""
+    """Controla e faz o jogo rodar"""
 
     def __init__(self):
         self.jogo = None
         self.inicializar()
+        print("Montando")
 
     def inicializar(self):
         self.jogo = Jogo()
         j = self.jogo
         j1 = Jogador("Tolo1", j)
-        j2 = Jogador("Tolo2", j)
+        j2 = Jogador("ZOrnitorrinco Voador", j)
         j2.automatico = True
         j3 = Jogador("Tolo3", j)
         j3.automatico = True
@@ -63,7 +64,10 @@ class Controlador():
 
     def ret_jogadores(self):
         """Retorna uma lista com os dados dos jogadores em dicionarios"""
-        return [ jog.__dict__ for jog in self.jogo.jogadores.values()]
+        jogs = [ jog.__dict__ for jog in self.jogo.jogadores.values()]
+        for j in jogs:
+            j["tam_mao"] = len(j["mao"])
+        return jogs
 
     def ret_atualizacao(self, nome_jog, cod, num):
         """Retorna dicionario com atualizacoes a serem feitas na interface"""
@@ -147,6 +151,18 @@ class Controlador():
 
 CONTROLADOR = Controlador()
 
+
+# PREPARACAO
+@app.route('/login')
+def pagina_login():
+    return render_template('login.slim',encoding = 'utf-8')
+
+@app.route('/lobby')
+def lobby():
+    return "blah"
+
+
+# JOGO
 @app.route('/')
 def nova_pagina():
     return CONTROLADOR.nova_pagina()
