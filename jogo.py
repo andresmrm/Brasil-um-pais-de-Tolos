@@ -292,7 +292,7 @@ class Jogador():
         else:
             carta, iden = ret
 
-        if carta.custo <= -1:
+        if carta.custo <= 5:
             return "ERRO: A carta deve valer mais do que 5!"
 
         self.mao.remove(iden)
