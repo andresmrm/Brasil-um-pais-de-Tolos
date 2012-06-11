@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
-# Copyright 2012 Qerereque
+# Copyright 2012 Querereque
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -121,19 +121,24 @@ class Controlador():
             return "ERRO: Jogada muito curta para processar!"
 
         tipo, iden = jogada[0], jogada[1:]
-        if tipo == 'C':
+        if tipo == 'J':
             return jog.jogar_carta(iden)
-        if tipo == 'D':
+        elif tipo == 'C':
+            return jog.comprar_carta(iden)
+        elif tipo == 'D':
+            return jog.descartar_carta(iden)
+        elif tipo == 'G':
             return jog.pegar_dinheiro()
-        if tipo == 'M':
+        elif tipo == 'M':
             return jog.mais_carta()
 
         return "ERRO: Jogada nao identificada!" 
 
     def nova_pagina(self):
         jogadores = self.ret_jogadores()
+        descarte = self.jogo.descarte
         baralho = self.jogo.baralho
-        return render_template('jogo.slim',jogadores=jogadores,baralho=baralho)
+        return render_template('jogo.slim',jogadores=jogadores, descarte=descarte, baralho=baralho)
 
     def nova_atualizacao(self, jogador, cod, num):
         ret = self.ret_atualizacao(jogador, cod, num)
@@ -142,9 +147,10 @@ class Controlador():
         else:
             j = self.ret_jogadores()
             b = self.jogo.baralho
+            d = self.jogo.descarte
             pa = render_template('mao.slim',jogadores=j,baralho=b)
             ret["mao"] = pa
-            pa = render_template('mesas.slim',jogadores=j,baralho=b)
+            pa = render_template('mesas.slim',jogadores=j,baralho=b, descarte=d)
             ret["mesas"] = pa
             return jsonify(ret)
 

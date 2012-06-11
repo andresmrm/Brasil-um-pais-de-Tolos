@@ -1,15 +1,29 @@
--for j in jogadores
+div.slimish_jinja_FDP_me_obrigou_criar_essa_div_a_toa
+  -for j in jogadores
+    .jogador
+      dl.info_jog
+        dt.nome_jog =j.nome
+        dd.infos 
+          -for naipe in j.maiorias
+            %span class="maioria =naipe"
+          | Pontos =j.pontos / Mão =j.tam_mao / $=j.dinheiro
+      -for naipe in j.mesa
+        .naipe
+          -for carta in j.mesa[naipe]
+            span class="carta =naipe" id="=carta"
+              p.nome_carta =(baralho[carta].nome)
+              p.num_carta =(baralho[carta].valor)
+              p.custo_carta =(baralho[carta].custo)
+      -else
+        %div.naipe
   .jogador
     dl.info_jog
-      dt.nome_jog = j.nome
-      dd.infos 
-        -for naipe in j.maiorias
-          %span class="maioria =naipe"
-        | Pontos =j.pontos / Mão =j.tam_mao / $=j.dinheiro
-    -for naipe in j.mesa
+      dt.nome_jog Descarte
+      %dd.infos
+    -for naipe in descarte
       .naipe
-        -for carta in j.mesa[naipe]
-          span class="carta =naipe" id="C=carta"
+        -for carta in descarte[naipe]
+          span class="carta =naipe" id="=carta"
             p.nome_carta =(baralho[carta].nome)
             p.num_carta =(baralho[carta].valor)
             p.custo_carta =(baralho[carta].custo)

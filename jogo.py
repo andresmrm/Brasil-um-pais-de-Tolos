@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
-# Copyright 2012 Qerereque
+# Copyright 2012 Querereque
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -20,12 +20,47 @@
 
 import os
 import random
+import re
 
 
 DIR_CARTAS = "cartas"
 MAX_CARTAS_MAO = 5
 NUM_CARTAS_INICIAIS = 2
 DINHEIRO_INICIAL = 5
+
+
+class Magica():
+
+    def __init__(self):
+        self.efeitos = {
+            "Nada acontece" : None,
+            "Jogador que tiver mais cartas (?P<tipo>\w+) (?P<naipe>\w+) baixadas na mesa (?P<acao>\w+) (?P<quant>\w+)\$" : self.dinheiro_maioria,
+        }
+
+    def interpretar(self, texto):
+        for e in self.efeitos.keys():
+            exp = re.search(e, texto)
+            if exp:
+                return (self.efeitos[e], exp.groupdict())
+        return (None, None)
+
+
+    def dinheiro_maioria(self, dados, dono):
+        """Da dinheiro para jogador com uma determinada maioria"""
+        nome_jog = dono.jogo.maiorias.get(dados["naipe"].lower())
+        if nome_jog != None:
+            if dados["acao"] == "perde":
+                sinal = -1
+            else:
+                sinal = 1
+            nomes = nome_jog[1]
+            for nome in nomes:
+                jog = dono.jogo.jogadores[nome]
+                alteracao = int(sinal*int(dados["quant"])/len(nomes))
+                jog.dinheiro += alteracao
+
+
+M = Magica()
 
 
 class Jogo():
@@ -36,6 +71,7 @@ class Jogo():
         self.jogadores = {}
         self.maiorias = {}
         self.monte = []
+        self.descarte = {}
         self.jogador_atual = None
         self.num_jogada = 0
 
@@ -56,15 +92,20 @@ class Jogo():
                             try:
                                 atribs = linha.split('\t')
                                 naipe,valor,custo,tipo,nome,frase,efeito = atribs
+                                e, d = M.interpretar(efeito)
                                 c = Carta(nome=nome,
                                           naipe=naipe[0:3].lower(),
                                             valor=int(valor),
                                             custo=int(custo),
                                             tipo=tipo,
                                             frase=frase.encode('ascii','xmlcharrefreplace'),
-                                            efeito=efeito.encode('ascii','xmlcharrefreplace'))
+                                            efeito_texto=efeito.encode('ascii','xmlcharrefreplace'),
+                                            efeito_dados=d,
+                                            efeito=e)
                                 self.baralho[len(self.baralho)] = c
+                                print efeito
                             except:
+                                raise
                                 print("Carta nao pode ser lida: "+linha)
     #                atributos = {}
     #                for linha in linhas:
@@ -119,8 +160,16 @@ class Jogo():
         """Tira uma carta no monte"""
         if len(self.monte) == 0:
             return None
-
         return self.monte.pop()
+
+    def receber_descarte(self, iden, carta):
+        """Recebe uma carta e a coloca no monte de descartadas"""
+        naipe = self.descarte.get(carta.naipe)
+        if naipe:
+            naipe.append(iden)
+        else:
+            self.descarte[carta.naipe] = [iden]
+
 
     def prox_jogador(self):
         """Passa a vez de jogar para o proximo jogador"""
@@ -171,19 +220,29 @@ class Jogador():
                 if valor%2 == 1:
                     self.pontos += valor
 
-    def jogar_carta(self, iden):
-        """Joga uma carta da mao para a mesa"""
+    def identificar_carta(self, iden, verif_mao=True):
+        """Identifica uma carta na mao do jogador"""
         try:
             iden = int(iden)
         except:
             return "ERRO: Identificador da carta nao e numero valido!"
 
-        if iden not in self.mao:
-            return "ERRO: Jogador nao tem essa carta na mao!"
+        if verif_mao:
+            if iden not in self.mao:
+                return "ERRO: Jogador nao tem essa carta na mao!"
 
         carta = self.jogo.baralho.get(iden)
         if carta == None:
             return "ERRO: Carta nao existe no baralho!"
+        return carta, iden
+
+    def jogar_carta(self, str_iden):
+        """Joga uma carta da mao para a mesa"""
+        ret = self.identificar_carta(str_iden)
+        if type(ret) == str:
+            return ret
+        else:
+            carta, iden = ret
 
         if self.dinheiro < carta.custo:
             return "ERRO: Dinheiro insuficiente para baixar carta!"
@@ -193,12 +252,52 @@ class Jogador():
         if self.mesa.get(carta.naipe) == None:
             self.mesa[carta.naipe] = []
         self.mesa[carta.naipe] += [iden]
+        carta.executar(self)
+        self.jogo.prox_jogador()
+        return "Ok! Jogada feita!"
+
+    def comprar_carta(self, str_iden):
+        """Compra uma carta do monte de descarte"""
+        if self.dinheiro < 3:
+            return "ERRO: Comprar uma carta gasta 3 de dinheiro!"
+
+        ret = self.identificar_carta(str_iden, False)
+        if type(ret) == str:
+            return ret
+        else:
+            carta, iden = ret
+
+        print self.jogo.descarte
+        if iden not in self.jogo.descarte[carta.naipe]:
+            return "ERRO: Monte de descarte nao tem essa carta!"
+
+        self.jogo.descarte[carta.naipe].remove(iden)
+        print iden, type(iden)
+        self.mao.append(iden)
+        self.dinheiro -= 3
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
             
     def pegar_dinheiro(self):
         """Pega dinheiro da banca"""
         self.dinheiro += 2
+        self.jogo.prox_jogador()
+        return "Ok! Jogada feita!"
+
+    def descartar_carta(self, str_iden):
+        """Descarta uma carta da mão e a coloca no monte de descartes"""
+        ret = self.identificar_carta(str_iden)
+        if type(ret) == str:
+            return ret
+        else:
+            carta, iden = ret
+
+        if carta.custo <= -1:
+            return "ERRO: A carta deve valer mais do que 5!"
+
+        self.mao.remove(iden)
+        self.jogo.receber_descarte(iden, carta)
+        self.dinheiro += 5
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
 
@@ -230,14 +329,20 @@ class Carta():
     """Uma carta"""
 
     def __init__(self, nome="Boba", valor=1, naipe="Azul", tipo="Normal",
-                 custo=1, frase="Ahhhhh", efeito=None):
+                 custo=1, frase="Ahhhhh", efeito_texto="Oh", efeito_dados={}, efeito=None):
         self.nome = nome
         self.valor = valor
         self.naipe = naipe
         self.tipo = tipo
         self.custo = custo
         self.frase = frase
+        self.efeito_texto = efeito_texto
+        self.efeito_dados = efeito_dados
         self.efeito = efeito
+
+    def executar(self, dono):
+        if self.efeito != None:
+            self.efeito(self.efeito_dados, dono)
 
 
 if __name__  == '__main__':
