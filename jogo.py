@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
-# Copyright 2012 Querereque
+# Copyright 2012 Quequeré
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -35,15 +35,17 @@ class Magica():
         self.efeitos = {
             "Nada acontece" : None,
             "Jogador que tiver mais cartas (?P<tipo>\w+) (?P<naipe>\w+) baixadas na mesa (?P<acao>\w+) (?P<quant>\w+)\$" : self.dinheiro_maioria,
+            "(?P<acao>\w+) (?P<quant>\w+)\$" : self.altera_dinheiro,
+            "Recebe (?P<quant>\w+) cartas do monte" : self.recebe_cartas_monte,
         }
 
     def interpretar(self, texto):
         for e in self.efeitos.keys():
             exp = re.search(e, texto)
             if exp:
+                print texto, exp
                 return (self.efeitos[e], exp.groupdict())
         return (None, None)
-
 
     def dinheiro_maioria(self, dados, dono):
         """Da dinheiro para jogador com uma determinada maioria"""
@@ -58,6 +60,25 @@ class Magica():
                 jog = dono.jogo.jogadores[nome]
                 alteracao = int(sinal*int(dados["quant"])/len(nomes))
                 jog.dinheiro += alteracao
+
+    def altera_dinheiro(self, dados, dono):
+        """Altera a quantidade de dinheiro do dono da carta"""
+        if dados["acao"] == "perde":
+            sinal = -1
+        else:
+            sinal = 1
+        alteracao = int(sinal*int(dados["quant"]))
+        dono.dinheiro += alteracao
+
+    def recebe_cartas_monte(self, dados, dono):
+        """Dono da carta pega X cartas do monte"""
+        for i in range(int(dados["quant"])):
+            if len(dono.mao) < MAX_CARTAS_MAO:
+                carta = dono.jogo.pegar_carta_monte()
+                if carta != None:
+                    dono.adi_carta(carta)
+
+
 
 
 M = Magica()
@@ -74,6 +95,7 @@ class Jogo():
         self.descarte = {}
         self.jogador_atual = None
         self.num_jogada = 0
+        self.fim = False
 
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
@@ -103,7 +125,6 @@ class Jogo():
                                             efeito_dados=d,
                                             efeito=e)
                                 self.baralho[len(self.baralho)] = c
-                                print efeito
                             except:
                                 raise
                                 print("Carta nao pode ser lida: "+linha)
@@ -130,6 +151,9 @@ class Jogo():
         """Faz as preparacoes iniciais para comecar o jogo"""
         self.montar_baralho()
         self.monte = list(self.baralho.keys())
+        #DELETE ESSE FOR DEPOIS DE TESTAR
+        for i in range(50):
+            self.monte = self.monte + list(self.baralho.keys())
         random.shuffle(self.monte)
         self.distribuir_cartas()
         self.jogador_atual = self.jogadores.keys()[0]
@@ -159,6 +183,7 @@ class Jogo():
     def pegar_carta_monte(self):
         """Tira uma carta no monte"""
         if len(self.monte) == 0:
+            self.fim = True
             return None
         return self.monte.pop()
 
@@ -267,12 +292,10 @@ class Jogador():
         else:
             carta, iden = ret
 
-        print self.jogo.descarte
         if iden not in self.jogo.descarte[carta.naipe]:
             return "ERRO: Monte de descarte nao tem essa carta!"
 
         self.jogo.descarte[carta.naipe].remove(iden)
-        print iden, type(iden)
         self.mao.append(iden)
         self.dinheiro -= 3
         self.jogo.prox_jogador()
@@ -303,7 +326,7 @@ class Jogador():
 
     def mais_carta(self):
         """Pega uma carta do monte"""
-        if len(self.mao) >= 5:
+        if len(self.mao) >= MAX_CARTAS_MAO:
             return "ERRO: Mao cheia!"
 
         carta = self.jogo.pegar_carta_monte()

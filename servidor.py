@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 #-----------------------------------------------------------------------------
-# Copyright 2012 Querereque
+# Copyright 2012 Quequeré
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -34,7 +34,6 @@ class BPT(Flask):
 
 CONTROLADOR = None
 app = BPT(__name__)
-app.debug = True
 
 
 class Controlador():
@@ -191,8 +190,11 @@ def enviar_atualizacao():
 def enviar_baralho():
     cartas = {} 
     for c in CONTROLADOR.jogo.baralho:
-        cartas[c]  = CONTROLADOR.jogo.baralho[c].__dict__ 
+        cartas[c] = dict(CONTROLADOR.jogo.baralho[c].__dict__)
+        cartas[c].pop("efeito")
+        cartas[c].pop("efeito_dados")
     return jsonify(cartas)
 
 if __name__  == '__main__':
+    app.debug = True
     app.run()
