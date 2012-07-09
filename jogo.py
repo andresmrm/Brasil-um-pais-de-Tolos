@@ -113,10 +113,11 @@ class Jogo():
                             linha = linha.decode('utf-8')
                             try:
                                 atribs = linha.split('\t')
-                                naipe,valor,custo,tipo,nome,frase,efeito = atribs
+                                naipe,imagem,valor,custo,tipo,nome,frase,efeito = atribs
                                 e, d = M.interpretar(efeito)
                                 c = Carta(nome=nome,
                                           naipe=naipe[0:3].lower(),
+                                          imagem=str(imagem+".png"),
                                             valor=int(valor),
                                             custo=int(custo),
                                             tipo=tipo,
@@ -351,9 +352,10 @@ class Jogador():
 class Carta():
     """Uma carta"""
 
-    def __init__(self, nome="Boba", valor=1, naipe="Azul", tipo="Normal",
+    def __init__(self, nome="Boba", imagem="", valor=1, naipe="Azul", tipo="Normal",
                  custo=1, frase="Ahhhhh", efeito_texto="Oh", efeito_dados={}, efeito=None):
         self.nome = nome
+        self.imagem = imagem
         self.valor = valor
         self.naipe = naipe
         self.tipo = tipo

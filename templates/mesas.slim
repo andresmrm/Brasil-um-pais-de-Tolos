@@ -10,10 +10,7 @@ div.slimish_jinja_FDP_me_obrigou_criar_essa_div_a_toa
       -for naipe in j.mesa
         .naipe
           -for carta in j.mesa[naipe]
-            span class="carta =naipe" id="=carta"
-              p.nome_carta =(baralho[carta].nome)
-              p.num_carta =(baralho[carta].valor)
-              p.custo_carta =(baralho[carta].custo)
+            %span class="carta =baralho[carta].naipe" id="=carta" style="background-image:url(static/cartas/=baralho[carta].imagem )"
       -else
         %div.naipe
   .jogador
@@ -23,9 +20,6 @@ div.slimish_jinja_FDP_me_obrigou_criar_essa_div_a_toa
     -for naipe in descarte
       .naipe
         -for carta in descarte[naipe]
-          span class="carta =naipe" id="=carta"
-            p.nome_carta =(baralho[carta].nome)
-            p.num_carta =(baralho[carta].valor)
-            p.custo_carta =(baralho[carta].custo)
+          %span class="carta =baralho[carta].naipe" id="=carta" style="background-image:url(static/cartas/=baralho[carta].imagem )"
     -else
       %div.naipe
