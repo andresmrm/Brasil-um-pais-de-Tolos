@@ -23,7 +23,7 @@ import random
 import re
 
 
-DIR_CARTAS = "cartas"
+DIR_CARTAS = "bpt/cartas"
 MAX_CARTAS_MAO = 5
 NUM_CARTAS_INICIAIS = 2
 DINHEIRO_INICIAL = 5

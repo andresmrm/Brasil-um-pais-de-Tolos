@@ -1,4 +1,4 @@
-!html
+doctype 5
 html
   head
     title
@@ -6,20 +6,18 @@ html
         |Jogo de Cartas
     meta name="keywords" content="template language"
     link href="static/estilo.less" rel="stylesheet/less" type="text/css" 
-    %script src="static/less.js" type="text/javascript"
-    %script src="static/jquery.js" type="text/javascript"
+    script src="static/less.js" type="text/javascript"
+    script src="static/jquery.js" type="text/javascript"
 
     script type="text/javascript"
-      -block codigo1
-        | 
-          var meu_nome \= "Tolo1";
-          var meu_cod \= "teste";
-          var mode \= 0;
-          var num_jogada \= 0;
-          var cartas \= {};
-          $.getJSON("baralho", function(data){
-            cartas \= data;
-          });
+      var meu_nome = "Tolo1";
+      var meu_cod = "teste";
+      var mode = 0;
+      var num_jogada = 0;
+      var cartas = {};
+      $.getJSON("baralho", function(data){
+        cartas = data;
+      });
 
   body
     /.cabeca
@@ -29,61 +27,59 @@ html
         h1 HAHAHAHA! Alguem devia ter colocado algo aqui!
 
       script type="text/javascript"
-        -block codigo2
-          | 
-            function carta_clicada() {
-              var id \= $(this).attr('id');
-              $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":modo+id})
-              //.success(function(data) { alert("sucesso!"+data); })
-              .success(tratar_erro)
-              .error(function(data) { alert("erro!"+data); });
-              atualizar();
+        function carta_clicada() {
+          var id = $(this).attr('id');
+          $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":modo+id})
+          //.success(function(data) { alert("sucesso!"+data); })
+          .success(tratar_erro)
+          .error(function(data) { alert("erro!"+data); });
+          atualizar();
+        }
+        $("#jogar_carta").click(function() {
+          modo = "J";
+        });
+        $("#descartar_carta").click(function() {
+          modo = "D";
+        });
+        $("#comprar_carta").click(function() {
+          modo = "C";
+        });
+        $("#mais_din").click(function() {
+          $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"G1"})
+          .success(tratar_erro)
+          .error(function(data) { alert("erro!"+data); });
+          atualizar();
+        });
+        $("#mais_carta").click(function() {
+          $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"M1"})
+          .success(tratar_erro)
+          .error(function(data) { alert("erro!"+data); });
+          atualizar();
+        });
+        $("#reiniciar").click(function() {
+          $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"R1"})
+          .success(tratar_erro)
+          .error(function(data) { alert("erro!"+data); });
+          num_jogada = -1;
+          atualizar();
+        });
+        function tratar_erro(msg) {
+          if(msg.split(":")[0] == "ERRO") {
+            alert(msg);
+          }
+        }
+        function atualizar() {
+          $.post("atualizar", {"jogador":meu_nome,"cod":meu_cod,"num_jogada":num_jogada}, function(data){
+            if(data!="0"){
+              num_jogada = data["num_jogada"];
+              $('.menu_mao').html(data["mao"]);
+              $('.mesas').html(data["mesas"]);
+              $(".carta").click(carta_clicada);
             }
-            $("#jogar_carta").click(function() {
-              modo \= "J";
-            });
-            $("#descartar_carta").click(function() {
-              modo \= "D";
-            });
-            $("#comprar_carta").click(function() {
-              modo \= "C";
-            });
-            $("#mais_din").click(function() {
-              $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"G1"})
-              .success(tratar_erro)
-              .error(function(data) { alert("erro!"+data); });
-              atualizar();
-            });
-            $("#mais_carta").click(function() {
-              $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"M1"})
-              .success(tratar_erro)
-              .error(function(data) { alert("erro!"+data); });
-              atualizar();
-            });
-            $("#reiniciar").click(function() {
-              $.post("jogada", {"jogador":meu_nome,"cod":meu_cod,"jogada":"R1"})
-              .success(tratar_erro)
-              .error(function(data) { alert("erro!"+data); });
-              num_jogada \= -1;
-              atualizar();
-            });
-            function tratar_erro(msg) {
-              if(msg.split(":")[0] \=\= "ERRO") {
-                alert(msg);
-              }
-            }
-            function atualizar() {
-              $.post("atualizar", {"jogador":meu_nome,"cod":meu_cod,"num_jogada":num_jogada}, function(data){
-                if(data!\="0"){
-                  num_jogada \= data["num_jogada"];
-                  $('.menu_mao').html(data["mao"]);
-                  $('.mesas').html(data["mesas"]);
-                  $(".carta").click(carta_clicada);
-                }
-              });
-            }
-            setInterval('atualizar()', 3000);
-            $(".carta").click(carta_clicada);
+          });
+        }
+        setInterval('atualizar()', 3000);
+        $(".carta").click(carta_clicada);
 
     .rodape
       footer Fim

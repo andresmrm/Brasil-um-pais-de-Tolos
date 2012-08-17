@@ -18,22 +18,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 #-----------------------------------------------------------------------------
 
-from flask import Flask
-from flask import render_template
-from flask import request
-from flask import jsonify
-from slimish_jinjaBR import SlimishExtension
+from pyramid.response import Response
+from pyramid.view import view_config
+
+from sqlalchemy.exc import DBAPIError
+
+from .models import (
+    DBSession,
+    Jogador,
+    )
 
 from jogo import *
 
 
-class BPT(Flask):
-    jinja_options = Flask.jinja_options
-    jinja_options['extensions'].append(SlimishExtension)
-
-
 CONTROLADOR = None
-app = BPT(__name__)
 
 
 class Controlador():
@@ -137,7 +135,7 @@ class Controlador():
         jogadores = self.ret_jogadores()
         descarte = self.jogo.descarte
         baralho = self.jogo.baralho
-        return render_template('jogo.slim',jogadores=jogadores, descarte=descarte, baralho=baralho)
+        return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho}
 
     def nova_atualizacao(self, jogador, cod, num):
         ret = self.ret_atualizacao(jogador, cod, num)
@@ -158,36 +156,36 @@ CONTROLADOR = Controlador()
 
 
 # PREPARACAO
-@app.route('/login')
-def pagina_login():
-    return render_template('login.slim',encoding = 'utf-8')
-
-@app.route('/lobby')
-def lobby():
-    return "blah"
+#@view_config(route_name='login', renderer='login.slim')
+#def pagina_login(request):
+#    return {}
+#
+#@view_config(route_name='lobby', renderer='lobby.slim')
+#def lobby(request):
+#    return {}
 
 
 # JOGO
-@app.route('/')
-def nova_pagina():
+@view_config(route_name='home', renderer='jogo.slim')
+def nova_pagina(request):
     return CONTROLADOR.nova_pagina()
 
-@app.route('/jogada', methods=['POST'])
-def nova_jogada():
+#@app.route('/jogada', methods=['POST'])
+def nova_jogada(request):
     jogador = request.form["jogador"]
     cod = request.form["cod"]
     jogada = request.form["jogada"]
     return CONTROLADOR.executar(jogador, cod, jogada)
 
-@app.route('/atualizar', methods=['POST'])
-def enviar_atualizacao():
+#@app.route('/atualizar', methods=['POST'])
+def enviar_atualizacao(request):
     jogador = request.form["jogador"]
     cod = request.form["cod"]
     num = request.form["num_jogada"]
     return CONTROLADOR.nova_atualizacao(jogador, cod, num)
 
-@app.route('/baralho', methods=['GET'])
-def enviar_baralho():
+#@app.route('/baralho', methods=['GET'])
+def enviar_baralho(request):
     cartas = {} 
     for c in CONTROLADOR.jogo.baralho:
         cartas[c] = dict(CONTROLADOR.jogo.baralho[c].__dict__)
@@ -195,6 +193,18 @@ def enviar_baralho():
         cartas[c].pop("efeito_dados")
     return jsonify(cartas)
 
-if __name__  == '__main__':
-    app.debug = True
-    app.run()
+
+
+
+#@view_config(route_name='home', renderer='templates/mytemplate.pt')
+#def my_view(request):
+#    try:
+#        one = DBSession.query(MyModel).filter(MyModel.name=='one').first()
+#    except DBAPIError:
+#        return Response(conn_err_msg, content_type='text/plain', status_int=500)
+#    return {'one':one, 'project':'bpt'}
+#
+#
+#@view_config(route_name='teste', renderer='teste.slim')
+#def teste(request):
+#    return {'one':'1', 'project':'bpt'}

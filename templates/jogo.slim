@@ -1,11 +1,11 @@
--extends "base.slim"
+-inherit base.slim
 
 -block central
   .mesas
-    -include "mesas.slim"
+    -include mesas.slim
   .menu_jogadas
     .menu_mao
-      -include "mao.slim"
+      -include mao.slim
     span id="mais_din" class="botao_menu" $ 
     span id="mais_carta" class="botao_menu" +1 
     span id="jogar_carta" class="botao_menu" J
