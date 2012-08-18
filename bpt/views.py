@@ -18,7 +18,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 #-----------------------------------------------------------------------------
 
+import json
+
 from pyramid.response import Response
+from pyramid.renderers import render_to_response
 from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
@@ -145,11 +148,11 @@ class Controlador():
             j = self.ret_jogadores()
             b = self.jogo.baralho
             d = self.jogo.descarte
-            pa = render_template('mao.slim',jogadores=j,baralho=b)
-            ret["mao"] = pa
-            pa = render_template('mesas.slim',jogadores=j,baralho=b, descarte=d)
-            ret["mesas"] = pa
-            return jsonify(ret)
+            pa = render_to_response('mao.slim',{'jogadores':j,'baralho':b})
+            ret["mao"] = pa.body
+            pa = render_to_response('mesas.slim',{'jogadores':j,'baralho':b, 'descarte':d})
+            ret["mesas"] = pa.body
+            return json.dumps(ret)
 
 
 CONTROLADOR = Controlador()
@@ -171,27 +174,30 @@ def nova_pagina(request):
     return CONTROLADOR.nova_pagina()
 
 #@app.route('/jogada', methods=['POST'])
+@view_config(route_name='jogada')
 def nova_jogada(request):
-    jogador = request.form["jogador"]
-    cod = request.form["cod"]
-    jogada = request.form["jogada"]
-    return CONTROLADOR.executar(jogador, cod, jogada)
+    jogador = request.POST["jogador"]
+    cod = request.POST["cod"]
+    jogada = request.POST["jogada"]
+    return Response(CONTROLADOR.executar(jogador, cod, jogada))
 
 #@app.route('/atualizar', methods=['POST'])
+@view_config(route_name='atualizar')
 def enviar_atualizacao(request):
-    jogador = request.form["jogador"]
-    cod = request.form["cod"]
-    num = request.form["num_jogada"]
-    return CONTROLADOR.nova_atualizacao(jogador, cod, num)
+    jogador = request.POST["jogador"]
+    cod = request.POST["cod"]
+    num = request.POST["num_jogada"]
+    return Response(CONTROLADOR.nova_atualizacao(jogador, cod, num))
 
 #@app.route('/baralho', methods=['GET'])
+@view_config(route_name='baralho')
 def enviar_baralho(request):
     cartas = {} 
     for c in CONTROLADOR.jogo.baralho:
         cartas[c] = dict(CONTROLADOR.jogo.baralho[c].__dict__)
         cartas[c].pop("efeito")
         cartas[c].pop("efeito_dados")
-    return jsonify(cartas)
+    return Response(json.dumps(cartas))
 
 
 

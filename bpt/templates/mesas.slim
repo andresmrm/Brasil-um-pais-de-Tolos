@@ -4,12 +4,12 @@
       dt.nome_jog = j["nome"]
       dd.infos 
         -for naipe in j["maiorias"]
-          span class = "maioria"+naipe
-            Pontos =j["pontos"] / Mão =j["tam_mao"] / $ =j["dinheiro"]
+          span class=("maioria "+naipe)
+        Pontos ${j["pontos"]} / Mão ${j["tam_mao"]} / $ ${j["dinheiro"]}
     -for naipe in j["mesa"]
       .naipe
-        -for carta in j.mesa[naipe]
-          span#carta."carta "+baralho[carta].naipe style="background-image:url(static/cartas/=baralho[carta].imagem )"
+        -for carta in j["mesa"][naipe]
+          span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(static/cartas/"+baralho[carta].imagem+")")
     /-else
       div.naipe
 .jogador
