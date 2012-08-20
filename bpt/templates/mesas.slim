@@ -19,6 +19,6 @@
   -for naipe in descarte
     .naipe
       -for carta in descarte[naipe]
-        span class="carta =baralho[carta].naipe" id="=carta" style="background-image:url(static/cartas/=baralho[carta].imagem )"
+        span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(static/cartas/"+baralho[carta].imagem+")")
   /-else
     div.naipe
