@@ -16,11 +16,16 @@ from zope.sqlalchemy import ZopeTransactionExtension
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
-class Jogador(Base):
+class BdJogador(Base):
     __tablename__ = 'jogadores'
     id = Column(Integer, primary_key=True)
-    nome = Column(Text, unique=True)
+    nome = Column(Text, unique=True, nullable=False)
+    senha = Column(Text, nullable=False)
+    email = Column(Text)
 
-    def __init__(self, nome):
-        self.nome = nome
+    #id = Column(mysql.BIGINT(20, unsigned=True), primary_key=True, autoincrement=True)
+
+    #def __init__(self, nome, senha):
+    #    self.nome = nome
+    #    self.senha = senha
 

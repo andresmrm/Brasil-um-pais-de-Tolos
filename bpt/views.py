@@ -26,9 +26,11 @@ from pyramid.view import view_config
 
 from sqlalchemy.exc import DBAPIError
 
+
+
 from .models import (
     DBSession,
-    Jogador,
+    BdJogador,
     )
 
 from jogo import *
@@ -158,11 +160,114 @@ class Controlador():
 CONTROLADOR = Controlador()
 
 
+
+
+
+import deform
+import colander
+from deform import Form
+
+def record_to_appstruct(self):
+    form =  formulador(FormRegistrar,('Registrar',))
+    return dict([(k, self.__dict__[k]) for k in sorted(self.__dict__) if '_sa_' != k[:4]])
+
+def merge_session_with_post(session, post):
+    for key,value in post:
+        setattr(session, key, value)
+    return session
+
+
+def formulador(form, botoes):
+    f = {"form":Form(form(),buttons=botoes).render()}
+    return f
+
+def verif_nome_unico(nome):
+    dbsession = DBSession()
+    j = dbsession.query(BdJogador).filter_by(nome=nome).first()
+    if j == None:
+        return True
+    else:
+        return False
+
+
+
+class FormLogin(colander.MappingSchema):
+    nome = colander.SchemaNode(colander.String(),
+                        validator=colander.Function(verif_nome_unico,"Nome existe"),
+                        description='Digite seu nome de usuário')
+    senha = colander.SchemaNode(
+                        colander.String(),
+                        validator=colander.Length(min=5, max=100),
+                        widget=deform.widget.PasswordWidget(size=20),
+                        description='Digite sua senha')
+
+class FormRegistrar(colander.MappingSchema):
+    nome = colander.SchemaNode(colander.String(),
+                        validator=colander.Function(verif_nome_unico,"Nome existe"),
+                        description='Digite seu nome de usuário')
+    senha = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Length(min=5),
+                widget=deform.widget.CheckedPasswordWidget(size=20),
+                description='Digite sua senha e a confirme')
+    email = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Email('Email inválido'))
+
+class FormEditar(colander.MappingSchema):
+    senha = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Length(min=5),
+                widget=deform.widget.CheckedPasswordWidget(size=20),
+                description='Digite sua senha e a confirme')
+    email = colander.SchemaNode(
+                colander.String(),
+                validator=colander.Email('Email inválido'))
+
+
 # PREPARACAO
-#@view_config(route_name='login', renderer='login.slim')
-#def pagina_login(request):
-#    return {}
-#
+
+@view_config(route_name='login', renderer='login.slim')
+def pagina_login(request):
+    return formulador(FormLogin,('Entrar',))
+
+@view_config(route_name='criar_perfil', renderer='registrar.slim')
+def criar_perfil(request):
+    dbsession = DBSession()
+    record = BdJogador()
+    form = deform.Form(FormRegistrar(), buttons=('Registrar',))
+    if request.POST:
+        try:
+            appstruct = form.validate(request.POST.items())
+        except deform.ValidationFailure, e:
+            return {'form':e.render()}
+        record = merge_session_with_post(record, request.POST.items())
+        dbsession.merge(record)
+        dbsession.flush()
+        return {'sucesso': 'True'}
+    return {'form':form.render()}
+
+@view_config(route_name='editar_perfil', renderer='editar_perfil.slim')
+def editar_perfil(request):
+    dbsession = DBSession()
+    record = dbsession.query(BdJogador).filter_by(nome=request.matchdict['nome']).first()
+    if record == None:
+        return {'perdido':'True'}
+    else:
+        form = deform.Form(FormEditar(), buttons=('Alterar',))
+        if request.POST:
+            try:
+                appstruct = form.validate(request.POST.items())
+            except deform.ValidationFailure, e:
+                return {'form':e.render()}
+            record = merge_session_with_post(record, request.POST.items())
+            dbsession.merge(record)
+            dbsession.flush()
+            return {'sucesso': 'True'}
+        else:
+            appstruct = record_to_appstruct(record)
+        return {'form':form.render(appstruct=appstruct)}
+
 #@view_config(route_name='lobby', renderer='lobby.slim')
 #def lobby(request):
 #    return {}
@@ -198,7 +303,6 @@ def enviar_baralho(request):
         cartas[c].pop("efeito")
         cartas[c].pop("efeito_dados")
     return Response(json.dumps(cartas))
-
 
 
 

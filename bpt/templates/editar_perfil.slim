@@ -1,0 +1,12 @@
+-inherit base.slim
+
+-block central
+  .login
+    -if form
+      =form|n
+    -elif sucesso
+      Usuário editado com sucesso!
+    -elif perdido
+      Usuário não encontrado!
+script type="text/javascript"
+  deform.load()

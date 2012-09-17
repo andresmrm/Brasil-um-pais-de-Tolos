@@ -15,6 +15,7 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     'plim',
+    'deform',
     ]
 
 setup(name='bpt',

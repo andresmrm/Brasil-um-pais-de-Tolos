@@ -1,0 +1,10 @@
+-inherit base.slim
+
+-block central
+  .login
+    -if form
+      =form|n
+    -elif sucesso
+      Jogador registrado com sucesso!
+script type="text/javascript"
+  deform.load()
