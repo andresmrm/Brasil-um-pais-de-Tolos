@@ -22,7 +22,13 @@ import json
 
 from pyramid.response import Response
 from pyramid.renderers import render_to_response
-from pyramid.view import view_config
+from pyramid.httpexceptions import HTTPFound, HTTPForbidden
+from pyramid.view import view_config, forbidden_view_config
+from pyramid.security import (
+    remember,
+    forget,
+    authenticated_userid,
+    )
 
 from sqlalchemy.exc import DBAPIError
 
@@ -193,7 +199,6 @@ def verif_nome_unico(nome):
 
 class FormLogin(colander.MappingSchema):
     nome = colander.SchemaNode(colander.String(),
-                        validator=colander.Function(verif_nome_unico,"Nome existe"),
                         description='Digite seu nome de usuário')
     senha = colander.SchemaNode(
                         colander.String(),
@@ -227,20 +232,71 @@ class FormEditar(colander.MappingSchema):
 
 # PREPARACAO
 
+@forbidden_view_config()
+#@forbidden_view_config(renderer='login.slim')
+def forbidden_view(request):
+    # do not allow a user to login if they are already logged in
+    if authenticated_userid(request):
+        return HTTPForbidden()
+    loc = request.route_url('login')
+    return HTTPFound(location=loc)
+
 @view_config(route_name='login', renderer='login.slim')
 def pagina_login(request):
-    return formulador(FormLogin,('Entrar',))
+    if authenticated_userid(request):
+        return HTTPForbidden()
+    login_url = request.route_url('login')
+    referrer = request.url
+    if referrer == login_url:
+        referrer = '/' # never use the login form itself as came_from
+    came_from = request.params.get('came_from', referrer)
+    message = ''
+    login = ''
+    password = ''
+    form = deform.Form(FormLogin(), buttons=('Entrar',))
+    if request.POST:
+        try:
+            appstruct = form.validate(request.POST.items())
+        except deform.ValidationFailure, e:
+            return {'form':e.render()}
+        nome = request.POST["nome"]
+        senha = request.POST["senha"]
+        dbsession = DBSession()
+        jog = dbsession.query(BdJogador).filter_by(nome=nome).first()
+        if jog.senha == senha:
+            headers = remember(request, nome)
+            return HTTPFound(location = came_from, headers = headers)
+        message = 'Failed login'
+        return {'form':form.render(appstruct={'nome':nome,'senha':senha}),
+                'message' : message,
+                'url' : request.application_url + '/login',
+                'came_from' : came_from,
+               }
+    return {'form':form.render()}
+
+
+@view_config(route_name='logout')
+def logout(request):
+    headers = forget(request)
+    return HTTPFound(location = request.route_url('inicial'),
+                     headers = headers)
+
+@view_config(route_name='inicial', renderer='inicial.slim')
+def incial(request):
+    logado = authenticated_userid(request)
+    return {'logado': logado,
+           }
 
 @view_config(route_name='criar_perfil', renderer='registrar.slim')
 def criar_perfil(request):
-    dbsession = DBSession()
-    record = BdJogador()
     form = deform.Form(FormRegistrar(), buttons=('Registrar',))
     if request.POST:
         try:
             appstruct = form.validate(request.POST.items())
         except deform.ValidationFailure, e:
             return {'form':e.render()}
+        dbsession = DBSession()
+        record = BdJogador()
         record = merge_session_with_post(record, request.POST.items())
         dbsession.merge(record)
         dbsession.flush()
@@ -274,12 +330,12 @@ def editar_perfil(request):
 
 
 # JOGO
-@view_config(route_name='home', renderer='jogo.slim')
+@view_config(route_name='jogo', renderer='jogo.slim', permission='jogar')
 def nova_pagina(request):
     return CONTROLADOR.nova_pagina()
 
 #@app.route('/jogada', methods=['POST'])
-@view_config(route_name='jogada')
+@view_config(route_name='jogada', permission='jogar')
 def nova_jogada(request):
     jogador = request.POST["jogador"]
     cod = request.POST["cod"]
@@ -287,7 +343,7 @@ def nova_jogada(request):
     return Response(CONTROLADOR.executar(jogador, cod, jogada))
 
 #@app.route('/atualizar', methods=['POST'])
-@view_config(route_name='atualizar')
+@view_config(route_name='atualizar', permission='jogar')
 def enviar_atualizacao(request):
     jogador = request.POST["jogador"]
     cod = request.POST["cod"]

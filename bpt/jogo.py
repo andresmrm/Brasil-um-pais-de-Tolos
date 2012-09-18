@@ -43,7 +43,6 @@ class Magica():
         for e in self.efeitos.keys():
             exp = re.search(e, texto)
             if exp:
-                print texto, exp
                 return (self.efeitos[e], exp.groupdict())
         return (None, None)
 

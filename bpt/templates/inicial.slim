@@ -1,0 +1,9 @@
+-inherit base.slim
+
+-block central
+  -if logado
+    Bem vindo, ${logado}!
+    a href=request.route_url("jogo") Jogar
+  -else
+    a href=request.route_url("login") Logar
+    a href=request.route_url("criar_perfil") Registrar

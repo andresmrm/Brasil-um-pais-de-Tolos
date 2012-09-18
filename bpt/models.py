@@ -13,6 +13,23 @@ from sqlalchemy.orm import (
 
 from zope.sqlalchemy import ZopeTransactionExtension
 
+from pyramid.security import (
+    Allow,
+    Everyone,
+    ALL_PERMISSIONS,
+    )
+
+
+class RootFactory(object):
+    __acl__ = [ (Allow, Everyone, 'logar'),
+                (Allow, 'g:admin', ALL_PERMISSIONS),
+                (Allow, 'g:guarda', 'editar'),
+                (Allow, 'g:jogador', 'jogar'),
+              ]
+    def __init__(self, request):
+        pass
+
+
 DBSession = scoped_session(sessionmaker(extension=ZopeTransactionExtension()))
 Base = declarative_base()
 
@@ -28,4 +45,6 @@ class BdJogador(Base):
     #def __init__(self, nome, senha):
     #    self.nome = nome
     #    self.senha = senha
+
+
 
