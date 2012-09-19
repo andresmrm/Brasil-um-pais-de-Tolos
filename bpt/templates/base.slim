@@ -19,7 +19,7 @@ html
     /  header Comeco
     .centro
       -if logado
-        =logado
+        a href=request.route_url("editar_perfil",nome=logado) ${logado}
         a href=request.route_url("logout") Logout
 
       -block central

@@ -5,7 +5,7 @@ from pyramid.authentication import AuthTktAuthenticationPolicy
 from pyramid.authorization import ACLAuthorizationPolicy
 from security import groupfinder
 
-from .models import DBSession
+from .models import DBSession, UserFactory
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
@@ -35,7 +35,8 @@ def main(global_config, **settings):
     config.add_route('jogo', '/jogo')
     config.add_route('form', '/form')
     config.add_route('criar_perfil', '/registrar')
-    config.add_route('editar_perfil', '/editar_perfil/{nome}')
+    config.add_route('editar_perfil', '/editar_perfil/{nome}',
+                     factory=UserFactory, traverse="/{nome}")
     config.add_route('ver_perfil', '/ver_perfil/{nome}')
     config.scan()
     return config.make_wsgi_app()

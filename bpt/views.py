@@ -238,37 +238,29 @@ def forbidden_view(request):
     # do not allow a user to login if they are already logged in
     if authenticated_userid(request):
         return HTTPForbidden()
-    loc = request.route_url('login')
+    loc = request.route_url('login', _query=(('next', request.path),))
     return HTTPFound(location=loc)
 
 @view_config(route_name='login', renderer='login.slim')
 def pagina_login(request):
-    if authenticated_userid(request):
-        return HTTPForbidden()
+    next = request.params.get('next') or request.route_url('inicial')
     login_url = request.route_url('login')
-    referrer = request.url
-    if referrer == login_url:
-        referrer = '/' # never use the login form itself as came_from
-    came_from = request.params.get('came_from', referrer)
-    message = ''
-    login = ''
-    password = ''
     form = deform.Form(FormLogin(), buttons=('Entrar',))
-    if request.POST:
+    if 'Entrar' in request.POST:
         try:
             appstruct = form.validate(request.POST.items())
         except deform.ValidationFailure, e:
             return {'form':e.render()}
-        nome = request.POST["nome"]
-        senha = request.POST["senha"]
+        nome = request.POST.get("nome",'')
+        senha = request.POST.get("senha",'')
         dbsession = DBSession()
         jog = dbsession.query(BdJogador).filter_by(nome=nome).first()
-        if jog.senha == senha:
+        if jog and jog.verif_senha(senha):
             headers = remember(request, nome)
-            return HTTPFound(location = came_from, headers = headers)
-        message = 'Failed login'
+            return HTTPFound(location=next, headers=headers)
+        mensagem = 'Falha no login'
         return {'form':form.render(appstruct={'nome':nome,'senha':senha}),
-                'message' : message,
+                'mensagem' : mensagem,
                 'url' : request.application_url + '/login',
                 'came_from' : came_from,
                }
@@ -278,8 +270,7 @@ def pagina_login(request):
 @view_config(route_name='logout')
 def logout(request):
     headers = forget(request)
-    return HTTPFound(location = request.route_url('inicial'),
-                     headers = headers)
+    return HTTPFound(location = request.route_url('inicial'), headers = headers)
 
 @view_config(route_name='inicial', renderer='inicial.slim')
 def incial(request):
@@ -290,7 +281,7 @@ def incial(request):
 @view_config(route_name='criar_perfil', renderer='registrar.slim')
 def criar_perfil(request):
     form = deform.Form(FormRegistrar(), buttons=('Registrar',))
-    if request.POST:
+    if 'Registrar' in request.POST:
         try:
             appstruct = form.validate(request.POST.items())
         except deform.ValidationFailure, e:
@@ -303,7 +294,8 @@ def criar_perfil(request):
         return {'sucesso': 'True'}
     return {'form':form.render()}
 
-@view_config(route_name='editar_perfil', renderer='editar_perfil.slim')
+@view_config(route_name='editar_perfil', renderer='editar_perfil.slim',
+             permission='jogar')
 def editar_perfil(request):
     dbsession = DBSession()
     record = dbsession.query(BdJogador).filter_by(nome=request.matchdict['nome']).first()
@@ -311,7 +303,7 @@ def editar_perfil(request):
         return {'perdido':'True'}
     else:
         form = deform.Form(FormEditar(), buttons=('Alterar',))
-        if request.POST:
+        if 'Alterar' in request.POST:
             try:
                 appstruct = form.validate(request.POST.items())
             except deform.ValidationFailure, e:
