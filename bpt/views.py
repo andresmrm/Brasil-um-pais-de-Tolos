@@ -40,6 +40,7 @@ from .models import (
     )
 
 from jogo import *
+from chat import SistemaChat
 
 
 CONTROLADOR = None
@@ -56,7 +57,7 @@ class Controlador():
     def inicializar(self):
         self.jogo = Jogo()
         j = self.jogo
-        j1 = Jogador("Tolo1", j)
+        j1 = Jogador("a", j)
         j2 = Jogador("ZOrnitorrinco Voador", j)
         j2.automatico = True
         j3 = Jogador("Tolo3", j)
@@ -77,7 +78,7 @@ class Controlador():
             j["tam_mao"] = len(j["mao"])
         return jogs
 
-    def ret_atualizacao(self, nome_jog, cod, num):
+    def ret_atualizacao(self, nome_jog, num):
         """Retorna dicionario com atualizacoes a serem feitas na interface"""
         try:
             num = int(num)
@@ -87,7 +88,7 @@ class Controlador():
         if num == self.jogo.num_jogada:
             return "0"
 
-        resposta = self.validar_jogador(nome_jog, cod)
+        resposta = self.validar_jogador(nome_jog)
         if resposta != True:
             return resposta
 
@@ -97,18 +98,18 @@ class Controlador():
         dicio["mesas"] = "A"
         return dicio
 
-    def validar_jogador(self, nome_jog, cod):
-        """Verifica se um jogador existe e se seu codigo bate"""
+    def validar_jogador(self, nome_jog):
+        """Verifica se um jogador existe"""
         jog = self.jogo.jogadores.get(nome_jog)
         if jog == None:
             return "ERRO: Jogador nao encontrado!"
 
-        if jog.cod != cod:
-            return "ERRO: Codigo nao bate!"
+        #if jog.cod != cod:
+        #    return "ERRO: Codigo nao bate!"
 
         return True
 
-    def executar(self,nome_jog, cod, jogada):
+    def executar(self,nome_jog, jogada):
         """Exucuta uma jogada de um jogador"""
         try:
             if jogada[0] == 'R':
@@ -117,7 +118,7 @@ class Controlador():
         except:
             pass
 
-        resposta = self.validar_jogador(nome_jog, cod)
+        resposta = self.validar_jogador(nome_jog)
         if resposta != True:
             return resposta
         jog = self.jogo.jogadores.get(nome_jog)
@@ -148,8 +149,8 @@ class Controlador():
         baralho = self.jogo.baralho
         return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho}
 
-    def nova_atualizacao(self, jogador, cod, num):
-        ret = self.ret_atualizacao(jogador, cod, num)
+    def nova_atualizacao(self, jogador, num):
+        ret = self.ret_atualizacao(jogador, num)
         if ret == "0":
             return ret
         else:
@@ -164,7 +165,8 @@ class Controlador():
 
 
 CONTROLADOR = Controlador()
-
+CHAT = SistemaChat()
+CHAT.criar_sala("central")
 
 
 
@@ -316,9 +318,27 @@ def editar_perfil(request):
             appstruct = record_to_appstruct(record)
         return {'form':form.render(appstruct=appstruct)}
 
-#@view_config(route_name='lobby', renderer='lobby.slim')
-#def lobby(request):
-#    return {}
+# CHAT
+@view_config(route_name='enviar_msg', permission='jogar')
+def receber_msg(request):
+    jogador = authenticated_userid(request)
+    if jogador:
+        msg = request.POST["msg"]
+        num = CHAT.adi_msg('central', jogador, msg)
+        return Response(str(num))
+    return HTTPForbidden
+
+@view_config(route_name='ret_msgs', permission='jogar')
+def ret_msgs(request):
+    jogador = authenticated_userid(request)
+    if jogador:
+        msgs = CHAT.ret_msgs('central')
+        print "aaaaaaaaaaaaaa",msgs, CHAT.salas["central"].msgs
+        pa = render_to_response('chat_msgs.slim',{'msgs':msgs})
+        ret = {}
+        ret["msgs"] = pa.body
+        return Response(json.dumps(ret))
+    return HTTPForbidden
 
 
 # JOGO
@@ -329,18 +349,16 @@ def nova_pagina(request):
 #@app.route('/jogada', methods=['POST'])
 @view_config(route_name='jogada', permission='jogar')
 def nova_jogada(request):
-    jogador = request.POST["jogador"]
-    cod = request.POST["cod"]
+    jogador = authenticated_userid(request)
     jogada = request.POST["jogada"]
-    return Response(CONTROLADOR.executar(jogador, cod, jogada))
+    return Response(CONTROLADOR.executar(jogador, jogada))
 
 #@app.route('/atualizar', methods=['POST'])
 @view_config(route_name='atualizar', permission='jogar')
 def enviar_atualizacao(request):
-    jogador = request.POST["jogador"]
-    cod = request.POST["cod"]
+    jogador = authenticated_userid(request)
     num = request.POST["num_jogada"]
-    return Response(CONTROLADOR.nova_atualizacao(jogador, cod, num))
+    return Response(CONTROLADOR.nova_atualizacao(jogador, num))
 
 #@app.route('/baralho', methods=['GET'])
 @view_config(route_name='baralho')
@@ -351,18 +369,3 @@ def enviar_baralho(request):
         cartas[c].pop("efeito")
         cartas[c].pop("efeito_dados")
     return Response(json.dumps(cartas))
-
-
-
-#@view_config(route_name='home', renderer='templates/mytemplate.pt')
-#def my_view(request):
-#    try:
-#        one = DBSession.query(MyModel).filter(MyModel.name=='one').first()
-#    except DBAPIError:
-#        return Response(conn_err_msg, content_type='text/plain', status_int=500)
-#    return {'one':one, 'project':'bpt'}
-#
-#
-#@view_config(route_name='teste', renderer='teste.slim')
-#def teste(request):
-#    return {'one':'1', 'project':'bpt'}

@@ -4,6 +4,7 @@
   -if logado
     Bem vindo, ${logado}!
     a href=request.route_url("jogo") Jogar
+    -include chat.slim
   -else
     a href=request.route_url("login") Logar
     a href=request.route_url("criar_perfil") Registrar

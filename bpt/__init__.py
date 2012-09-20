@@ -29,6 +29,8 @@ def main(global_config, **settings):
     config.add_route('inicial', '/')
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+    config.add_route('enviar_msg', '/enviar_msg')
+    config.add_route('ret_msgs', '/ret_msgs')
     config.add_route('atualizar', '/atualizar')
     config.add_route('baralho', '/baralho')
     config.add_route('jogada', '/jogada')

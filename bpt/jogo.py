@@ -225,7 +225,6 @@ class Jogador():
         self.mao = []
         self.mesa = {}
         self.pontos = 0
-        self.cod = "teste"
         self.jogo = jogo
         self.maiorias = []
         self.automatico = False
