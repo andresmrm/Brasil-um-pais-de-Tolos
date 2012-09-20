@@ -1,0 +1,11 @@
+-inherit base.slim
+
+-block central
+  -if perdido
+    Usuário não encontrado!
+  -elif nome
+    ul
+      li =nome
+      li =email
+
+

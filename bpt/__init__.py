@@ -21,24 +21,27 @@ def main(global_config, **settings):
     config.set_authentication_policy(authn_policy)
     config.set_authorization_policy(authz_policy)
 
-
     config.add_static_view('deform_static', 'deform:static')
 
 
-
     config.add_route('inicial', '/')
+    config.add_route('central', '/central')
+
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
+
     config.add_route('enviar_msg', '/enviar_msg')
     config.add_route('ret_msgs', '/ret_msgs')
-    config.add_route('atualizar', '/atualizar')
+
+    config.add_route('jogo', '/jogo')
     config.add_route('baralho', '/baralho')
     config.add_route('jogada', '/jogada')
-    config.add_route('jogo', '/jogo')
-    config.add_route('form', '/form')
+    config.add_route('atualizar', '/atualizar')
+
     config.add_route('criar_perfil', '/registrar')
+    config.add_route('ver_perfil', '/ver_perfil/{nome}')
     config.add_route('editar_perfil', '/editar_perfil/{nome}',
                      factory=UserFactory, traverse="/{nome}")
-    config.add_route('ver_perfil', '/ver_perfil/{nome}')
+
     config.scan()
     return config.make_wsgi_app()

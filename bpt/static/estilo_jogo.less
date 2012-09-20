@@ -1,0 +1,245 @@
+@fundo: #222;
+@fundo_jog: #242;
+@fundo_mao: #666;
+
+@largura_carta: 100px;
+@carta_sat: 80%;
+@carta_dark: 10%;
+@carta_light: 25%;
+
+.texto {
+  color: #fff;
+  text-shadow: 0px 0px 1px #fff;
+  background-color: rgba(0,0,0,0.7);
+  border-radius: 10px;
+}
+
+.nao_selecionavel {
+  -webkit-user-select: none;
+}
+
+.sombra {
+  box-shadow: 2px 2px 2px #000;
+}
+
+
+body {
+  background-color: @fundo;
+  table-layout: fixed;
+}
+
+.centro {
+  width: ((@largura_carta+20)*6+40)*6;
+}
+
+.jogador {
+  .sombra;
+  background-color: @fundo_jog;
+  display: inline-block;
+  width: (@largura_carta+20)*6;
+  height: 460px;
+  padding: 10px;
+  margin: 5px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: darken(@fundo_jog,20%);
+  border-radius: 10px;
+
+  .info_jog {
+    margin: 0px 5px 10px 5px;
+  }
+
+  .nome_jog {
+    .texto;
+    font-size: 150%;
+    padding: 5px 10px;
+    text-align: left;
+    display: inline-block;
+  }
+  
+  .infos {
+    .texto;
+    font-size: 150%;
+    display: inline;
+    text-align: right;
+    float: right;
+    padding: 10px 10px;
+  }
+
+  .naipe {
+    margin: 120px 2px 2px 2px;
+    display: inline-block;
+    width: @largura_carta+10;
+    height: 480px;
+    vertical-align: top;
+  }
+
+}
+
+
+.carta {
+  width: @largura_carta;
+  height: 141px;
+  padding: 0px;
+  display: inline-block;
+  border-radius: 7px;
+  border-width: 0px;
+  border-style: solid;
+  margin: -65px 0px;
+  .sombra;
+  .nao_selecionavel;
+  background-size: 100%;
+  background-repeat:no-repeat;
+
+  .num_carta {
+    .texto;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: center;
+    margin: 0px;
+  }
+  .custo_carta {
+    .num_carta;
+    display: block;
+    margin: 55px 0px 0px 80px;
+  }
+  .nome_carta {
+    .texto;
+    margin: 0px 0px 10px 0px;
+    text-align: center;
+    width: 90px;
+    white-space: nowrap;
+    padding: 0px 5px;
+    font-size: 75%;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  @carta_pol: hsl(0, @carta_sat, @carta_light);
+  &.pol {
+    background-color: @carta_pol;
+    border-color: darken(@carta_pol, @carta_dark); 
+  }
+  @carta_esp: hsl(30, @carta_sat, @carta_light);
+  &.esp {
+    background-color: @carta_esp;
+    border-color: darken(@carta_esp, @carta_dark); 
+  }
+  @carta_ent: hsl(60, @carta_sat, @carta_light);
+  &.ent {
+    background-color: @carta_ent;
+    border-color: darken(@carta_ent, @carta_dark); 
+  }
+  @carta_soc: hsl(120, @carta_sat, @carta_light);
+  &.soc {
+    background-color: @carta_soc;
+    border-color: darken(@carta_soc, @carta_dark); 
+  }
+  @carta_fic: hsl(210, @carta_sat, @carta_light);
+  &.fic {
+    background-color: @carta_fic;
+    border-color: darken(@carta_fic, @carta_dark); 
+  }
+  @carta_lit: hsl(270, @carta_sat, @carta_light);
+  &.lit {
+    background-color: @carta_lit;
+    border-color: darken(@carta_lit, @carta_dark); 
+  }
+
+  &:hover {
+    border-color: #aaa;
+    position: relative;
+    z-index: 10;
+  }
+}
+
+.menu_jogadas {
+  background-color: @fundo_mao;
+  position: fixed;
+  height: 150px;
+  width: 100%;
+  bottom: 0px;
+  left: -2px;
+  border-style: solid;
+  border-width: 2px;
+}
+
+.menu_mao {
+  display: inline-block;
+  margin: 65px auto auto 5px;
+}
+
+@cor_din: #222;
+.botao_menu {
+  .texto;
+  .sombra;
+  .nao_selecionavel;
+  padding: 15px;
+  width: 40px;
+  font-size: 150%;
+  text-align: center;
+  float: right;
+  margin: 10px;
+  background-color: @cor_din;
+  border-color: darken(@cor_din, @carta_dark); 
+  border-radius: 7px;
+  border-width: 2px;
+  border-style: solid;
+  &:hover {
+    border-color: #aaa;
+    position: relative;
+    z-index: 10;
+  }
+}
+
+.login {
+  margin-left: auto;
+  margin-right: auto;
+  vertical-align: middle;
+  display: table-cell;
+  background-color: #fff;
+  height: 300px;
+}
+
+.maioria {
+  width: 17px;
+  height: 17px;
+  display: inline-block;
+  border-radius: 10px;
+  border-width: 1px;
+  border-style: solid;
+  .nao_selecionavel;
+
+  @carta_pol: hsl(0, @carta_sat, @carta_light);
+  &.pol {
+    background-color: @carta_pol;
+    border-color: darken(@carta_pol, @carta_dark); 
+  }
+  @carta_esp: hsl(30, @carta_sat, @carta_light);
+  &.esp {
+    background-color: @carta_esp;
+    border-color: darken(@carta_esp, @carta_dark); 
+  }
+  @carta_ent: hsl(60, @carta_sat, @carta_light);
+  &.ent {
+    background-color: @carta_ent;
+    border-color: darken(@carta_ent, @carta_dark); 
+  }
+  @carta_soc: hsl(120, @carta_sat, @carta_light);
+  &.soc {
+    background-color: @carta_soc;
+    border-color: darken(@carta_soc, @carta_dark); 
+  }
+  @carta_fic: hsl(210, @carta_sat, @carta_light);
+  &.fic {
+    background-color: @carta_fic;
+    border-color: darken(@carta_fic, @carta_dark); 
+  }
+  @carta_lit: hsl(270, @carta_sat, @carta_light);
+  &.lit {
+    background-color: @carta_lit;
+    border-color: darken(@carta_lit, @carta_dark); 
+  }
+}

@@ -234,12 +234,12 @@ class FormEditar(colander.MappingSchema):
 
 # PREPARACAO
 
-@forbidden_view_config()
-#@forbidden_view_config(renderer='login.slim')
+@forbidden_view_config(renderer='proibida.slim')
 def forbidden_view(request):
     # do not allow a user to login if they are already logged in
-    if authenticated_userid(request):
-        return HTTPForbidden()
+    logado = authenticated_userid(request)
+    if logado:
+        return {'logado':logado}
     loc = request.route_url('login', _query=(('next', request.path),))
     return HTTPFound(location=loc)
 
@@ -268,17 +268,26 @@ def pagina_login(request):
                }
     return {'form':form.render()}
 
-
 @view_config(route_name='logout')
 def logout(request):
     headers = forget(request)
     return HTTPFound(location = request.route_url('inicial'), headers = headers)
+
 
 @view_config(route_name='inicial', renderer='inicial.slim')
 def incial(request):
     logado = authenticated_userid(request)
     return {'logado': logado,
            }
+
+@view_config(route_name='central', renderer='central.slim', permission='jogar')
+def central(request):
+    logado = authenticated_userid(request)
+    return {'logado': logado,
+           }
+
+
+# PERFIS
 
 @view_config(route_name='criar_perfil', renderer='registrar.slim')
 def criar_perfil(request):
@@ -295,6 +304,17 @@ def criar_perfil(request):
         dbsession.flush()
         return {'sucesso': 'True'}
     return {'form':form.render()}
+
+@view_config(route_name='ver_perfil', renderer='ver_perfil.slim')
+def ver_perfil(request):
+    dbsession = DBSession()
+    record = dbsession.query(BdJogador).filter_by(nome=request.matchdict['nome']).first()
+    if record == None:
+        return {'perdido':'True'}
+    else:
+        appstruct = record_to_appstruct(record)
+        return appstruct
+        #return {'form':form.render(appstruct=appstruct)}
 
 @view_config(route_name='editar_perfil', renderer='editar_perfil.slim',
              permission='jogar')
@@ -333,7 +353,6 @@ def ret_msgs(request):
     jogador = authenticated_userid(request)
     if jogador:
         msgs = CHAT.ret_msgs('central')
-        print "aaaaaaaaaaaaaa",msgs, CHAT.salas["central"].msgs
         pa = render_to_response('chat_msgs.slim',{'msgs':msgs})
         ret = {}
         ret["msgs"] = pa.body
@@ -346,21 +365,18 @@ def ret_msgs(request):
 def nova_pagina(request):
     return CONTROLADOR.nova_pagina()
 
-#@app.route('/jogada', methods=['POST'])
 @view_config(route_name='jogada', permission='jogar')
 def nova_jogada(request):
     jogador = authenticated_userid(request)
     jogada = request.POST["jogada"]
     return Response(CONTROLADOR.executar(jogador, jogada))
 
-#@app.route('/atualizar', methods=['POST'])
 @view_config(route_name='atualizar', permission='jogar')
 def enviar_atualizacao(request):
     jogador = authenticated_userid(request)
     num = request.POST["num_jogada"]
     return Response(CONTROLADOR.nova_atualizacao(jogador, num))
 
-#@app.route('/baralho', methods=['GET'])
 @view_config(route_name='baralho')
 def enviar_baralho(request):
     cartas = {} 
