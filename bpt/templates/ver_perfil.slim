@@ -7,5 +7,7 @@
     ul
       li =nome
       li =email
+      -if e_o_proprio
+        a href=request.route_url("editar_perfil",nome=nome) Editar
 
 

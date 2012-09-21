@@ -276,12 +276,14 @@ def logout(request):
 
 @view_config(route_name='inicial', renderer='inicial.slim')
 def incial(request):
+    print "AAAAAAAAAAAAAAA"
     logado = authenticated_userid(request)
     return {'logado': logado,
            }
 
 @view_config(route_name='central', renderer='central.slim', permission='jogar')
 def central(request):
+    print "AAAAAAAAAAAAAAA2"
     logado = authenticated_userid(request)
     return {'logado': logado,
            }
@@ -309,10 +311,13 @@ def criar_perfil(request):
 def ver_perfil(request):
     dbsession = DBSession()
     record = dbsession.query(BdJogador).filter_by(nome=request.matchdict['nome']).first()
+    logado = authenticated_userid(request)
     if record == None:
         return {'perdido':'True'}
     else:
         appstruct = record_to_appstruct(record)
+        if appstruct['nome'] == logado:
+            appstruct['e_o_proprio'] = True
         return appstruct
         #return {'form':form.render(appstruct=appstruct)}
 

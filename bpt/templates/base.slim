@@ -18,8 +18,9 @@ html
   body
     .cabeca
       header
+        Brasil um País de Tolos
         -if logado
-          a href=request.route_url("editar_perfil",nome=logado) ${logado}
+          a href=request.route_url("ver_perfil",nome=logado) ${logado}
           |:
           a href=request.route_url("logout") Logout
     hr
@@ -28,4 +29,4 @@ html
         h1 HAHAHAHA! Alguem devia ter colocado algo aqui!
     hr
     .rodape
-      footer Super Jogo!
+      footer Mais um Super Jogo!
