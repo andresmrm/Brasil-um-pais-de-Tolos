@@ -20,6 +20,8 @@
 
 import os, random, re, time
 
+from chat import SistemaChat
+
 
 DIR_CARTAS = "bpt/cartas"
 MAX_CARTAS_MAO = 5
@@ -84,13 +86,19 @@ M = Magica()
 
 class SistemaPreJogo():
 
-    def __init__(self, sist_chat):
+    def __init__(self):
         self.salas = {}
         self.jogadores = {}
-        self.sist_chat = sist_chat
+        self.sist_chat = SistemaChat()
         
         self.central = 'central'
         self.criar_sala(self.central, None)
+
+    def adi_msg(self, nome_sala, jogador, msg):
+        return self.sist_chat.adi_msg(nome_sala, jogador, msg)
+
+    def ret_msgs(self, nome_sala):
+        return self.sist_chat.ret_msgs(nome_sala)
 
     def criar_sala(self, nome, jog):
         r = False
@@ -103,7 +111,7 @@ class SistemaPreJogo():
             r = True
         return r
 
-    def ret_sala(self, nome):
+    def ret_jogo(self, nome_jogo):
         return self.salas.get(nome)
 
     def ret_salas(self):
@@ -116,7 +124,7 @@ class SistemaPreJogo():
     def colocar_jog_sala(self, sala, jog):
         """Coloca um jogador em uma determinada sala"""
         if not sala:
-            print "Tentando remover jogador???!!! Feito mais ou menos..."
+            print("Tentando remover jogador???!!! Feito mais ou menos...")
             self.jogadores[jog] = None
             return True
 
@@ -238,7 +246,6 @@ class SistemaPreJogo():
 
         dicio = {}
         dicio["num_jogada"] = jogo.num_jogada
-        print "MAOOOOOOOO", nome_jogador, jogador.mao
         dicio["mao"] = jogador.mao
         dicio["mesas"] = "A"
         j = self.ret_jogadores_dicio(jogo)
@@ -339,7 +346,6 @@ class Jogo():
             self.distribuir_cartas()
             self.jogador_atual = self.jogadores.keys()[0]
             self.iniciado = True
-            print "INICIAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaR"
 
     def verificar_maiorias(self):
         """Verifica e marca em cada jogador quais maiorias de naipe ele tem"""

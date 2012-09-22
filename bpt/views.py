@@ -40,7 +40,6 @@ from .models import (
     )
 
 from jogo import *
-from chat import SistemaChat
 
 
 import deform
@@ -48,8 +47,7 @@ import colander
 from deform import Form
 
 
-CHAT = SistemaChat()
-PREJOGO = SistemaPreJogo(CHAT)
+PREJOGO = SistemaPreJogo()
 
 
 def record_to_appstruct(self):
@@ -158,8 +156,8 @@ def incial(request):
     return {'logado': logado,
            }
 
-@view_config(route_name='salas', renderer='salas.slim', permission='jogar')
-def salas(request):
+@view_config(route_name='sala_central', renderer='salas.slim', permission='jogar')
+def salas_central(request):
     if 'criar_sala' in request.POST:
         return HTTPFound(location = request.route_url('sala', {'nome':request.POST.get("nome",'')}))
     logado = authenticated_userid(request)
@@ -179,7 +177,7 @@ def sala(request):
 @view_config(route_name='atualizar_sala', permission='jogar')
 def atualizar_sala(request):
     salas = PREJOGO.ret_salas()
-    pa = render_to_response('listar_salas.slim',{'salas':salas})
+    pa = render_to_response('listar_salas.slim',{'salas':salas}, request=request)
     ret = {}
     ret["salas"] = pa.body
     return Response(json.dumps(ret))
@@ -243,15 +241,17 @@ def editar_perfil(request):
 @view_config(route_name='enviar_msg', permission='jogar')
 def receber_msg(request):
     jogador = authenticated_userid(request)
+    nome_sala = request.matchdict['nome']
     if jogador:
         msg = request.POST["msg"]
-        num = CHAT.adi_msg('central', jogador, msg)
+        num = PREJOGO.adi_msg(nome_sala, jogador, msg)
         return Response(str(num))
     return HTTPForbidden
 
 @view_config(route_name='ret_msgs', permission='jogar')
 def ret_msgs(request):
-    msgs = CHAT.ret_msgs('central')
+    nome_sala = request.matchdict['nome']
+    msgs = PREJOGO.ret_msgs(nome_sala)
     pa = render_to_response('chat_msgs.slim',{'msgs':msgs})
     ret = {}
     ret["msgs"] = pa.body
@@ -266,24 +266,24 @@ def nova_pagina(request):
 
 @view_config(route_name='jogada', permission='jogar')
 def nova_jogada(request):
+    nome_jogo = request.matchdict['nome']
     jogador = authenticated_userid(request)
     jogada = request.POST["jogada"]
     return Response(PREJOGO.executar(jogador, jogada))
 
 @view_config(route_name='atualizar_jogo', permission='jogar')
 def enviar_atualizacao(request):
+    nome_jogo = request.matchdict['nome']
     jogador = authenticated_userid(request)
     num = request.POST["num_jogada"]
-    print "UHUUUUUUUUU", num
+
     r = PREJOGO.nova_atualizacao(jogador, num)
     if r == "0":
         return Response(r)
     ret, j, b, d = r
-    print "AAAAAAAAAAAAAAAA:",j
     for jog in j:
         if jog['nome'] == jogador:
             dic_jog = jog
-    print "DICCCCCCCCCCCC", dic_jog
     pa = render_to_response('mao.slim',{'jogador':dic_jog,'baralho':b})
     ret["mao"] = pa.body
     pa = render_to_response('mesas.slim',{'jogadores':j,'baralho':b, 'descarte':d})
@@ -292,7 +292,9 @@ def enviar_atualizacao(request):
 
 @view_config(route_name='baralho', permission='jogar')
 def enviar_baralho(request):
+    nome_jogo = request.matchdict['nome']
     jogador = authenticated_userid(request)
+
     baralho = PREJOGO.ret_jogador(jogador).jogo.baralho
     cartas = {} 
     for c in baralho:

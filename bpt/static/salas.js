@@ -3,12 +3,12 @@ $("#criar_sala").keypress(function(event) {
      event.preventDefault();
      texto = $("#criar_sala").val();
      $("#criar_sala").val("");
-     location.href=texto;
+     location.href="/sala/"+texto+"/";
    }
 });
 
 function atualizar_sala() {
-  $.post("/atualizar_sala", function(data){
+  $.post("atualizar", function(data){
     if(data!="0"){
       dic = JSON.parse(data);
       $('#salas').html(dic["salas"]);

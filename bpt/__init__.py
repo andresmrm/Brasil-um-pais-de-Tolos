@@ -7,6 +7,7 @@ from security import groupfinder
 
 from .models import DBSession, UserFactory
 
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -25,20 +26,20 @@ def main(global_config, **settings):
 
 
     config.add_route('inicial', '/')
-    config.add_route('sala', '/salas/{nome}')
-    config.add_route('salas', '/salas/')
-    config.add_route('atualizar_sala', '/atualizar_sala')
+    config.add_route('sala_central', '/sala/central/')
+    config.add_route('sala', '/sala/{nome}/')
+    config.add_route('atualizar_sala', '/sala/{nome}/atualizar')
 
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
 
-    config.add_route('enviar_msg', '/enviar_msg')
-    config.add_route('ret_msgs', '/ret_msgs')
+    config.add_route('enviar_msg', '/{tipo}/{nome}/enviar_msg')
+    config.add_route('ret_msgs', '/{tipo}/{nome}/ret_msgs')
 
-    config.add_route('jogo', '/jogo/{nome}')
-    config.add_route('baralho', '/baralho')
-    config.add_route('jogada', '/jogada')
-    config.add_route('atualizar_jogo', '/atualizar_jogo')
+    config.add_route('jogo', '/jogo/{nome}/')
+    config.add_route('baralho', '/jogo/{nome}/baralho')
+    config.add_route('jogada', '/jogo/{nome}/jogada')
+    config.add_route('atualizar_jogo', '/jogo/{nome}/atualizar')
 
     config.add_route('criar_perfil', '/registrar')
     config.add_route('ver_perfil', '/ver_perfil/{nome}')

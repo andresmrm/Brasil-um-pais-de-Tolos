@@ -1,13 +1,13 @@
 var mode = 0;
 var num_jogada = -1;
 var cartas = {};
-$.getJSON("/baralho", function(data){
+$.getJSON("baralho", function(data){
   cartas = data;
 });
 
 function carta_clicada() {
   var id = $(this).attr('id');
-  $.post("/jogada", {"jogada":modo+id})
+  $.post("jogada", {"jogada":modo+id})
   //.success(function(data) { alert("sucesso!"+data); })
   .success(tratar_erro)
   .error(function(data) { alert("erro!"+data); });
@@ -23,19 +23,19 @@ $("#comprar_carta").click(function() {
   modo = "C";
 });
 $("#mais_din").click(function() {
-  $.post("/jogada", {"jogada":"G1"})
+  $.post("jogada", {"jogada":"G1"})
   .success(tratar_erro)
   .error(function(data) { alert("erro!"+data); });
   atualizar();
 });
 $("#mais_carta").click(function() {
-  $.post("/jogada", {"jogada":"M1"})
+  $.post("jogada", {"jogada":"M1"})
   .success(tratar_erro)
   .error(function(data) { alert("erro!"+data); });
   atualizar();
 });
 $("#reiniciar").click(function() {
-  $.post("/jogada", {"jogada":"R1"})
+  $.post("jogada", {"jogada":"R1"})
   .success(tratar_erro)
   .error(function(data) { alert("erro!"+data); });
   num_jogada = -1;
@@ -47,7 +47,7 @@ function tratar_erro(msg) {
   }
 }
 function atualizar() {
-  $.post("/atualizar_jogo", {"num_jogada":num_jogada}, function(data){
+  $.post("atualizar", {"num_jogada":num_jogada}, function(data){
     if(data!="0"){
       dic = JSON.parse(data);
       num_jogada = dic["num_jogada"];
