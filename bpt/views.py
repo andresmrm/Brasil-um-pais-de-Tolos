@@ -273,13 +273,18 @@ def nova_jogada(request):
 @view_config(route_name='atualizar_jogo', permission='jogar')
 def enviar_atualizacao(request):
     jogador = authenticated_userid(request)
-    print request.POST
     num = request.POST["num_jogada"]
+    print "UHUUUUUUUUU", num
     r = PREJOGO.nova_atualizacao(jogador, num)
-    if r[0] == "0":
-        return Response(r[0])
+    if r == "0":
+        return Response(r)
     ret, j, b, d = r
-    pa = render_to_response('mao.slim',{'jogadores':j,'baralho':b})
+    print "AAAAAAAAAAAAAAAA:",j
+    for jog in j:
+        if jog['nome'] == jogador:
+            dic_jog = jog
+    print "DICCCCCCCCCCCC", dic_jog
+    pa = render_to_response('mao.slim',{'jogador':dic_jog,'baralho':b})
     ret["mao"] = pa.body
     pa = render_to_response('mesas.slim',{'jogadores':j,'baralho':b, 'descarte':d})
     ret["mesas"] = pa.body

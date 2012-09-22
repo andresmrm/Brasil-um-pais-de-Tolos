@@ -153,26 +153,6 @@ class SistemaPreJogo():
             j["tam_mao"] = len(j["mao"])
         return jogs
 
-    def ret_atualizacao(self, jogador, jogo, num):
-        """Retorna dicionario com atualizacoes a serem feitas na interface"""
-        try:
-            num = int(num)
-        except:
-            return "ERRO: Numero da jogada nao e numero valido!"
-
-        if num == jogo.num_jogada:
-            return "0"
-
-        #resposta = self.validar_jogador(nome_jog)
-        #if resposta != True:
-        #    return resposta
-
-        dicio = {}
-        dicio["num_jogada"] = jogo.num_jogada
-        dicio["mao"] = jogador.mao
-        dicio["mesas"] = "A"
-        return dicio
-
     def validar_jogador(self, nome_jog):
         """Verifica se um jogador existe"""
         jog = self.jogadores.get(nome_jog)
@@ -244,16 +224,27 @@ class SistemaPreJogo():
         return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho}
 
     def nova_atualizacao(self, nome_jogador, num):
-        jog = self.jogadores[nome_jogador]
-        jogo = jog.jogo
-        ret = self.ret_atualizacao(jog, jogo, num)
-        if ret == "0":
-            return [ret]
-        else:
-            j = self.ret_jogadores_dicio(jogo)
-            b = jogo.baralho
-            d = jogo.descarte
-            return [ret, j, b, d]
+        """Retorna dicionario com atualizacoes a serem feitas na interface"""
+        try:
+            num = int(num)
+        except:
+            return "ERRO: Numero da jogada nao e numero valido!"
+
+        jogador = self.jogadores[nome_jogador]
+        jogo = jogador.jogo
+        if num == jogo.num_jogada:
+            # Nada para ser atualizado
+            return "0"
+
+        dicio = {}
+        dicio["num_jogada"] = jogo.num_jogada
+        print "MAOOOOOOOO", nome_jogador, jogador.mao
+        dicio["mao"] = jogador.mao
+        dicio["mesas"] = "A"
+        j = self.ret_jogadores_dicio(jogo)
+        b = jogo.baralho
+        d = jogo.descarte
+        return [dicio, j, b, d]
 
 
 class Jogo():

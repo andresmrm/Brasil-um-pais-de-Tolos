@@ -1,5 +1,5 @@
 var mode = 0;
-var num_jogada = 0;
+var num_jogada = -1;
 var cartas = {};
 $.getJSON("/baralho", function(data){
   cartas = data;
