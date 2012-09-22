@@ -9,7 +9,7 @@
     -for naipe in j["mesa"]
       .naipe
         -for carta in j["mesa"][naipe]
-          span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(static/cartas/"+baralho[carta].imagem+")")
+          span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")
     /-else
       div.naipe
 .jogador
@@ -19,6 +19,6 @@
   -for naipe in descarte
     .naipe
       -for carta in descarte[naipe]
-        span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(static/cartas/"+baralho[carta].imagem+")")
+        span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")
   /-else
     div.naipe

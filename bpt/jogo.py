@@ -366,17 +366,3 @@ class Carta():
     def executar(self, dono):
         if self.efeito != None:
             self.efeito(self.efeito_dados, dono)
-
-
-if __name__  == '__main__':
-    j = Jogo()
-    j1 = Jogador("Tolo1",j)
-    j2 = Jogador("Tolo2",j)
-    j3 = Jogador("Tolo3",j)
-
-    j.iniciar()
-    j1.pegar_dinheiro()
-
-    for jog in j.jogadores:
-        print jog.mao
-    print j.monte

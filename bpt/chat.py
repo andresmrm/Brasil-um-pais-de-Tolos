@@ -24,7 +24,7 @@ class SistemaChat():
         self.salas = {}
 
     def criar_sala(self, nome):
-        self.salas[nome] = Sala(nome)
+        self.salas[nome] = SalaChat(nome)
 
     def adi_msg(self, sala, jog, msg):
         return self.salas[sala].adi_msg(jog, msg)
@@ -36,7 +36,7 @@ class SistemaChat():
         self.salas[nome] = None
 
 
-class Sala():
+class SalaChat():
 
     def __init__(self, nome):
         self.nome = nome

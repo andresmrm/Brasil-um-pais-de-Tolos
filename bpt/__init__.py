@@ -25,7 +25,9 @@ def main(global_config, **settings):
 
 
     config.add_route('inicial', '/')
-    config.add_route('central', '/central')
+    config.add_route('sala', '/salas/{nome}')
+    config.add_route('salas', '/salas/')
+    config.add_route('atualizar_sala', '/atualizar_sala')
 
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')
@@ -33,10 +35,10 @@ def main(global_config, **settings):
     config.add_route('enviar_msg', '/enviar_msg')
     config.add_route('ret_msgs', '/ret_msgs')
 
-    config.add_route('jogo', '/jogo')
+    config.add_route('jogo', '/jogo/{nome}')
     config.add_route('baralho', '/baralho')
     config.add_route('jogada', '/jogada')
-    config.add_route('atualizar', '/atualizar')
+    config.add_route('atualizar_jogo', '/atualizar_jogo')
 
     config.add_route('criar_perfil', '/registrar')
     config.add_route('ver_perfil', '/ver_perfil/{nome}')

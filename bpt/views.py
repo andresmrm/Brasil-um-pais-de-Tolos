@@ -41,6 +41,7 @@ from .models import (
 
 from jogo import *
 from chat import SistemaChat
+from pre_jogo import SistemaPreJogo
 
 
 CONTROLADOR = None
@@ -158,6 +159,7 @@ class Controlador():
             b = self.jogo.baralho
             d = self.jogo.descarte
             pa = render_to_response('mao.slim',{'jogadores':j,'baralho':b})
+            print "-------------",ret
             ret["mao"] = pa.body
             pa = render_to_response('mesas.slim',{'jogadores':j,'baralho':b, 'descarte':d})
             ret["mesas"] = pa.body
@@ -166,8 +168,7 @@ class Controlador():
 
 CONTROLADOR = Controlador()
 CHAT = SistemaChat()
-CHAT.criar_sala("central")
-
+PREJOGO = SistemaPreJogo(CHAT)
 
 
 
@@ -232,6 +233,7 @@ class FormEditar(colander.MappingSchema):
                 validator=colander.Email('Email inválido'))
 
 
+
 # PREPARACAO
 
 @forbidden_view_config(renderer='proibida.slim')
@@ -276,17 +278,35 @@ def logout(request):
 
 @view_config(route_name='inicial', renderer='inicial.slim')
 def incial(request):
-    print "AAAAAAAAAAAAAAA"
     logado = authenticated_userid(request)
     return {'logado': logado,
            }
 
-@view_config(route_name='central', renderer='central.slim', permission='jogar')
-def central(request):
-    print "AAAAAAAAAAAAAAA2"
+@view_config(route_name='salas', renderer='salas.slim', permission='jogar')
+def salas(request):
+    if 'criar_sala' in request.POST:
+        return HTTPFound(location = request.route_url('sala', {'nome':request.POST.get("nome",'')}))
     logado = authenticated_userid(request)
+    PREJOGO.colocar_jog_sala(PREJOGO.central, logado)
     return {'logado': logado,
            }
+
+@view_config(route_name='sala', renderer='sala.slim', permission='jogar')
+def sala(request):
+    logado = authenticated_userid(request)
+    sala = request.matchdict['nome']
+    PREJOGO.criar_sala(sala, logado)
+    return {'logado': logado,
+            'sala': sala,
+           }
+
+@view_config(route_name='atualizar_sala', permission='jogar')
+def atualizar_sala(request):
+    salas = PREJOGO.ret_salas()
+    pa = render_to_response('listar_salas.slim',{'salas':salas})
+    ret = {}
+    ret["salas"] = pa.body
+    return Response(json.dumps(ret))
 
 
 # PERFIS
@@ -355,14 +375,11 @@ def receber_msg(request):
 
 @view_config(route_name='ret_msgs', permission='jogar')
 def ret_msgs(request):
-    jogador = authenticated_userid(request)
-    if jogador:
-        msgs = CHAT.ret_msgs('central')
-        pa = render_to_response('chat_msgs.slim',{'msgs':msgs})
-        ret = {}
-        ret["msgs"] = pa.body
-        return Response(json.dumps(ret))
-    return HTTPForbidden
+    msgs = CHAT.ret_msgs('central')
+    pa = render_to_response('chat_msgs.slim',{'msgs':msgs})
+    ret = {}
+    ret["msgs"] = pa.body
+    return Response(json.dumps(ret))
 
 
 # JOGO
@@ -376,7 +393,7 @@ def nova_jogada(request):
     jogada = request.POST["jogada"]
     return Response(CONTROLADOR.executar(jogador, jogada))
 
-@view_config(route_name='atualizar', permission='jogar')
+@view_config(route_name='atualizar_jogo', permission='jogar')
 def enviar_atualizacao(request):
     jogador = authenticated_userid(request)
     num = request.POST["num_jogada"]
