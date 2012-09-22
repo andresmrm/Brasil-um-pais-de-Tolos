@@ -2,4 +2,4 @@ ul
 -for sala in salas
   li
     a href=sala.nome =sala.nome
-    /a href=request.route_url("salas", nome=sala.nome) Entrar
+    ${len(sala.jogadores)}

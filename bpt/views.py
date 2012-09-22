@@ -41,140 +41,16 @@ from .models import (
 
 from jogo import *
 from chat import SistemaChat
-from pre_jogo import SistemaPreJogo
-
-
-CONTROLADOR = None
-
-
-class Controlador():
-    """Controla e faz o jogo rodar"""
-
-    def __init__(self):
-        self.jogo = None
-        self.inicializar()
-        print("Montando")
-
-    def inicializar(self):
-        self.jogo = Jogo()
-        j = self.jogo
-        j1 = Jogador("a", j)
-        j2 = Jogador("ZOrnitorrinco Voador", j)
-        j2.automatico = True
-        j3 = Jogador("Tolo3", j)
-        j3.automatico = True
-
-        j.iniciar()
-        #j1.mesa = { 'pol':[1,2,3,4,5,6,7,8,9],
-        #            'fic':[1,2],
-        #            'ent': [1],
-        #            'soc': [1],
-        #            'esp': [1,4,6,8],
-        #            'lit':[1]} 
-
-    def ret_jogadores(self):
-        """Retorna uma lista com os dados dos jogadores em dicionarios"""
-        jogs = [ jog.__dict__ for jog in self.jogo.jogadores.values()]
-        for j in jogs:
-            j["tam_mao"] = len(j["mao"])
-        return jogs
-
-    def ret_atualizacao(self, nome_jog, num):
-        """Retorna dicionario com atualizacoes a serem feitas na interface"""
-        try:
-            num = int(num)
-        except:
-            return "ERRO: Numero da jogada nao e numero valido!"
-
-        if num == self.jogo.num_jogada:
-            return "0"
-
-        resposta = self.validar_jogador(nome_jog)
-        if resposta != True:
-            return resposta
-
-        dicio = {}
-        dicio["num_jogada"] = self.jogo.num_jogada
-        dicio["mao"] = self.jogo.jogadores[nome_jog].mao
-        dicio["mesas"] = "A"
-        return dicio
-
-    def validar_jogador(self, nome_jog):
-        """Verifica se um jogador existe"""
-        jog = self.jogo.jogadores.get(nome_jog)
-        if jog == None:
-            return "ERRO: Jogador nao encontrado!"
-
-        #if jog.cod != cod:
-        #    return "ERRO: Codigo nao bate!"
-
-        return True
-
-    def executar(self,nome_jog, jogada):
-        """Exucuta uma jogada de um jogador"""
-        try:
-            if jogada[0] == 'R':
-                self.inicializar()
-                return "Ok"
-        except:
-            pass
-
-        resposta = self.validar_jogador(nome_jog)
-        if resposta != True:
-            return resposta
-        jog = self.jogo.jogadores.get(nome_jog)
-
-        if jog.nome != self.jogo.jogador_atual:
-            return "ERRO: Nao e a sua vez de jogar!"
-
-        if len(jogada) < 2:
-            return "ERRO: Jogada muito curta para processar!"
-
-        tipo, iden = jogada[0], jogada[1:]
-        if tipo == 'J':
-            return jog.jogar_carta(iden)
-        elif tipo == 'C':
-            return jog.comprar_carta(iden)
-        elif tipo == 'D':
-            return jog.descartar_carta(iden)
-        elif tipo == 'G':
-            return jog.pegar_dinheiro()
-        elif tipo == 'M':
-            return jog.mais_carta()
-
-        return "ERRO: Jogada nao identificada!" 
-
-    def nova_pagina(self):
-        jogadores = self.ret_jogadores()
-        descarte = self.jogo.descarte
-        baralho = self.jogo.baralho
-        return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho}
-
-    def nova_atualizacao(self, jogador, num):
-        ret = self.ret_atualizacao(jogador, num)
-        if ret == "0":
-            return ret
-        else:
-            j = self.ret_jogadores()
-            b = self.jogo.baralho
-            d = self.jogo.descarte
-            pa = render_to_response('mao.slim',{'jogadores':j,'baralho':b})
-            print "-------------",ret
-            ret["mao"] = pa.body
-            pa = render_to_response('mesas.slim',{'jogadores':j,'baralho':b, 'descarte':d})
-            ret["mesas"] = pa.body
-            return json.dumps(ret)
-
-
-CONTROLADOR = Controlador()
-CHAT = SistemaChat()
-PREJOGO = SistemaPreJogo(CHAT)
-
 
 
 import deform
 import colander
 from deform import Form
+
+
+CHAT = SistemaChat()
+PREJOGO = SistemaPreJogo(CHAT)
+
 
 def record_to_appstruct(self):
     form =  formulador(FormRegistrar,('Registrar',))
@@ -385,25 +261,37 @@ def ret_msgs(request):
 # JOGO
 @view_config(route_name='jogo', renderer='jogo.slim', permission='jogar')
 def nova_pagina(request):
-    return CONTROLADOR.nova_pagina()
+    jogador = authenticated_userid(request)
+    return PREJOGO.nova_pagina(jogador)
 
 @view_config(route_name='jogada', permission='jogar')
 def nova_jogada(request):
     jogador = authenticated_userid(request)
     jogada = request.POST["jogada"]
-    return Response(CONTROLADOR.executar(jogador, jogada))
+    return Response(PREJOGO.executar(jogador, jogada))
 
 @view_config(route_name='atualizar_jogo', permission='jogar')
 def enviar_atualizacao(request):
     jogador = authenticated_userid(request)
+    print request.POST
     num = request.POST["num_jogada"]
-    return Response(CONTROLADOR.nova_atualizacao(jogador, num))
+    r = PREJOGO.nova_atualizacao(jogador, num)
+    if r[0] == "0":
+        return Response(r[0])
+    ret, j, b, d = r
+    pa = render_to_response('mao.slim',{'jogadores':j,'baralho':b})
+    ret["mao"] = pa.body
+    pa = render_to_response('mesas.slim',{'jogadores':j,'baralho':b, 'descarte':d})
+    ret["mesas"] = pa.body
+    return Response(json.dumps(ret))
 
-@view_config(route_name='baralho')
+@view_config(route_name='baralho', permission='jogar')
 def enviar_baralho(request):
+    jogador = authenticated_userid(request)
+    baralho = PREJOGO.ret_jogador(jogador).jogo.baralho
     cartas = {} 
-    for c in CONTROLADOR.jogo.baralho:
-        cartas[c] = dict(CONTROLADOR.jogo.baralho[c].__dict__)
+    for c in baralho:
+        cartas[c] = dict(baralho[c].__dict__)
         cartas[c].pop("efeito")
         cartas[c].pop("efeito_dados")
     return Response(json.dumps(cartas))

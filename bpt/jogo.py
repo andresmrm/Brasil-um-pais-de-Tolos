@@ -18,9 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 #-----------------------------------------------------------------------------
 
-import os
-import random
-import re
+import os, random, re, time
 
 
 DIR_CARTAS = "bpt/cartas"
@@ -83,10 +81,190 @@ class Magica():
 M = Magica()
 
 
+
+class SistemaPreJogo():
+
+    def __init__(self, sist_chat):
+        self.salas = {}
+        self.jogadores = {}
+        self.sist_chat = sist_chat
+        
+        self.central = 'central'
+        self.criar_sala(self.central, None)
+
+    def criar_sala(self, nome, jog):
+        r = False
+        if self.salas.get(nome) == None:
+            s = Jogo(nome, self.sist_chat)
+            self.salas[nome] = s
+            r = True
+        if jog:
+            self.colocar_jog_sala(nome, jog)
+            r = True
+        return r
+
+    def ret_sala(self, nome):
+        return self.salas.get(nome)
+
+    def ret_salas(self):
+        r = []
+        for s in self.salas.values():
+            if s.nome != 'central':
+                r.append(s)
+        return r
+
+    def colocar_jog_sala(self, sala, jog):
+        """Coloca um jogador em uma determinada sala"""
+        if not sala:
+            print "Tentando remover jogador???!!! Feito mais ou menos..."
+            self.jogadores[jog] = None
+            return True
+
+        s = self.salas.get(sala)
+        # Verifica se a sala existe
+        if not s:
+            return False
+
+        j = self.jogadores.get(jog)
+        if not j:
+            j = Jogador(jog, s) 
+            self.jogadores[jog] = j
+        else:
+            j.trocar_jogo(s)
+        s.adi_jogador(j)
+        return True
+
+    def rem_jogador(self, sala, jog):
+        s = self.salas[sala]
+        s.rem_jog(jog)
+        if s.vazia() and sala != self.central:
+            self.fechar_sala(nome)
+
+    def ret_jogador(self, nome):
+        return self.jogadores.get(nome)
+
+    def ret_jogadores(self, nome_jogo):
+        self.salas[nome_jogo].ret_jogadores()
+
+    def ret_jogadores_dicio(self, jogo):
+        """Retorna uma lista com os dados dos jogadores em dicionarios"""
+        jogs = [ jog.__dict__ for jog in jogo.ret_jogadores()]
+        for j in jogs:
+            j["tam_mao"] = len(j["mao"])
+        return jogs
+
+    def ret_atualizacao(self, jogador, jogo, num):
+        """Retorna dicionario com atualizacoes a serem feitas na interface"""
+        try:
+            num = int(num)
+        except:
+            return "ERRO: Numero da jogada nao e numero valido!"
+
+        if num == jogo.num_jogada:
+            return "0"
+
+        #resposta = self.validar_jogador(nome_jog)
+        #if resposta != True:
+        #    return resposta
+
+        dicio = {}
+        dicio["num_jogada"] = jogo.num_jogada
+        dicio["mao"] = jogador.mao
+        dicio["mesas"] = "A"
+        return dicio
+
+    def validar_jogador(self, nome_jog):
+        """Verifica se um jogador existe"""
+        jog = self.jogadores.get(nome_jog)
+        if jog == None:
+            return "ERRO: Jogador nao encontrado!"
+
+        #if jog.cod != cod:
+        #    return "ERRO: Codigo nao bate!"
+
+        return True
+
+    def fechar_sala(self, nome):
+        s = self.salas[nome]
+        self.jogadores = s.ret_jogadores()
+        for jog in jogadores:
+            self.jogadores[jog].trocar_jogo(self.central)
+        self.salas[nome] = None
+        self.sist_chat.fechar_sala(nome)
+
+    def iniciar_jogo(self, nome_jogo):
+        j = self.salas.get(nome_jogo)
+        if j:
+            j.iniciar()
+            return True
+        else:
+            return False
+
+    def executar(self,nome_jog, jogada):
+        """Exucuta uma jogada de um jogador"""
+        resposta = self.validar_jogador(nome_jog)
+        if resposta != True:
+            return resposta
+        jog = self.jogadores[nome_jog]
+        jogo = jog.jogo
+        try:
+            if jogada[0] == 'R':
+                jogo.iniciar()
+                return "Ok"
+        except:
+            pass
+
+        if jog.nome != jogo.jogador_atual:
+            return "ERRO: Nao e a sua vez de jogar!"
+
+        if len(jogada) < 2:
+            return "ERRO: Jogada muito curta para processar!"
+
+        tipo, iden = jogada[0], jogada[1:]
+        if tipo == 'J':
+            return jog.jogar_carta(iden)
+        elif tipo == 'C':
+            return jog.comprar_carta(iden)
+        elif tipo == 'D':
+            return jog.descartar_carta(iden)
+        elif tipo == 'G':
+            return jog.pegar_dinheiro()
+        elif tipo == 'M':
+            return jog.mais_carta()
+
+        return "ERRO: Jogada nao identificada!" 
+
+    def nova_pagina(self, nome_jog):
+        jog = self.jogadores[nome_jog]
+        jogo = jog.jogo
+        jogo.iniciar()
+        jogadores = self.ret_jogadores_dicio(jogo)
+        descarte = jogo.descarte
+        baralho = jogo.baralho
+        return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho}
+
+    def nova_atualizacao(self, nome_jogador, num):
+        jog = self.jogadores[nome_jogador]
+        jogo = jog.jogo
+        ret = self.ret_atualizacao(jog, jogo, num)
+        if ret == "0":
+            return [ret]
+        else:
+            j = self.ret_jogadores_dicio(jogo)
+            b = jogo.baralho
+            d = jogo.descarte
+            return [ret, j, b, d]
+
+
 class Jogo():
     """Reune e centraliza os elementos do jogo"""
 
-    def __init__(self):
+    def __init__(self, nome, sist_chat):
+        self.nome = nome
+        self. iniciado = False
+        self.sist_chat = sist_chat
+        self.sist_chat.criar_sala(nome)
+
         self.baralho = {}
         self.jogadores = {}
         self.maiorias = {}
@@ -99,6 +277,17 @@ class Jogo():
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
         self.jogadores[jog.nome] = jog
+
+    def rem_jogador(self, jog):
+        self.jogadores[jog.nome] = None
+
+    def ret_jogadores(self):
+        return self.jogadores.values()
+
+    def vazio(self):
+        if len(self.jogadores) == 0:
+            return True
+        return False
 
     def montar_baralho(self):
         """Carrega as cartas e monta o monte inicial de cartas"""
@@ -149,14 +338,17 @@ class Jogo():
 
     def iniciar(self):
         """Faz as preparacoes iniciais para comecar o jogo"""
-        self.montar_baralho()
-        self.monte = list(self.baralho.keys())
-        #DELETE ESSE FOR DEPOIS DE TESTAR
-        for i in range(50):
-            self.monte = self.monte + list(self.baralho.keys())
-        random.shuffle(self.monte)
-        self.distribuir_cartas()
-        self.jogador_atual = self.jogadores.keys()[0]
+        if self.iniciado == False:
+            self.montar_baralho()
+            self.monte = list(self.baralho.keys())
+            #DELETE ESSE FOR DEPOIS DE TESTAR
+            for i in range(50):
+                self.monte = self.monte + list(self.baralho.keys())
+            random.shuffle(self.monte)
+            self.distribuir_cartas()
+            self.jogador_atual = self.jogadores.keys()[0]
+            self.iniciado = True
+            print "INICIAaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaR"
 
     def verificar_maiorias(self):
         """Verifica e marca em cada jogador quais maiorias de naipe ele tem"""
@@ -221,14 +413,21 @@ class Jogador():
 
     def __init__(self, nome, jogo):
         self.nome = nome
+        self.automatico = False
+        self.ult_contato = 0
+        self.trocar_jogo(jogo)
+
+    def novo_contato(self):
+        self.ult_contato = time.time()
+
+    def trocar_jogo(self, jogo):
+        self.jogo = jogo
         self.dinheiro = DINHEIRO_INICIAL
         self.mao = []
         self.mesa = {}
         self.pontos = 0
-        self.jogo = jogo
         self.maiorias = []
-        self.automatico = False
-        jogo.adi_jogador(self)
+        self.novo_contato()
 
     def adi_carta(self, carta):
         """Adiciona uma carta a mao do jogador"""
