@@ -2,13 +2,16 @@
 @fundo_menu: #fff;
 @azul: #33b1e4;
 @roxo: #84459b;
-@laranja: #f89820;
+@laranja: #F19B30;
 @vermelho: #ed2627;
 @verde: #19ad4f;
 @amarelo: #e9e217;
+@branco: #fff;
+@preto: #000;
 
 
 .azul_arredondado {
+	.sombra;
 	background-color: @fundo_menu;
 	border-style: solid;
 	border-width: thin;
@@ -22,10 +25,31 @@
   box-shadow: 0.05em 0.05em 0.1em #000;
 }
 
+html {
+    height: 100%;
+}
+
 body {
-  background-color: @fundo;
+	height: 100%;
+	margin: 0em;
+	background-color: @fundo;
 	font-family:"Arial";
-  //table-layout: fixed;
+}
+
+.cabeca {
+	background-color: @vermelho;
+	height: 3%;
+}
+.centro {
+	width: 100%;
+	height: 92%;
+}
+
+.rodape {
+	background-color: @vermelho;
+	clear:both;
+	height: 2em;
+	height: 5%;
 }
 
 ul {
@@ -48,8 +72,13 @@ li {
 
 #logo_inicial {
 	width: 90%;
-	///height: 20em;
     margin-left: 5%;
+}
+
+#logo_salas {
+	width: 90%;
+    margin-left: 5%;
+    margin-top: 5%;
 }
 
 #menu_inicial {
@@ -57,15 +86,18 @@ li {
 }
 
 .link_inicial {
-	border-radius: 0.3em;
+	display:block;
 	margin-bottom: 0.2em;
     margin-left: 35%;
     margin-right: 35%;
-	color: #fff;
-	text-decoration:none;
-	display:block;
-	padding: 0.3em;
+	padding-top: 1%;
+	padding-bottom: 1%;
+	//padding: 30%;
+	color: @branco;
+	border-radius: 0.3em;
 	text-align: center;
+	text-shadow: 0.05em 0.05em 0.1em #000;
+	text-decoration:none;
 	.sombra;
 	&.iniciar {
 		background-color: @roxo;
@@ -76,4 +108,101 @@ li {
 	&.registrar {
 		background-color: @amarelo;
 	}
+}
+
+.divisao_esq {
+	width: 25%;
+	height: 100%;
+    float:left;
+}
+.divisao_dir {
+	width: 75%;
+	float: left;
+	height: 100%;
+}
+
+.painel (@cor) {
+	color: @branco;
+	margin-left: 5%;
+	margin-right: 5%;
+	margin-top: 5%;
+	border-top-left-radius: 0.5em;
+	border-top-right-radius: 0.5em;
+	border-style: solid;
+	border-width: thin;
+	background-color: @cor;
+	border-color: @cor;
+
+	input {
+		width: 85%;
+		//margin-right: auto;
+		margin: 0.5em;
+	}
+	h5 {
+		margin: 0.2em;
+		margin-left: 0.7em;
+	}
+	ul {
+		margin: 0em;
+	}
+	table {
+		width: 100%;
+	}
+	tbody {
+		width: 100%;
+	}
+	tr {
+		width: 100%;
+	}
+}
+
+.p_criar_jogo {
+	.painel(@laranja);
+	margin-top: 20%;
+}
+.p_participantes {
+	.painel(@vermelho);
+	height: 60%;
+}
+.p_salas {
+	.painel(@azul);
+	height: 45%;
+}
+.p_chat {
+	.painel(@verde);
+	height: 40%;
+}
+
+.sp_criar_jogo {
+	background-color: @branco;
+	width: 100%;
+	height: 100%;
+}
+#salas {
+	background-color: @branco;
+	width: 100%;
+	height: 90%;
+	overflow-y: scroll;
+	color: @preto;
+}
+#participantes {
+	background-color: @branco;
+	width: 100%;
+	height: 94%;
+	overflow-y: scroll;
+}
+
+.rolo {
+		background-color: @branco;
+		color: @preto;
+		overflow-y: scroll;
+		height: 80%;
+}
+
+.col_nome_jogo {
+	width: 40%;
+}
+.col_jogs {
+	width: 40%;
+	text-align: center;
 }

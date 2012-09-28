@@ -1,6 +1,7 @@
-ul
--for sala in salas
-  li
-    /a href=sala.nome+"/" =sala.nome
-    a href=request.route_url("sala", nome=sala.nome) =sala.nome
-    ${len(sala.jogadores)}
+table
+  -for sala in salas
+    tr
+      td.col_nome_jogo
+        a href=request.route_url("sala", nome=sala.nome) =sala.nome
+      td.col_jogs
+        ${len(sala.jogadores)}

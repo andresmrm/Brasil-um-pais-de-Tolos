@@ -1,11 +1,25 @@
 -inherit base.slim
 
 -block central
-  Salas:
-  #salas
-  form
-    Entrar em sala de nome:
-    input#criar_sala type="text"
-  script src="/static/salas.js" type="text/javascript"
-  -include chat.slim
+  .divisao_esq
+    img#logo_salas src='/static/imagens/logo.png'
+    .p_criar_jogo
+      h5 Criar um novo jogo
+      .sp_criar_jogo
+        form
+          input#criar_sala type="text"
+    .p_participantes
+      h5 Participantes
+      #participantes
+  .divisao_dir
+    .p_salas
+      table
+        tr
+          td
+            h5.col_nome_jogo Nome do jogo
+          td
+            h5.col_jogs Jogadores
+      #salas
+    script src="/static/salas.js" type="text/javascript"
+    -include chat.slim
 
