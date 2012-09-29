@@ -138,21 +138,25 @@ class SistemaPreJogo():
             j = Jogador(jog, s) 
             self.jogadores[jog] = j
         else:
+            if j.jogo:
+                self.rem_jogador(j.jogo.nome, j)
             j.trocar_jogo(s)
         s.adi_jogador(j)
+        print "COLOCADO: ",s.nome,s.jogadores
         return True
 
-    def rem_jogador(self, sala, jog):
-        s = self.salas[sala]
-        s.rem_jog(jog)
-        if s.vazia() and sala != self.central:
-            self.fechar_sala(nome)
+    def rem_jogador(self, nome_sala, jog):
+        s = self.salas[nome_sala]
+        s.rem_jogador(jog)
+        print "REM: ",s.nome,s.jogadores
+        if s.vazio() and nome_sala != self.central:
+            self.fechar_sala(nome_sala)
 
     def ret_jogador(self, nome):
         return self.jogadores.get(nome)
 
     def ret_jogadores(self, nome_jogo):
-        self.salas[nome_jogo].ret_jogadores()
+        return self.salas[nome_jogo].ret_jogadores()
 
     def ret_jogadores_dicio(self, jogo):
         """Retorna uma lista com os dados dos jogadores em dicionarios"""
@@ -174,10 +178,10 @@ class SistemaPreJogo():
 
     def fechar_sala(self, nome):
         s = self.salas[nome]
-        self.jogadores = s.ret_jogadores()
+        jogadores = s.ret_jogadores()
         for jog in jogadores:
             self.jogadores[jog].trocar_jogo(self.central)
-        self.salas[nome] = None
+        self.salas.pop(nome)
         self.sist_chat.fechar_sala(nome)
 
     def iniciar_jogo(self, nome_jogo):
@@ -272,12 +276,15 @@ class Jogo():
         self.num_jogada = 0
         self.fim = False
 
+    def vazio(self):
+        return len(self.jogadores)
+
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
         self.jogadores[jog.nome] = jog
 
     def rem_jogador(self, jog):
-        self.jogadores[jog.nome] = None
+        self.jogadores.pop(jog.nome)
 
     def ret_jogadores(self):
         return self.jogadores.values()

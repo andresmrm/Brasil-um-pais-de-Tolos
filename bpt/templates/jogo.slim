@@ -1,18 +1,17 @@
 -inherit base.slim
 
--block estilos
-  link href="/static/estilo_jogo.less" rel="stylesheet/less" type="text/css" 
-
 -block central
-  .mesas
-    /-include mesas.slim
+  .pre_mesas
+    .mesas
+      /-include mesas.slim
   .menu_jogadas
-    .menu_mao
-      /-include mao.slim
-    span id="mais_din" class="botao_menu" $ 
-    span id="mais_carta" class="botao_menu" +1 
-    span id="jogar_carta" class="botao_menu" J
-    span id="descartar_carta" class="botao_menu" D
-    span id="comprar_carta" class="botao_menu" C 
-    span id="reiniciar" class="botao_menu" R
+    .sub_menu_jogadas
+      .menu_mao
+        /-include mao.slim
+      span id="comprar_carta" class="botao_jogo"
+      span id="descartar_carta" class="botao_jogo"
+      span id="jogar_carta" class="botao_jogo"
+      span id="mais_carta" class="botao_jogo"
+      span id="mais_din" class="botao_jogo"
+      /span id="reiniciar" class="botao_jogo" r
   script src="/static/jogo.js" type="text/javascript"

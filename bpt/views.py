@@ -158,9 +158,11 @@ def incial(request):
 
 @view_config(route_name='sala_central', renderer='salas.slim', permission='jogar')
 def salas_central(request):
-    if 'criar_sala' in request.POST:
-        return HTTPFound(location = request.route_url('sala', {'nome':request.POST.get("nome",'')}))
     logado = authenticated_userid(request)
+    if 'criar_sala' in request.POST:
+        nome = request.POST.get("nome",'')
+        PREJOGO.colocar_jog_sala(nome, logado)
+        return HTTPFound(location = request.route_url('sala', {'nome': nome}))
     PREJOGO.colocar_jog_sala(PREJOGO.central, logado)
     return {'logado': logado,
            }
@@ -250,11 +252,14 @@ def receber_msg(request):
 
 @view_config(route_name='ret_msgs', permission='jogar')
 def ret_msgs(request):
+    ret = {}
     nome_sala = request.matchdict['nome']
     msgs = PREJOGO.ret_msgs(nome_sala)
     pa = render_to_response('chat_msgs.slim',{'msgs':msgs})
-    ret = {}
     ret["msgs"] = pa.body
+    jogs = PREJOGO.ret_jogadores(nome_sala)
+    pa = render_to_response('participantes.slim',{'jogs':jogs})
+    ret["participantes"] = pa.body
     return Response(json.dumps(ret))
 
 

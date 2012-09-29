@@ -1,24 +1,20 @@
 -for j in jogadores
   .jogador
-    dl.info_jog
-      dt.nome_jog = j["nome"]
+    h4 =j["nome"]
+    /dl.info_jog
       dd.infos 
         -for naipe in j["maiorias"]
           span class=("maioria "+naipe)
         Pontos ${j["pontos"]} / Mão ${j["tam_mao"]} / $ ${j["dinheiro"]}
-    -for naipe in j["mesa"]
-      .naipe
-        -for carta in j["mesa"][naipe]
-          span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")
-    /-else
-      div.naipe
+    .sub_jogador
+      -for naipe in j["mesa"]
+        .naipe
+          -for carta in j["mesa"][naipe]
+            span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")
 .jogador
-  dl.info_jog
-    dt.nome_jog Descarte
-    dd.infos
-  -for naipe in descarte
-    .naipe
-      -for carta in descarte[naipe]
-        span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")
-  /-else
-    div.naipe
+  h4 Descarte
+  .sub_jogador
+    -for naipe in descarte
+      .naipe
+        -for carta in descarte[naipe]
+          span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")

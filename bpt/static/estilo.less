@@ -1,5 +1,3 @@
-@fundo: #fcf6da;
-@fundo_menu: #fff;
 @azul: #33b1e4;
 @roxo: #84459b;
 @laranja: #F19B30;
@@ -9,6 +7,17 @@
 @branco: #fff;
 @preto: #000;
 
+@fundo: #fcf6da;
+@fundo_menu: #fff;
+@fundo_mesas: #D8E4DC;
+@fundo_jog: #1B98CB;
+@fundo_mao: #CCEBF9;
+
+@largura_carta: 100px;
+@altura_carta: 141px;
+@carta_sat: 80%;
+@carta_dark: 10%;
+@carta_light: 25%;
 
 .azul_arredondado {
 	.sombra;
@@ -125,7 +134,7 @@ li {
 	color: @branco;
 	margin-left: 5%;
 	margin-right: 5%;
-	margin-top: 5%;
+	margin-top: 1em;
 	border-top-left-radius: 0.5em;
 	border-top-right-radius: 0.5em;
 	border-style: solid;
@@ -134,9 +143,7 @@ li {
 	border-color: @cor;
 
 	input {
-		width: 85%;
-		//margin-right: auto;
-		margin: 0.5em;
+		border: 1px solid rgb(181, 188, 199);
 	}
 	h5 {
 		margin: 0.2em;
@@ -159,44 +166,61 @@ li {
 .p_criar_jogo {
 	.painel(@laranja);
 	margin-top: 20%;
+	input {
+		width: 90%;
+		margin-top: 1em;
+		margin-bottom: 1em;
+		margin-left: 4%;
+	}
 }
 .p_participantes {
 	.painel(@vermelho);
-	height: 60%;
+	height: 40%;
 }
 .p_salas {
 	.painel(@azul);
-	height: 45%;
+	height: 40%;
 }
 .p_chat {
 	.painel(@verde);
 	height: 40%;
+	margin-top: 3em;
+	input {
+		width: 99%;
+		margin-top: 1px;
+		margin-bottom: 1px;
+		margin-left: 1px;
+	}
 }
 
-.sp_criar_jogo {
+.submenu(@cor) {
+	border-style: solid;
+	border-width: thin;
+	border-color: @cor;
 	background-color: @branco;
 	width: 100%;
 	height: 100%;
+	margin-left: -1px;
+}
+.sp_criar_jogo {
+	.submenu(@laranja);
 }
 #salas {
-	background-color: @branco;
-	width: 100%;
-	height: 90%;
+	.submenu(@azul);
 	overflow-y: scroll;
 	color: @preto;
 }
 #participantes {
-	background-color: @branco;
-	width: 100%;
-	height: 94%;
+	.submenu(@vermelho);
 	overflow-y: scroll;
+	color: @preto;
 }
 
 .rolo {
-		background-color: @branco;
-		color: @preto;
-		overflow-y: scroll;
-		height: 80%;
+	.submenu(@verde);
+	color: @preto;
+	overflow-y: scroll;
+	height: 80%;
 }
 
 .col_nome_jogo {
@@ -205,4 +229,123 @@ li {
 .col_jogs {
 	width: 40%;
 	text-align: center;
+}
+
+
+
+
+
+
+.nao_selecionavel {
+  -webkit-user-select: none;
+}
+
+
+.botao_jogo {
+  .nao_selecionavel;
+  width: 4em;
+  height: 4em;
+  float: right;
+  margin: 0.2em;
+  background-size:100% 100%;
+  &:hover {
+  }
+  
+  &#mais_din {
+    background-image:url('/static/imagens/b_pegardindin.png');
+  }
+  &#mais_carta {
+    background-image:url('/static/imagens/b_pegarcarta.png');
+  }
+  &#jogar_carta {
+    background-image:url('/static/imagens/b_jogarcarta.png');
+  }
+  &#descartar_carta {
+    background-image:url('/static/imagens/b_descartar.png');
+  }
+  &#comprar_carta {
+    background-image:url('/static/imagens/b_pegardescarte.png');
+  }
+}
+
+.pre_mesas {
+	width: 100%;
+	height: 75%;
+	overflow-x: scroll;
+	overflow-y: hidden;
+}
+.mesas {
+	width: 5000px;
+	height: 100%;
+	background-color: @fundo_mesas;
+	//margin: 0em;
+}
+.menu_jogadas {
+	background-color: @fundo_mao;
+	height: 25%;
+	margin-top: 0em;
+	padding: 1em;
+}
+.sub_menu_jogadas {
+	background-color: #FFF;
+	border-style: solid;
+	border-width: thin;
+	border-color: #777;
+	border-radius: 0.5em;
+	height: @altura_carta+10;
+	width: 99%;
+}
+
+.menu_mao {
+  display: inline-block;
+  margin: 65px auto auto 5px;
+}
+
+.carta {
+  width: @largura_carta;
+  height: @altura_carta;
+  display: inline-block;
+  margin: -65px 0px;
+  .nao_selecionavel;
+  background-size: 100%;
+  //background-repeat:no-repeat;
+
+  &:hover {
+    //border-color: #aaa;
+    position: relative;
+    z-index: 10;
+  }
+}
+
+.jogador {
+	background-color: @fundo_jog;
+	display: inline-block;
+	float: left;
+	width: (@largura_carta+7)*6;
+	height: 80%;
+	margin: 1em;
+	border-radius: 10px;
+	.naipe {
+		margin: 90px 0em 0em 0em;
+		display: inline-block;
+		width: @largura_carta;
+		height: 100%;
+		vertical-align: top;
+	}
+	h4 {
+		margin: 0.4em;
+		margin-left: 0.7em;
+		color: @branco;
+	}
+}
+.sub_jogador {
+	background-color: @branco;
+	border-radius: 10px;
+	border-top-left-radius: 0em;
+	border-top-right-radius: 0em;
+	border-style: solid;
+	border-width: thin;
+	border-color: @fundo_jog;
+	padding: 0.5em;
+	height: 95%;
 }
