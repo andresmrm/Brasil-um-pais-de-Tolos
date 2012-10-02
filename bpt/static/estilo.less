@@ -76,6 +76,7 @@ li {
 	//background-size: 80%;
 	//display: block;
 	padding: 3%;
+	margin-top: 5%;
 	margin-bottom: 1%;
 }
 
@@ -175,18 +176,18 @@ li {
 }
 .p_participantes {
 	.painel(@vermelho);
-	height: 40%;
+	height: 55%;
 }
 .p_salas {
 	.painel(@azul);
-	height: 40%;
+	height: 45%;
 }
 .p_chat {
 	.painel(@verde);
-	height: 40%;
+	height: 45%;
 	margin-top: 3em;
 	input {
-		width: 99%;
+		width: 100%-1px;
 		margin-top: 1px;
 		margin-bottom: 1px;
 		margin-left: 1px;
@@ -220,7 +221,7 @@ li {
 	.submenu(@verde);
 	color: @preto;
 	overflow-y: scroll;
-	height: 80%;
+	height: 100%-16em;
 }
 
 .col_nome_jogo {
@@ -231,6 +232,50 @@ li {
 	text-align: center;
 }
 
+.infos {
+	position: absolute;
+	top: 4em;
+	left: 20em;
+	height: 1.5em;
+	display: block;
+	background-color: @branco;
+	border-width: thin;
+	border-style: solid;
+	border-radius: 8px;
+	border-color: @azul;
+	padding: 0.25em;
+	color: @preto;
+}
+
+.icone_jogo {
+  height: 90%;
+}
+
+.maioria {
+  width: 1.5em;
+  height: 1.5em;
+  display: inline-block;
+	background-size:100% 100%;
+  .nao_selecionavel;
+  &.pol {
+    background-image:url('/static/imagens/vermelha.png');
+  }
+  &.fic {
+    background-image:url('/static/imagens/azul.png');
+  }
+  &.esp {
+    background-image:url('/static/imagens/laranja.png');
+  }
+  &.ent {
+    background-image:url('/static/imagens/amarela.png');
+  }
+  &.soc {
+    background-image:url('/static/imagens/verde.png');
+  }
+  &.lit {
+    background-image:url('/static/imagens/roxa.png');
+  }
+}
 
 
 
