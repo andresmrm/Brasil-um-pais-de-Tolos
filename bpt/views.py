@@ -196,7 +196,12 @@ def criar_perfil(request):
         except deform.ValidationFailure, e:
             return {'form':e.render()}
         dbsession = DBSession()
-        record = BdJogador()
+
+        atribs = request.POST
+        nome = atribs["nome"]
+        senha = atribs["senha"]
+
+        record = BdJogador(nome, senha)
         record = merge_session_with_post(record, request.POST.items())
         dbsession.merge(record)
         dbsession.flush()
