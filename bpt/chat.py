@@ -19,32 +19,59 @@
 #-----------------------------------------------------------------------------
 
 class SistemaChat():
+    """Reúne e gerencia as salas de chat"""
 
     def __init__(self):
         self.salas = {}
 
     def criar_sala(self, nome):
-        self.salas[nome] = SalaChat(nome)
+        """Cria uma sala de nome 'nome'"""
+        sala = self.salas.get(nome)
+        if not sala:
+            self.salas[nome] = SalaChat(nome)
+        else:
+            print("Erro(criar_sala - SistemaChat): Sala %s ja existe", nome)
 
-    def adi_msg(self, sala, jog, msg):
-        return self.salas[sala].adi_msg(jog, msg)
+    def adi_msg(self, nome_sala, nome_jogador, msg):
+        """Adiciona a mensagem 'msg' à sala de nome 'nome_sala' sendo
+        'nome_jogador' o autor"""
+        sala = self.salas.get(nome_sala)
+        if sala:
+            return sala.adi_msg(nome_jogador, msg)
+        else:
+            print("Erro(adi_msg - SistemaChat): Sala %s nao existe", nome_sala)
 
-    def ret_msgs(self, sala, quant=20):
-        return self.salas[sala].ret_msgs(quant)
+    def ret_msgs(self, nome, quant=20):
+        """Retorna 'quant' mensagens da sala de nome 'nome'"""
+        sala = self.salas.get(nome)
+        if sala:
+            return sala.ret_msgs(quant)
+        else:
+            print("Erro(ret_msg - SistemaChat): Sala %s nao existe", nome)
+            return []
 
     def fechar_sala(self, nome):
-        self.salas[nome] = None
+        """Fecha a sala de nome 'nome'"""
+        sala = self.salas.get(nome)
+        if sala:
+            self.salas.pop(nome)
+        else:
+            print("Erro(fechar_sala - SistemaChat): Sala %s nao existe", nome)
 
 
 class SalaChat():
+    """Guarda o nome de uma sala e suas mensagens"""
 
     def __init__(self, nome):
         self.nome = nome
         self.msgs = []
 
     def adi_msg(self, jog, msg):
+        """Adiciona uma mensagem à sala e returna o número de mensagens nessa
+        sala"""
         self.msgs.append("%s: %s" % (jog, msg))
         return len(self.msgs)
 
     def ret_msgs(self, quant):
+        """Returna as 'quant' últimas mensagens dessa sala"""
         return self.msgs[-quant:]

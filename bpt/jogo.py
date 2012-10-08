@@ -142,15 +142,14 @@ class SistemaPreJogo():
                 self.rem_jogador(j.jogo.nome, j)
             j.trocar_jogo(s)
         s.adi_jogador(j)
-        print "COLOCADO: ",s.nome,s.jogadores
         return True
 
     def rem_jogador(self, nome_sala, jog):
-        s = self.salas[nome_sala]
-        s.rem_jogador(jog)
-        print "REM: ",s.nome,s.jogadores
-        if s.vazio() and nome_sala != self.central:
-            self.fechar_sala(nome_sala)
+        s = self.salas.get(nome_sala)
+        if s:
+            s.rem_jogador(jog)
+            if s.vazio() and nome_sala != self.central:
+                self.fechar_sala(nome_sala)
 
     def ret_jogador(self, nome):
         return self.jogadores.get(nome)

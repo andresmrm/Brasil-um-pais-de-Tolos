@@ -2,12 +2,12 @@
 
 -block central
   #sala
-    p =sala 
+    h3.nome_sala =sala 
       | :
       a href=request.route_url("jogo",nome=sala) Iniciar Partida
       | :
       a href=request.route_url("sala_central") Sair dessa sala 
-  .p_participantes
+  .p_participantes_sala
     h5 Participantes
     #participantes
   -include chat.slim
