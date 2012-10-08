@@ -85,50 +85,54 @@ M = Magica()
 
 
 class SistemaPreJogo():
+    """Reúne e organiza os jogos"""
 
     def __init__(self):
-        self.salas = {}
+        self.jogos = {}
         self.jogadores = {}
         self.sist_chat = SistemaChat()
         
         self.central = 'central'
-        self.criar_sala(self.central, None)
+        self.criar_jogo(self.central, None)
 
-    def adi_msg(self, nome_sala, jogador, msg):
-        return self.sist_chat.adi_msg(nome_sala, jogador, msg)
+    def adi_msg(self, nome_jogo, nome_jogador, msg):
+        """Adiciona 'msg' ao jogo 'nome_jogo' com autoria de 'nome_jogador' e
+        retorna o número de mensagens nesse jogo"""
+        return self.sist_chat.adi_msg(nome_jogo, nome_jogador, msg)
 
-    def ret_msgs(self, nome_sala):
-        return self.sist_chat.ret_msgs(nome_sala)
+    def ret_msgs(self, nome_jogo):
+        """Retorna mensagens do jogo 'nome_jogo'"""
+        return self.sist_chat.ret_msgs(nome_jogo)
 
-    def criar_sala(self, nome, jog):
+    def criar_jogo(self, nome, jog):
         r = False
-        if self.salas.get(nome) == None:
+        if self.jogos.get(nome) == None:
             s = Jogo(nome, self.sist_chat)
-            self.salas[nome] = s
+            self.jogos[nome] = s
             r = True
         if jog:
-            self.colocar_jog_sala(nome, jog)
+            self.colocar_jog_jogo(nome, jog)
             r = True
         return r
 
     def ret_jogo(self, nome_jogo):
-        return self.salas.get(nome)
+        return self.jogos.get(nome)
 
-    def ret_salas(self):
+    def ret_jogos(self):
         r = []
-        for s in self.salas.values():
+        for s in self.jogos.values():
             if s.nome != 'central':
                 r.append(s)
         return r
 
-    def colocar_jog_sala(self, sala, jog):
+    def colocar_jog_jogo(self, nome_jogo, jog):
         """Coloca um jogador em uma determinada sala"""
-        if not sala:
+        if not nome_jogo:
             print("Tentando remover jogador???!!! Feito mais ou menos...")
             self.jogadores[jog] = None
             return True
 
-        s = self.salas.get(sala)
+        s = self.jogos.get(nome_jogo)
         # Verifica se a sala existe
         if not s:
             return False
@@ -144,18 +148,18 @@ class SistemaPreJogo():
         s.adi_jogador(j)
         return True
 
-    def rem_jogador(self, nome_sala, jog):
-        s = self.salas.get(nome_sala)
+    def rem_jogador(self, nome_jogo, jog):
+        s = self.jogos.get(nome_jogo)
         if s:
             s.rem_jogador(jog)
-            if s.vazio() and nome_sala != self.central:
-                self.fechar_sala(nome_sala)
+            if s.vazio() and nome_jogo != self.central:
+                self.fechar_jogo(nome_jogo)
 
     def ret_jogador(self, nome):
         return self.jogadores.get(nome)
 
     def ret_jogadores(self, nome_jogo):
-        return self.salas[nome_jogo].ret_jogadores()
+        return self.jogos[nome_jogo].ret_jogadores()
 
     def ret_jogadores_dicio(self, jogo):
         """Retorna uma lista com os dados dos jogadores em dicionarios"""
@@ -175,16 +179,16 @@ class SistemaPreJogo():
 
         return True
 
-    def fechar_sala(self, nome):
-        s = self.salas[nome]
+    def fechar_jogo(self, nome):
+        s = self.jogos[nome]
         jogadores = s.ret_jogadores()
         for jog in jogadores:
             self.jogadores[jog].trocar_jogo(self.central)
-        self.salas.pop(nome)
-        self.sist_chat.fechar_sala(nome)
+        self.jogos.pop(nome)
+        self.sist_chat.fechar_jogo(nome)
 
     def iniciar_jogo(self, nome_jogo):
-        j = self.salas.get(nome_jogo)
+        j = self.jogos.get(nome_jogo)
         if j:
             j.iniciar()
             return True

@@ -178,7 +178,7 @@ def sala(request):
 
 @view_config(route_name='atualizar_sala', permission='jogar')
 def atualizar_sala(request):
-    salas = PREJOGO.ret_salas()
+    salas = PREJOGO.ret_jogos()
     pa = render_to_response('listar_salas.slim',{'salas':salas}, request=request)
     ret = {}
     ret["salas"] = pa.body
