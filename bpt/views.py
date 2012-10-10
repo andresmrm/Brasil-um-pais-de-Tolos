@@ -303,12 +303,16 @@ def enviar_atualizacao(request):
 @view_config(route_name='baralho', permission='jogar')
 def enviar_baralho(request):
     nome_jogo = request.matchdict['nome']
-    jogador = authenticated_userid(request)
+    nome_jogador = authenticated_userid(request)
 
-    baralho = PREJOGO.ret_jogador(jogador).jogo.baralho
-    cartas = {} 
-    for c in baralho:
-        cartas[c] = dict(baralho[c].__dict__)
-        cartas[c].pop("efeito")
-        cartas[c].pop("efeito_dados")
-    return Response(json.dumps(cartas))
+    jogador = PREJOGO.ret_jogador(nome_jogador)
+    if jogador:
+        baralho = jogador.jogo.baralho
+        cartas = {} 
+        for c in baralho:
+            cartas[c] = dict(baralho[c].__dict__)
+            cartas[c].pop("efeito")
+            cartas[c].pop("efeito_dados")
+        return Response(json.dumps(cartas))
+    else:
+        Response()

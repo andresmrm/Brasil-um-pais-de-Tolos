@@ -170,7 +170,6 @@ li {
 }
 .p_participantes_sala {
 	.painel(@vermelho);
-	height: 25%;
 }
 .p_salas {
 	.painel(@azul);
@@ -243,10 +242,11 @@ li {
 }
 
 .infos {
-	position: absolute;
-	top: 4em;
-	left: 20em;
+	position: relative;
+	top: -0.5em;
+	left: 15em;
 	height: 1.5em;
+	width: 20em;
 	display: block;
 	background-color: @branco;
 	border-width: thin;
@@ -352,24 +352,34 @@ li {
 }
 
 .menu_mao {
-  display: inline-block;
-  margin: 65px auto auto 5px;
+	display: inline-block;
+	margin: 65px auto auto 5px;
 }
 
 .carta {
-  width: @largura_carta;
-  height: @altura_carta;
-  display: inline-block;
-  margin: -65px 0px;
-  .nao_selecionavel;
-  background-size: 100%;
-  //background-repeat:no-repeat;
+	width: @largura_carta;
+	height: @altura_carta;
+	display: inline-block;
+	margin: -65px 0px;
+	.nao_selecionavel;
+	background-size: 100%;
+	//background-repeat:no-repeat;
 
-  &:hover {
-    //border-color: #aaa;
-    position: relative;
-    z-index: 10;
-  }
+	&:hover {
+		border-color: #000;
+		border-style: solid;
+		border-width: 2px;
+		border-radius: 0.5em;
+		//position: relative;
+		//z-index: 10;
+	}
+}
+.carta_zoom {
+	width: @largura_carta*4;
+	height: @altura_carta*4;
+	display: fixed;
+	background-size: 100%;
+	.nao_selecionavel;
 }
 
 .jogador {
@@ -388,6 +398,7 @@ li {
 		vertical-align: top;
 	}
 	h4 {
+		height: 1em;
 		margin: 0.4em;
 		margin-left: 0.7em;
 		color: @branco;
