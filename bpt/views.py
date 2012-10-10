@@ -140,7 +140,7 @@ def pagina_login(request):
         return {'form':form.render(appstruct={'nome':nome,'senha':senha}),
                 'mensagem' : mensagem,
                 'url' : request.application_url + '/login',
-                'came_from' : came_from,
+                #'came_from' : came_from,
                }
     return {'form':form.render()}
 
@@ -161,9 +161,9 @@ def salas_central(request):
     logado = authenticated_userid(request)
     if 'criar_sala' in request.POST:
         nome = request.POST.get("nome",'')
-        PREJOGO.colocar_jog_sala(nome, logado)
+        PREJOGO.colocar_jogador_jogo(nome, logado)
         return HTTPFound(location = request.route_url('sala', {'nome': nome}))
-    PREJOGO.colocar_jog_sala(PREJOGO.central, logado)
+    PREJOGO.colocar_jogador_jogo(PREJOGO.central, logado)
     return {'logado': logado,
            }
 
@@ -171,7 +171,7 @@ def salas_central(request):
 def sala(request):
     logado = authenticated_userid(request)
     sala = request.matchdict['nome']
-    PREJOGO.criar_sala(sala, logado)
+    PREJOGO.criar_jogo(sala, logado)
     return {'logado': logado,
             'sala': sala,
            }

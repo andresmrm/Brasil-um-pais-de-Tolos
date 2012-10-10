@@ -111,7 +111,7 @@ class SistemaPreJogo():
             self.jogos[nome] = s
             r = True
         if jog:
-            self.colocar_jog_jogo(nome, jog)
+            self.colocar_jogador_jogo(nome, jog)
             r = True
         return r
 
@@ -125,7 +125,7 @@ class SistemaPreJogo():
                 r.append(s)
         return r
 
-    def colocar_jog_jogo(self, nome_jogo, jog):
+    def colocar_jogador_jogo(self, nome_jogo, jog):
         """Coloca um jogador em uma determinada sala"""
         if not nome_jogo:
             print("Tentando remover jogador???!!! Feito mais ou menos...")
@@ -185,7 +185,7 @@ class SistemaPreJogo():
         for jog in jogadores:
             self.jogadores[jog].trocar_jogo(self.central)
         self.jogos.pop(nome)
-        self.sist_chat.fechar_jogo(nome)
+        self.sist_chat.fechar_sala(nome)
 
     def iniciar_jogo(self, nome_jogo):
         j = self.jogos.get(nome_jogo)
