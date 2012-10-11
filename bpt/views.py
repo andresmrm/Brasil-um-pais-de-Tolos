@@ -140,7 +140,7 @@ def pagina_login(request):
         return {'form':form.render(appstruct={'nome':nome,'senha':senha}),
                 'mensagem' : mensagem,
                 'url' : request.application_url + '/login',
-                'came_from' : came_from,
+                #'came_from' : came_from,
                }
     return {'form':form.render()}
 
@@ -161,9 +161,9 @@ def salas_central(request):
     logado = authenticated_userid(request)
     if 'criar_sala' in request.POST:
         nome = request.POST.get("nome",'')
-        PREJOGO.colocar_jog_sala(nome, logado)
+        PREJOGO.colocar_jogador_jogo(nome, logado)
         return HTTPFound(location = request.route_url('sala', {'nome': nome}))
-    PREJOGO.colocar_jog_sala(PREJOGO.central, logado)
+    PREJOGO.colocar_jogador_jogo(PREJOGO.central, logado)
     return {'logado': logado,
            }
 
@@ -303,12 +303,16 @@ def enviar_atualizacao(request):
 @view_config(route_name='baralho', permission='jogar')
 def enviar_baralho(request):
     nome_jogo = request.matchdict['nome']
-    jogador = authenticated_userid(request)
+    nome_jogador = authenticated_userid(request)
 
-    baralho = PREJOGO.ret_jogador(jogador).jogo.baralho
-    cartas = {} 
-    for c in baralho:
-        cartas[c] = dict(baralho[c].__dict__)
-        cartas[c].pop("efeito")
-        cartas[c].pop("efeito_dados")
-    return Response(json.dumps(cartas))
+    jogador = PREJOGO.ret_jogador(nome_jogador)
+    if jogador:
+        baralho = jogador.jogo.baralho
+        cartas = {} 
+        for c in baralho:
+            cartas[c] = dict(baralho[c].__dict__)
+            cartas[c].pop("efeito")
+            cartas[c].pop("efeito_dados")
+        return Response(json.dumps(cartas))
+    else:
+        Response()

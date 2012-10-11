@@ -111,7 +111,7 @@ class SistemaPreJogo():
             self.jogos[nome] = s
             r = True
         if jog:
-            self.colocar_jog_jogo(nome, jog)
+            self.colocar_jogador_jogo(nome, jog)
             r = True
         return r
 
@@ -125,7 +125,7 @@ class SistemaPreJogo():
                 r.append(s)
         return r
 
-    def colocar_jog_jogo(self, nome_jogo, jog):
+    def colocar_jogador_jogo(self, nome_jogo, jog):
         """Coloca um jogador em uma determinada sala"""
         if not nome_jogo:
             print("Tentando remover jogador???!!! Feito mais ou menos...")
@@ -185,7 +185,7 @@ class SistemaPreJogo():
         for jog in jogadores:
             self.jogadores[jog].trocar_jogo(self.central)
         self.jogos.pop(nome)
-        self.sist_chat.fechar_jogo(nome)
+        self.sist_chat.fechar_sala(nome)
 
     def iniciar_jogo(self, nome_jogo):
         j = self.jogos.get(nome_jogo)
@@ -229,14 +229,17 @@ class SistemaPreJogo():
 
         return "ERRO: Jogada nao identificada!" 
 
-    def nova_pagina(self, nome_jog):
-        jog = self.jogadores[nome_jog]
-        jogo = jog.jogo
-        jogo.iniciar()
-        jogadores = self.ret_jogadores_dicio(jogo)
-        descarte = jogo.descarte
-        baralho = jogo.baralho
-        return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho}
+    def nova_pagina(self, nome_jogador):
+        jogador = self.jogadores.get(nome_jogador)
+        if jogador:
+            jogo = jogador.jogo
+            jogo.iniciar()
+            jogadores = self.ret_jogadores_dicio(jogo)
+            descarte = jogo.descarte
+            baralho = jogo.baralho
+            return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho}
+        else:
+            return {}
 
     def nova_atualizacao(self, nome_jogador, num):
         """Retorna dicionario com atualizacoes a serem feitas na interface"""
@@ -245,20 +248,23 @@ class SistemaPreJogo():
         except:
             return "ERRO: Numero da jogada nao e numero valido!"
 
-        jogador = self.jogadores[nome_jogador]
-        jogo = jogador.jogo
-        if num == jogo.num_jogada:
-            # Nada para ser atualizado
-            return "0"
+        jogador = self.jogadores.get(nome_jogador)
+        if jogador:
+            jogo = jogador.jogo
+            if num == jogo.num_jogada:
+                # Nada para ser atualizado
+                return "0"
 
-        dicio = {}
-        dicio["num_jogada"] = jogo.num_jogada
-        dicio["mao"] = jogador.mao
-        dicio["mesas"] = "A"
-        j = self.ret_jogadores_dicio(jogo)
-        b = jogo.baralho
-        d = jogo.descarte
-        return [dicio, j, b, d]
+            dicio = {}
+            dicio["num_jogada"] = jogo.num_jogada
+            dicio["mao"] = jogador.mao
+            dicio["mesas"] = "A"
+            j = self.ret_jogadores_dicio(jogo)
+            b = jogo.baralho
+            d = jogo.descarte
+            return [dicio, j, b, d]
+        else:
+            return "0"
 
 
 class Jogo():
@@ -287,7 +293,8 @@ class Jogo():
         self.jogadores[jog.nome] = jog
 
     def rem_jogador(self, jog):
-        self.jogadores.pop(jog.nome)
+        if jog.nome in self.jogadores:
+            self.jogadores.pop(jog.nome)
 
     def ret_jogadores(self):
         return self.jogadores.values()

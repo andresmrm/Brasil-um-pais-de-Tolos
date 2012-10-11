@@ -54,6 +54,7 @@ function atualizar() {
       $('.menu_mao').html(dic["mao"]);
       $('.mesas').html(dic["mesas"]);
       $(".carta").click(carta_clicada);
+      $(".carta").hover(carta_sobre);
     }
   });
 }

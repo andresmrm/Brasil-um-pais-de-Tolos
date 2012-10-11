@@ -47,7 +47,7 @@ body {
 
 .cabeca {
 	background-color: @vermelho;
-	height: 3%;
+	height: 1.2em;
 }
 .centro {
 	width: 100%;
@@ -76,19 +76,22 @@ li {
 	//background-size: 80%;
 	//display: block;
 	padding: 3%;
-	margin-top: 5%;
+	margin-top: 4%;
 	margin-bottom: 1%;
 }
 
 #logo_inicial {
 	width: 90%;
-    margin-left: 5%;
+	margin-left: 5%;
 }
 
+#moldura_logo_salas {
+	height:20%;
+}
 #logo_salas {
 	width: 90%;
-    margin-left: 5%;
-    margin-top: 5%;
+	margin-left: 5%;
+	margin-top: 5%;
 }
 
 #menu_inicial {
@@ -143,15 +146,9 @@ li {
 	background-color: @cor;
 	border-color: @cor;
 
-	input {
-		border: 1px solid rgb(181, 188, 199);
-	}
 	h5 {
 		margin: 0.2em;
 		margin-left: 0.7em;
-	}
-	ul {
-		margin: 0em;
 	}
 	table {
 		width: 100%;
@@ -167,65 +164,73 @@ li {
 .p_criar_jogo {
 	.painel(@laranja);
 	margin-top: 20%;
+}
+.p_participantes {
+	.painel(@vermelho);
+}
+.p_participantes_sala {
+	.painel(@vermelho);
+}
+.p_salas {
+	.painel(@azul);
+}
+.p_chat {
+	.painel(@verde);
+	margin-top: 1em;
+}
+
+.submenu(@cor) {
+	margin-top: 0em;
+	margin-left: 5%;
+	margin-right: 5%;
+
+	border-style: solid;
+	border-width: thin;
+	border-color: @cor;
+	background-color: @branco;
+	ul {
+		margin: 0em;
+	}
+}
+.sp_criar_jogo {
+	.submenu(@laranja);
+	height: 3em;
 	input {
+		border: 1px solid rgb(181, 188, 199);
 		width: 90%;
 		margin-top: 1em;
 		margin-bottom: 1em;
 		margin-left: 4%;
 	}
 }
-.p_participantes {
-	.painel(@vermelho);
-	height: 55%;
-}
-.p_participantes_sala {
-	.painel(@vermelho);
-	height: 25%;
-}
-.p_salas {
-	.painel(@azul);
-	height: 45%;
-}
-.p_chat {
-	.painel(@verde);
-	height: 45%;
-	margin-top: 3em;
-	input {
-		width: 100%-1px;
-		margin-top: 1px;
-		margin-bottom: 1px;
-		margin-left: 1px;
-	}
-}
-
-.submenu(@cor) {
-	border-style: solid;
-	border-width: thin;
-	border-color: @cor;
-	background-color: @branco;
-	width: 100%;
-	height: 100%;
-	margin-left: -1px;
-}
-.sp_criar_jogo {
-	.submenu(@laranja);
-}
 #salas {
 	.submenu(@azul);
 	overflow-y: scroll;
 	color: @preto;
+	height: 40%
 }
 #participantes {
 	.submenu(@vermelho);
 	overflow-y: scroll;
 	color: @preto;
+	height: 55%; 
+	h5 {
+		margin: 0em;
+	}
 }
 
 .rolo {
 	.submenu(@verde);
 	color: @preto;
 	overflow-y: scroll;
-	height: 100%-16em;
+	height: 40%;
+}
+#form_chat {
+	.submenu(@verde);
+	input {
+		border: 1px solid rgb(181, 188, 199);
+		width: 100%;
+	}
 }
 
 .col_nome_jogo {
@@ -237,10 +242,11 @@ li {
 }
 
 .infos {
-	position: absolute;
-	top: 4em;
-	left: 20em;
+	position: relative;
+	top: -0.5em;
+	left: 15em;
 	height: 1.5em;
+	width: 20em;
 	display: block;
 	background-color: @branco;
 	border-width: thin;
@@ -346,24 +352,34 @@ li {
 }
 
 .menu_mao {
-  display: inline-block;
-  margin: 65px auto auto 5px;
+	display: inline-block;
+	margin: 65px auto auto 5px;
 }
 
 .carta {
-  width: @largura_carta;
-  height: @altura_carta;
-  display: inline-block;
-  margin: -65px 0px;
-  .nao_selecionavel;
-  background-size: 100%;
-  //background-repeat:no-repeat;
+	width: @largura_carta;
+	height: @altura_carta;
+	display: inline-block;
+	margin: -65px 0px;
+	.nao_selecionavel;
+	background-size: 100%;
+	//background-repeat:no-repeat;
 
-  &:hover {
-    //border-color: #aaa;
-    position: relative;
-    z-index: 10;
-  }
+	&:hover {
+		border-color: #000;
+		border-style: solid;
+		border-width: 2px;
+		border-radius: 0.5em;
+		//position: relative;
+		//z-index: 10;
+	}
+}
+.carta_zoom {
+	width: @largura_carta*4;
+	height: @altura_carta*4;
+	display: fixed;
+	background-size: 100%;
+	.nao_selecionavel;
 }
 
 .jogador {
@@ -382,6 +398,7 @@ li {
 		vertical-align: top;
 	}
 	h4 {
+		height: 1em;
 		margin: 0.4em;
 		margin-left: 0.7em;
 		color: @branco;
