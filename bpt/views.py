@@ -171,7 +171,7 @@ def salas_central(request):
 def sala(request):
     logado = authenticated_userid(request)
     sala = request.matchdict['nome']
-    PREJOGO.criar_sala(sala, logado)
+    PREJOGO.criar_jogo(sala, logado)
     return {'logado': logado,
             'sala': sala,
            }
