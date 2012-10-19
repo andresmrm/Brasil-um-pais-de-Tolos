@@ -2,6 +2,14 @@
 - limitar jogadores por sala
 - mostrar jogos que estão rodando atualmente
 
+- Maioria de cartas de um naipe: em caso de empate em número de cartas de um naipe entre
+jogadores diferentes, o critério de desempate é o jogador que possuir a CARTA NORMAL de
+maior valor, persistindo o empate a segunda CARTA NORMAL de maior valor, e assim por
+diante. Caso um jogador tenha a CARTA CORINGA de valor 2, ele automaticamente é
+considerado o jogador com maioria de cartas deste naipe.
+- O jogador só pode baixar uma carta de “evento” APÓS ele já ter uma carta “normal” do mesmo
+naipe na mesa.
+
 - afastar coringas/eventos
 - travar para não entrar um jogador que nao pertence ao jogo
 - mais estatísticas no perfil: jogos jogados/ganhos/terminados e porcentagens

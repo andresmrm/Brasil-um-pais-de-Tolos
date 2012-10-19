@@ -373,6 +373,7 @@ class Jogo():
                 atual = self.maiorias.get(naipe)
                 if atual == None or atual[0] < quant:
                     self.maiorias[naipe] = (quant, [j.nome])
+                # Em caso de empate de numero de cartas de um naipe
                 elif atual[0] == quant:
                     atual[1].append(j.nome)
         for j in self.jogadores.values():
@@ -451,10 +452,18 @@ class Jogador():
         """Calcula os pontos desse jogador"""
         self.pontos = 0
         for naipe in self.mesa.values():
+            pontos_naipe = 0
             for carta in naipe:
                 valor = self.jogo.baralho[carta].valor
+                pontos_naipe += valor
+                # Adiciona apenas os valores das cartas ímpares
                 if valor%2 == 1:
                     self.pontos += valor
+            # Verifica se tem todas as cartas de um naipe
+            if pontos_naipe == 55:
+                self.pontos += 20
+        # Pontos pelas maiorias CALCULO SIMPLIFICADO!!!!!!!!!!
+        self.pontos += len(self.maiorias)*10
 
     def identificar_carta(self, iden, verif_mao=True):
         """Identifica uma carta na mao do jogador"""
