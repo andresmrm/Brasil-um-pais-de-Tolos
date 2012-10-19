@@ -374,10 +374,12 @@ li {
 		//z-index: 10;
 	}
 }
-.carta_zoom {
-	width: @largura_carta*4;
-	height: @altura_carta*4;
-	display: fixed;
+#carta_zoom {
+	width: @largura_carta*3;
+	height: @altura_carta*3;
+	position: fixed;
+  display: none;
+  top: 2em;
 	background-size: 100%;
 	.nao_selecionavel;
 }

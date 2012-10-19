@@ -1,9 +1,6 @@
 - descartar carta de mesmo num e naipe
-- brilhar cartaz que podem ser jogadas, descartadas
-- zoom carta
 - ordenar cartas na mesa por numeros
 - afastar coringas/eventos
-- brilhar carta no hover, mas não trazer ela para frente
 - nao deixar comprar cartas do descarte alem de 5
 - travar para não entrar um jogador que nao pertence ao jogo
 - mais estatísticas no perfil: jogos jogados/ganhos/terminados e porcentagens
@@ -13,9 +10,10 @@
 - mostrar jogos que estão rodando atualmente
 
 
-
 Reduzir acessos ao BD
 Rets so quando necessario
 Otimizar tudo
 Criar testes
 Segurança?
+
+- brilhar cartaz que podem ser jogadas, descartadas
