@@ -1,14 +1,10 @@
-- descartar carta de mesmo num e naipe
-- ordenar cartas na mesa por numeros
-- afastar coringas/eventos
-- nao deixar comprar cartas do descarte alem de 5
-- travar para não entrar um jogador que nao pertence ao jogo
-- mais estatísticas no perfil: jogos jogados/ganhos/terminados e porcentagens
-
 - mensagens de erros
 - limitar jogadores por sala
 - mostrar jogos que estão rodando atualmente
 
+- afastar coringas/eventos
+- travar para não entrar um jogador que nao pertence ao jogo
+- mais estatísticas no perfil: jogos jogados/ganhos/terminados e porcentagens
 
 Reduzir acessos ao BD
 Rets so quando necessario

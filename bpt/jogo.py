@@ -401,7 +401,6 @@ class Jogo():
         else:
             self.descarte[carta.naipe] = [iden]
 
-
     def prox_jogador(self):
         """Passa a vez de jogar para o proximo jogador"""
         nomes = self.jogadores.keys()
@@ -485,10 +484,19 @@ class Jogador():
             return "ERRO: Dinheiro insuficiente para baixar carta!"
         self.dinheiro -= carta.custo
 
+        # Cria lista para o naipe caso nao exista
         self.mao.remove(iden)
         if self.mesa.get(carta.naipe) == None:
             self.mesa[carta.naipe] = []
+
+        # Verifica se já tem uma carta de mesmo valor e naipe da mesa
+        for ident_tmp in self.mesa[carta.naipe]:
+            carta_tmp = self.jogo.baralho.get(ident_tmp)
+            if carta_tmp.valor == carta.valor:
+                self.perder_carta_mesa(ident_tmp,carta_tmp)
+
         self.mesa[carta.naipe] += [iden]
+        self.mesa[carta.naipe].sort(key=lambda id: self.jogo.baralho.get(id).valor)
         carta.executar(self)
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
@@ -497,6 +505,9 @@ class Jogador():
         """Compra uma carta do monte de descarte"""
         if self.dinheiro < 3:
             return "ERRO: Comprar uma carta gasta 3 de dinheiro!"
+
+        if len(self.mao) >= MAX_CARTAS_MAO:
+            return "ERRO: Mao cheia!"
 
         ret = self.identificar_carta(str_iden, False)
         if type(ret) == str:
@@ -518,6 +529,12 @@ class Jogador():
         self.dinheiro += 2
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
+
+    def perder_carta_mesa(self, iden, carta):
+        """Joga fora uma carta da mesa"""
+        self.mesa[carta.naipe].remove(iden)
+        self.jogo.receber_descarte(iden, carta)
+
 
     def descartar_carta(self, str_iden):
         """Descarta uma carta da mão e a coloca no monte de descartes"""
