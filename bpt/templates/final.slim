@@ -1,0 +1,20 @@
+-inherit base.slim
+
+-block central
+  .final_fundo
+    table.final
+      tr
+        -for j in jogadores
+          td
+            .final_nome =j.nome
+      tr
+        -for j in jogadores
+          td
+            .final_pontos =j.pontos
+    .final_msg
+      h2 Parabéns!
+      O jogador ${ganhador}
+      br
+      é o Tolo-Mor do Brasil!
+    a href=request.route_url("rank") class="final_link rank" Ranking
+    a href=request.route_url("sala_central") class="final_link lobby" Lobby

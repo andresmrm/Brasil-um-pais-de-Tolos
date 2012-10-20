@@ -40,6 +40,9 @@ def main(global_config, **settings):
     config.add_route('baralho', '/jogo/{nome}/baralho')
     config.add_route('jogada', '/jogo/{nome}/jogada')
     config.add_route('atualizar_jogo', '/jogo/{nome}/atualizar')
+    config.add_route('fim', '/jogo/{nome}/fim')
+
+    config.add_route('rank', '/rank')
 
     config.add_route('criar_perfil', '/registrar')
     config.add_route('ver_perfil', '/ver_perfil/{nome}')

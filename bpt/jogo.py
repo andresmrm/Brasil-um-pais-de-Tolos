@@ -116,7 +116,7 @@ class SistemaPreJogo():
         return r
 
     def ret_jogo(self, nome_jogo):
-        return self.jogos.get(nome)
+        return self.jogos.get(nome_jogo)
 
     def ret_jogos(self):
         r = []
@@ -276,14 +276,14 @@ class Jogo():
         self.sist_chat = sist_chat
         self.sist_chat.criar_sala(nome)
 
-        self.baralho = {}
-        self.jogadores = {}
-        self.maiorias = {}
         self.monte = []
+        self.baralho = {}
+        self.maiorias = {}
         self.descarte = {}
-        self.jogador_atual = None
-        self.num_jogada = 0
+        self.jogadores = {}
         self.fim = False
+        self.num_jogada = 0
+        self.jogador_atual = None
 
     def vazio(self):
         return len(self.jogadores)
@@ -356,9 +356,14 @@ class Jogo():
         if self.iniciado == False:
             self.montar_baralho()
             self.monte = list(self.baralho.keys())
+
+
             #DELETE ESSE FOR DEPOIS DE TESTAR
             for i in range(50):
                 self.monte = self.monte + list(self.baralho.keys())
+            #self.monte = self.monte[:3]
+
+
             random.shuffle(self.monte)
             self.distribuir_cartas()
             self.jogador_atual = self.jogadores.keys()[0]

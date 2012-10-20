@@ -176,6 +176,18 @@ def sala(request):
             'sala': sala,
            }
 
+@view_config(route_name='fim', renderer='final.slim', permission='jogar')
+def fim(request):
+    logado = authenticated_userid(request)
+    nome_jogo = request.matchdict['nome']
+    jogo = PREJOGO.ret_jogo(nome_jogo)
+    jogadores = jogo.ret_jogadores()
+    ganhador = jogadores[0].nome
+    return {'logado': logado,
+            'ganhador': ganhador,
+            'jogadores': jogadores,
+           }
+
 @view_config(route_name='atualizar_sala', permission='jogar')
 def atualizar_sala(request):
     salas = PREJOGO.ret_jogos()

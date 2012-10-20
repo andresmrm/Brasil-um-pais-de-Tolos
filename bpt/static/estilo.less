@@ -43,6 +43,8 @@ body {
 	margin: 0em;
 	background-color: @fundo;
 	font-family:"Arial";
+	background-size: 100%;
+  background-image: url("/static/imagens/final_fundo.png")
 }
 
 .cabeca {
@@ -100,9 +102,10 @@ li {
 
 .link_inicial {
 	display:block;
+	text-decoration:none;
 	margin-bottom: 0.2em;
-    margin-left: 35%;
-    margin-right: 35%;
+  margin-left: 35%;
+  margin-right: 35%;
 	padding-top: 1%;
 	padding-bottom: 1%;
 	//padding: 30%;
@@ -110,7 +113,6 @@ li {
 	border-radius: 0.3em;
 	text-align: center;
 	text-shadow: 0.05em 0.05em 0.1em #000;
-	text-decoration:none;
 	.sombra;
 	&.iniciar {
 		background-color: @roxo;
@@ -416,4 +418,70 @@ li {
 	border-color: @fundo_jog;
 	padding: 0.5em;
 	height: 95%;
+}
+
+table.final {
+  width: 100%;
+  margin-top: 0.5em;
+}
+.final_nome {
+  .sombra;
+  background-color: @vermelho;
+  color: @branco;
+  padding: 0.5em;
+	border-radius: 6px;
+  margin: 0.5em;
+  text-align: center;
+  font-size: 150%;
+}
+.final_pontos {
+  background-color: @branco;
+  text-align: center;
+	border-radius: 3px;
+	border-style: solid;
+	border-width: medium;
+	border-color: @vermelho;
+  margin: 1em;
+  margin-top: 0.2em;
+  padding: 0.2em;
+  font-size: 200%;
+  font-weight:bold;
+}
+.final_msg {
+  background-color: #FEFFC5;
+  padding: 1em;
+	border-radius: 20px;
+  margin: 0.5em;
+  width: 15em;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-size: 200%;
+  h2 {
+    margin-top: 0em;
+    margin-bottom: 0.2em;
+  }
+}
+.final_link {
+  .sombra;
+	display:block;
+	text-decoration:none;
+  color: @branco;
+  padding: 0.5em;
+	border-radius: 10px;
+  margin: 0.5em;
+  text-align: center;
+  font-size: 150%;
+  width: 7em;
+  margin-left: auto;
+  margin-right: 1em;
+  &.rank {
+    background-color: @verde;
+  }
+  &.lobby {
+    background-color: @roxo;
+  }
+  
+}
+.final_fundo {
 }
