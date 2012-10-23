@@ -6,7 +6,10 @@
   -elif nome
     ul
       li =nome
-      li =email
+      li Partidas ${partidas}
+      li Saidas ${saidas}
+      li Vitórias ${vitorias}
+      li Pontos ${pontos}
       -if e_o_proprio
         a href=request.route_url("editar_perfil",nome=nome) Editar
 

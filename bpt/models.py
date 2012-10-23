@@ -54,7 +54,10 @@ class BdJogador(Base):
     #id = Column(mysql.BIGINT(20, unsigned=True), primary_key=True, autoincrement=True)
     nome = Column(Text, unique=True, nullable=False)
     senha = Column(Text, nullable=False)
-    email = Column(Text)
+    partidas = Column(Integer, nullable=False)
+    vitorias = Column(Integer, nullable=False)
+    saidas = Column(Integer, nullable=False)
+    pontos = Column(Integer, nullable=False)
 
     @property
     def __acl__(self):
@@ -65,10 +68,13 @@ class BdJogador(Base):
     def verif_senha(self, senha):
         return self.senha == senha
 
-    def __init__(self, nome, senha, email="", grupo="g:jogador"):
+    def __init__(self, nome, senha, grupo="g:jogador"):
         self.nome = nome
         self.senha = senha
-        self.email = email
+        self.partidas = 0
+        self.vitorias = 0
+        self.saidas = 0
+        self.pontos = 0
 
 
 

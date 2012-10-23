@@ -92,9 +92,9 @@ class FormRegistrar(colander.MappingSchema):
                 validator=colander.Length(min=5),
                 widget=deform.widget.CheckedPasswordWidget(size=20),
                 description='Digite sua senha e a confirme')
-    email = colander.SchemaNode(
-                colander.String(),
-                validator=colander.Email('Email inválido'))
+    #email = colander.SchemaNode(
+                #colander.String(),
+                #validator=colander.Email('Email inválido'))
 
 class FormEditar(colander.MappingSchema):
     senha = colander.SchemaNode(
@@ -102,9 +102,9 @@ class FormEditar(colander.MappingSchema):
                 validator=colander.Length(min=5),
                 widget=deform.widget.CheckedPasswordWidget(size=20),
                 description='Digite sua senha e a confirme')
-    email = colander.SchemaNode(
-                colander.String(),
-                validator=colander.Email('Email inválido'))
+#    email = colander.SchemaNode(
+#                colander.String(),
+#                validator=colander.Email('Email inválido'))
 
 
 
@@ -331,4 +331,8 @@ def enviar_baralho(request):
 
 @view_config(route_name='rank', renderer='rank.slim')
 def rank(request):
-    return {}
+    dbsession = DBSession()
+    jogadores = dbsession.query(BdJogador).all()
+    for j in jogadores:
+        j.posicao = jogadores.index(j)+1
+    return {'jogadores': jogadores}

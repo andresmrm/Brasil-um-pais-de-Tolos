@@ -1,0 +1,35 @@
+-inherit base.slim
+
+-block central
+  .rank_topo
+      img src='/static/imagens/logo.png'
+      h1 RANKING
+  .p_rank
+    table
+      tr
+        td
+          h5 Nome
+        td
+          h5 Partidas 
+        td
+          h5 Saídas
+        td
+          h5 Vitórias 
+        td
+          h5 Pontos 
+  .sub_rank
+    table
+      -for j in jogadores
+        tr
+          td.posicao
+            =j.posicao
+          td
+            a href=request.route_url("ver_perfil", nome=j.nome) =j.nome
+          td
+            =j.partidas
+          td
+            =j.saidas
+          td
+            =j.vitorias
+          td
+            =j.pontos

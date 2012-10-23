@@ -168,6 +168,9 @@ class SistemaPreJogo():
             j["tam_mao"] = len(j["mao"])
         return jogs
 
+    def ret_todos_jogadores(self):
+        return self.jogadores.values()
+
     def validar_jogador(self, nome_jog):
         """Verifica se um jogador existe"""
         jog = self.jogadores.get(nome_jog)

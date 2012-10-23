@@ -522,3 +522,36 @@ table.final {
 	background-size: 100%;
   background-image: url("/static/imagens/final_fundo.png")
 }
+
+.rank_topo {
+  height: 20%;
+  padding: 2em;
+  img {
+    height: 100%;
+  }
+  h1 {
+    font-size: 300%;
+    display: inline-block;
+    margin-left: 1em;
+    vertical-align: top;
+  }
+}
+.p_rank {
+	.painel(@verde);
+  table {
+    padding-left: 2.5em;
+    padding-right: 2em;
+  }
+}
+.sub_rank {
+	.submenu(@verde);
+	overflow-y: scroll;
+	color: @preto;
+	height: 50%;
+  table {
+    width: 100%;
+  }
+  td.posicao {
+    width: 3em;
+  }
+}
