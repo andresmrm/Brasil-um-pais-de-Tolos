@@ -303,6 +303,10 @@ class Jogo():
     def ret_jogadores(self):
         return self.jogadores.values()
 
+    def ret_ganhador(self):
+        ordenado = sorted(self.jogadores.values(),key=lambda j: j.pontos)
+        return ordenado[0]
+
     def vazio(self):
         if len(self.jogadores) == 0:
             return True
@@ -399,7 +403,6 @@ class Jogo():
     def pegar_carta_monte(self):
         """Tira uma carta no monte"""
         if len(self.monte) == 0:
-            self.fim = True
             return None
         return self.monte.pop()
 
@@ -578,8 +581,11 @@ class Jogador():
 
         carta = self.jogo.pegar_carta_monte()
         if carta == None:
-            print("O MONTE ACABOU!!!")
-            return "ERRO: O monte acabou!"
+            if self.jogo.fim:
+                return "O monte acabou!"
+            else:
+                self.jogo.fim = True
+                return "FIM: O monte acabou!"
 
         self.mao.append(carta)
         self.jogo.prox_jogador()

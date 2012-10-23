@@ -182,7 +182,7 @@ def fim(request):
     nome_jogo = request.matchdict['nome']
     jogo = PREJOGO.ret_jogo(nome_jogo)
     jogadores = jogo.ret_jogadores()
-    ganhador = jogadores[0].nome
+    ganhador = jogo.ret_ganhador().nome
     return {'logado': logado,
             'ganhador': ganhador,
             'jogadores': jogadores,
@@ -291,7 +291,15 @@ def nova_jogada(request):
     nome_jogo = request.matchdict['nome']
     jogador = authenticated_userid(request)
     jogada = request.POST["jogada"]
-    return Response(PREJOGO.executar(jogador, jogada))
+    msg = PREJOGO.executar(jogador, jogada)
+    if msg[:3] == "FIM":
+        jogo = PREJOGO.ret_jogo(nome_jogo)
+        ganhador = jogo.ret_ganhador()
+        dbsession = DBSession()
+        j = dbsession.query(BdJogador).filter_by(nome=ganhador.nome).first()
+        j.vitorias += 1
+        j.pontos += 1
+    return Response(msg)
 
 @view_config(route_name='atualizar_jogo', permission='jogar')
 def enviar_atualizacao(request):
@@ -333,7 +341,7 @@ def enviar_baralho(request):
 def rank(request):
     dbsession = DBSession()
     jogadores = dbsession.query(BdJogador).all()
-    jogadores.sort(key=lambda j: j.pontos)
+    jogadores.sort(key=lambda j: j.pontos, reverse=True)
     for j in jogadores:
         j.posicao = jogadores.index(j)+1
     return {'jogadores': jogadores}
