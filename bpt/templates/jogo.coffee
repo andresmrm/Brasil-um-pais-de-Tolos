@@ -46,21 +46,26 @@
 		if e.which == 122
 			$("#carta_zoom").toggle()
 	dar_zoom = (event, delta) ->
-		if delta > 0
-			$("#carta_zoom").show()
-		else
-			$("#carta_zoom").hide()
+    event.preventDefault()
+    if delta > 0
+      $("#carta_zoom").show()
+    else
+      $("#carta_zoom").hide()
 
 	atualizar = () ->
 		$.post "atualizar", {"num_jogada":num_jogada}, (data) ->
 			if data != "0"
-				dic = JSON.parse(data)
-				num_jogada = dic["num_jogada"]
-				$('.menu_mao').html(dic["mao"])
-				$('.mesas').html(dic["mesas"])
-				$(".carta").click(carta_clicada)
-				$(".carta").hover(carta_sobre)
-				$(".carta").bind 'mousewheel', dar_zoom
+        dic = JSON.parse(data)
+        num_jogada = dic["num_jogada"]
+        $('.menu_mao').html(dic["mao"])
+        $('.mesas').html(dic["mesas"])
+        $(".carta").click(carta_clicada)
+        $(".carta").hover(carta_sobre)
+        $(".carta").bind 'mousewheel', dar_zoom
+        if dic["fim"]
+          $("#botao_fim").show()
+        else
+          $("#botao_fim").hide()
 	setInterval(atualizar,3000)
 
 	$(".carta").hover(carta_sobre)

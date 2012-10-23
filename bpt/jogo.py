@@ -251,7 +251,7 @@ class SistemaPreJogo():
         jogador = self.jogadores.get(nome_jogador)
         if jogador:
             jogo = jogador.jogo
-            if num == jogo.num_jogada:
+            if num == jogo.num_jogada and not jogo.fim:
                 # Nada para ser atualizado
                 return "0"
 
@@ -259,6 +259,7 @@ class SistemaPreJogo():
             dicio["num_jogada"] = jogo.num_jogada
             dicio["mao"] = jogador.mao
             dicio["mesas"] = "A"
+            dicio["fim"] = jogo.fim
             j = self.ret_jogadores_dicio(jogo)
             b = jogo.baralho
             d = jogo.descarte
@@ -361,7 +362,7 @@ class Jogo():
             #DELETE ESSE FOR DEPOIS DE TESTAR
             for i in range(50):
                 self.monte = self.monte + list(self.baralho.keys())
-            #self.monte = self.monte[:3]
+            self.monte = self.monte[:3]
 
 
             random.shuffle(self.monte)
