@@ -333,6 +333,7 @@ def enviar_baralho(request):
 def rank(request):
     dbsession = DBSession()
     jogadores = dbsession.query(BdJogador).all()
+    jogadores.sort(key=lambda j: j.pontos)
     for j in jogadores:
         j.posicao = jogadores.index(j)+1
     return {'jogadores': jogadores}
