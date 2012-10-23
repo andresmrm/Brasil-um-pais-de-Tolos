@@ -237,7 +237,7 @@ class SistemaPreJogo():
             jogadores = self.ret_jogadores_dicio(jogo)
             descarte = jogo.descarte
             baralho = jogo.baralho
-            return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho}
+            return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho, 'jogo':jogo.nome}
         else:
             return {}
 

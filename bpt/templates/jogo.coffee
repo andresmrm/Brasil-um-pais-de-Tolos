@@ -63,9 +63,9 @@
         $(".carta").hover(carta_sobre)
         $(".carta").bind 'mousewheel', dar_zoom
         if dic["fim"]
-          $("#botao_fim").show()
+          $("#msg_fim").show()
         else
-          $("#botao_fim").hide()
+          $("#msg_fim").hide()
 	setInterval(atualizar,3000)
 
 	$(".carta").hover(carta_sobre)

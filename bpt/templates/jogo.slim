@@ -16,5 +16,8 @@
       /span id="reiniciar" class="botao_jogo" r
   /script src="/static/jogo.js" type="text/javascript"
   #carta_zoom
-  #botao_fim
+  #msg_fim
+    p Não há mais cartas no monte.
+    p O Jogo acabou.
+    a#link_fim href=request.route_url("fim", nome=jogo) Fim
   -include jogo.coffee

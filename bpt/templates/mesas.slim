@@ -5,11 +5,11 @@
         -for naipe in j["maiorias"]
           span class=("maioria "+naipe)
         img.icone_jogo src='/static/imagens/palhaco.png'
-        ${j["pontos"]}
+        p.num_painel_jogo ${j["pontos"]}
         img.icone_jogo src='/static/imagens/mao.png'
-        ${j["tam_mao"]}
+        p.num_painel_jogo ${j["tam_mao"]}
         img.icone_jogo src='/static/imagens/cifrao.png'
-        ${j["dinheiro"]}
+        p.num_painel_jogo ${j["dinheiro"]}
     .sub_jogador
       -for naipe in j["mesa"]
         .naipe

@@ -328,3 +328,7 @@ def enviar_baralho(request):
         return Response(json.dumps(cartas))
     else:
         Response()
+
+@view_config(route_name='rank', renderer='rank.slim')
+def rank(request):
+    return {}
