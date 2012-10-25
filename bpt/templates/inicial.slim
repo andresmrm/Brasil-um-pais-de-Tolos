@@ -7,9 +7,11 @@
     ul
       -if logado
         li
-          a.link_inicial.iniciar href=request.route_url("sala_central") Iniciar
+          a.link_inicial.iniciar href=request.route_url("sala_central") Lobby
       -else
         li
           a.link_inicial.entrar href=request.route_url("login") Entrar
         li
           a.link_inicial.registrar href=request.route_url("criar_perfil") Registrar
+      li
+        a.link_inicial.rank href=request.route_url("rank") Ranking

@@ -339,9 +339,12 @@ def enviar_baralho(request):
 
 @view_config(route_name='rank', renderer='rank.slim')
 def rank(request):
+    nome_jogador = authenticated_userid(request)
     dbsession = DBSession()
     jogadores = dbsession.query(BdJogador).all()
     jogadores.sort(key=lambda j: j.pontos, reverse=True)
     for j in jogadores:
         j.posicao = jogadores.index(j)+1
-    return {'jogadores': jogadores}
+    return {'jogadores': jogadores,
+            'logado' : nome_jogador
+           }

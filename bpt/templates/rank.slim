@@ -2,7 +2,8 @@
 
 -block central
   .rank_topo
-      img src='/static/imagens/logo.png'
+      a href=request.route_url("inicial")
+        img src='/static/imagens/logo.png'
       h1 RANKING
   .p_rank
     table
@@ -33,3 +34,7 @@
             =j.vitorias
           td
             =j.pontos
+  -if logado
+    ul
+      li
+        a.link_inicial.iniciar href=request.route_url("sala_central") Lobby

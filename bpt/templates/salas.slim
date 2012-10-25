@@ -3,7 +3,8 @@
 -block central
   .divisao_esq
     #moldura_logo_salas
-      img#logo_salas src='/static/imagens/logo.png'
+      a href=request.route_url("inicial")
+        img#logo_salas src='/static/imagens/logo.png'
     .p_criar_jogo
       h5 Criar um novo jogo
     .sp_criar_jogo
