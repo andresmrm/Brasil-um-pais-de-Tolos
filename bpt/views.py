@@ -171,10 +171,13 @@ def salas_central(request):
 def sala(request):
     logado = authenticated_userid(request)
     sala = request.matchdict['nome']
-    PREJOGO.criar_jogo(sala, logado)
-    return {'logado': logado,
-            'sala': sala,
-           }
+    if PREJOGO.criar_jogo(sala, logado):
+        return {'logado': logado,
+                'sala': sala,
+               }
+    else:
+        return HTTPFound(location = request.route_url('sala_central'))
+
 
 @view_config(route_name='fim', renderer='final.slim', permission='jogar')
 def fim(request):

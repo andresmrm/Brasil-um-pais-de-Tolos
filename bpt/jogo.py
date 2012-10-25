@@ -106,13 +106,14 @@ class SistemaPreJogo():
 
     def criar_jogo(self, nome, jog):
         r = False
+        # Caso jogo não exista
         if self.jogos.get(nome) == None:
             s = Jogo(nome, self.sist_chat)
             self.jogos[nome] = s
             r = True
+        # Caso deve colocar um jogador dentro da sala
         if jog:
-            self.colocar_jogador_jogo(nome, jog)
-            r = True
+            r = self.colocar_jogador_jogo(nome, jog)
         return r
 
     def ret_jogo(self, nome_jogo):
@@ -125,22 +126,26 @@ class SistemaPreJogo():
                 r.append(s)
         return r
 
-    def colocar_jogador_jogo(self, nome_jogo, jog):
+    def colocar_jogador_jogo(self, nome_jogo, nome_jogador):
         """Coloca um jogador em uma determinada sala"""
         if not nome_jogo:
-            print("Tentando remover jogador???!!! Feito mais ou menos...")
-            self.jogadores[jog] = None
+            self.jogadores[nome_jogador] = None
             return True
 
         s = self.jogos.get(nome_jogo)
         # Verifica se a sala existe
         if not s:
             return False
+            return "ERRO: Sala nao existe!"
+        # Verifica se jogo tem espaço para mais um jogador
+        if len(s.ret_jogadores())+1 > s.max_num_jogadores:
+            return False
+            return "ERRO: Sala cheia!"
 
-        j = self.jogadores.get(jog)
+        j = self.jogadores.get(nome_jogador)
         if not j:
-            j = Jogador(jog, s) 
-            self.jogadores[jog] = j
+            j = Jogador(nome_jogador, s) 
+            self.jogadores[nome_jogador] = j
         else:
             if j.jogo:
                 self.rem_jogador(j.jogo.nome, j)
@@ -148,10 +153,10 @@ class SistemaPreJogo():
         s.adi_jogador(j)
         return True
 
-    def rem_jogador(self, nome_jogo, jog):
+    def rem_jogador(self, nome_jogo, nome_jogador):
         s = self.jogos.get(nome_jogo)
         if s:
-            s.rem_jogador(jog)
+            s.rem_jogador(nome_jogador)
             if s.vazio() and nome_jogo != self.central:
                 self.fechar_jogo(nome_jogo)
 
@@ -288,6 +293,7 @@ class Jogo():
         self.fim = False
         self.num_jogada = 0
         self.jogador_atual = None
+        self.max_num_jogadores = 5
 
     def vazio(self):
         return len(self.jogadores)
