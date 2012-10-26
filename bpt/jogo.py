@@ -143,14 +143,15 @@ class SistemaPreJogo():
             return "ERRO: Sala cheia!"
 
         j = self.jogadores.get(nome_jogador)
+        # Caso jogador ainda não exista
         if not j:
             j = Jogador(nome_jogador, s) 
             self.jogadores[nome_jogador] = j
-        else:
-            if j.jogo:
+            s.adi_jogador(j)
+        elif j.jogo and j.jogo != s:
                 self.rem_jogador(j.jogo.nome, j)
-            j.trocar_jogo(s)
-        s.adi_jogador(j)
+                s.adi_jogador(j)
+                j.trocar_jogo(s)
         return True
 
     def rem_jogador(self, nome_jogo, nome_jogador):
@@ -448,6 +449,7 @@ class Jogador():
         self.automatico = False
         self.ult_contato = 0
         self.trocar_jogo(jogo)
+        self.pronto = False
 
     def novo_contato(self):
         self.ult_contato = time.time()

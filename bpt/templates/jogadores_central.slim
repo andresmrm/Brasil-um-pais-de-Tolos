@@ -1,0 +1,6 @@
+table
+  -if jogs
+    -for jog in jogs
+      tr
+        td.col_nome_jog
+          a href=request.route_url("ver_perfil", nome=jog.nome) =jog.nome

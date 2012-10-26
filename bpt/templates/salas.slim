@@ -10,9 +10,9 @@
     .sp_criar_jogo
       form
         input#criar_sala type="text"
-    .p_participantes
+    .p_participantes_lobby
       h5 Participantes
-    #participantes
+    #participantes_central
   .divisao_dir
     .p_salas
       table
@@ -22,5 +22,5 @@
           td
             h5.col_jogs Jogadores
     #salas
-    script src="/static/salas.js" type="text/javascript"
+    script src="/static/central.js" type="text/javascript"
     -include chat.slim

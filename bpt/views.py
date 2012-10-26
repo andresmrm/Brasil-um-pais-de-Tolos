@@ -191,13 +191,44 @@ def fim(request):
             'jogadores': jogadores,
            }
 
+@view_config(route_name='atualizar_central', permission='jogar')
+def atualizar_central(request):
+    salas = PREJOGO.ret_jogos()
+    s = render_to_response('listar_salas.slim',{'salas':salas}, request=request).body
+    jogs = PREJOGO.ret_jogadores(PREJOGO.central)
+    j = render_to_response('jogadores_central.slim',{'jogs':jogs}, request=request).body
+    ret = {
+        "salas": s,
+        "jogadores": j
+    }
+    return Response(json.dumps(ret))
+
 @view_config(route_name='atualizar_sala', permission='jogar')
 def atualizar_sala(request):
-    salas = PREJOGO.ret_jogos()
-    pa = render_to_response('listar_salas.slim',{'salas':salas}, request=request)
-    ret = {}
-    ret["salas"] = pa.body
-    return Response(json.dumps(ret))
+    nome_sala = request.matchdict['nome']
+    jogs = PREJOGO.ret_jogadores(nome_sala)
+
+    todos_prontos = True
+    for j in jogs:
+        if not j.pronto:
+            todos_prontos = False
+
+    if not todos_prontos:
+        j = render_to_response('jogadores_sala.slim',{'jogs':jogs},request=request).body
+        ret = {
+            "jogadores": j
+        }
+        return Response(json.dumps(ret))
+    else:
+        ret = {'link': request.route_url('jogo', nome=nome_sala)}
+        return Response(json.dumps(ret))
+
+@view_config(route_name='pronto', permission='jogar')
+def pronto(request):
+    nome_jogador = authenticated_userid(request)
+    jogador = PREJOGO.ret_jogador(nome_jogador)
+    jogador.pronto = not jogador.pronto
+    return Response("OK")
 
 
 # PERFIS
@@ -262,11 +293,11 @@ def editar_perfil(request):
 # CHAT
 @view_config(route_name='enviar_msg', permission='jogar')
 def receber_msg(request):
-    jogador = authenticated_userid(request)
+    nome_jogador = authenticated_userid(request)
     nome_sala = request.matchdict['nome']
-    if jogador:
+    if nome_jogador:
         msg = request.POST["msg"]
-        num = PREJOGO.adi_msg(nome_sala, jogador, msg)
+        num = PREJOGO.adi_msg(nome_sala, nome_jogador, msg)
         return Response(str(num))
     return HTTPForbidden
 
@@ -277,24 +308,24 @@ def ret_msgs(request):
     msgs = PREJOGO.ret_msgs(nome_sala)
     pa = render_to_response('chat_msgs.slim',{'msgs':msgs})
     ret["msgs"] = pa.body
-    jogs = PREJOGO.ret_jogadores(nome_sala)
-    pa = render_to_response('participantes.slim',{'jogs':jogs})
-    ret["participantes"] = pa.body
+    #jogs = PREJOGO.ret_jogadores(nome_sala)
+    #pa = render_to_response('participantes.slim',{'jogs':jogs})
+    #ret["participantes"] = pa.body
     return Response(json.dumps(ret))
 
 
 # JOGO
 @view_config(route_name='jogo', renderer='jogo.slim', permission='jogar')
 def nova_pagina(request):
-    jogador = authenticated_userid(request)
-    return PREJOGO.nova_pagina(jogador)
+    nome_jogador = authenticated_userid(request)
+    return PREJOGO.nova_pagina(nome_jogador)
 
 @view_config(route_name='jogada', permission='jogar')
 def nova_jogada(request):
     nome_jogo = request.matchdict['nome']
-    jogador = authenticated_userid(request)
+    nome_jogador = authenticated_userid(request)
     jogada = request.POST["jogada"]
-    msg = PREJOGO.executar(jogador, jogada)
+    msg = PREJOGO.executar(nome_jogador, jogada)
     if msg[:3] == "FIM":
         jogo = PREJOGO.ret_jogo(nome_jogo)
         ganhador = jogo.ret_ganhador()
@@ -307,15 +338,14 @@ def nova_jogada(request):
 @view_config(route_name='atualizar_jogo', permission='jogar')
 def enviar_atualizacao(request):
     nome_jogo = request.matchdict['nome']
-    jogador = authenticated_userid(request)
+    nome_jogador = authenticated_userid(request)
     num = request.POST["num_jogada"]
-
-    r = PREJOGO.nova_atualizacao(jogador, num)
+    r = PREJOGO.nova_atualizacao(nome_jogador, num)
     if r == "0":
         return Response(r)
     ret, j, b, d = r
     for jog in j:
-        if jog['nome'] == jogador:
+        if jog['nome'] == nome_jogador:
             dic_jog = jog
     pa = render_to_response('mao.slim',{'jogador':dic_jog,'baralho':b})
     ret["mao"] = pa.body

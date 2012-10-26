@@ -1,0 +1,13 @@
+table
+  -if jogs
+    -for jog in jogs
+      tr
+        td.col_nome_jog
+          /h5 =jog.nome
+          a href=request.route_url("sala", nome=jog.nome) =jog.nome
+        td.col_pronto
+          h5
+            -if jog.pronto
+              Sim
+            -else
+              Não

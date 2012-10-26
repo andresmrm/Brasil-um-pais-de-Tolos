@@ -169,7 +169,7 @@ li {
 	.painel(@laranja);
 	margin-top: 20%;
 }
-.p_participantes {
+.p_participantes_lobby {
 	.painel(@vermelho);
 }
 .p_participantes_sala {
@@ -213,7 +213,7 @@ li {
 	color: @preto;
 	height: 40%
 }
-#participantes {
+#participantes_central {
 	.submenu(@vermelho);
 	overflow-y: scroll;
 	color: @preto;
@@ -221,6 +221,25 @@ li {
 	h5 {
 		margin: 0em;
 	}
+}
+#participantes_sala {
+	.submenu(@vermelho);
+	overflow-y: scroll;
+	color: @preto;
+	height: 25%; 
+	h5 {
+		margin: 0em;
+	}
+  table {
+    width: 100%;
+  }
+  .col_nome_jog {
+    width: 40%;
+  }
+  .col_pronto {
+    width: 40%;
+    text-align: center;
+  }
 }
 
 .rolo {

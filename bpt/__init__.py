@@ -27,8 +27,10 @@ def main(global_config, **settings):
 
     config.add_route('inicial', '/')
     config.add_route('sala_central', '/sala/central/')
+    config.add_route('atualizar_central', '/sala/central/atualizar')
     config.add_route('sala', '/sala/{nome}/')
     config.add_route('atualizar_sala', '/sala/{nome}/atualizar')
+    config.add_route('pronto', '/sala/{nome}/pronto')
 
     config.add_route('login', '/login')
     config.add_route('logout', '/logout')

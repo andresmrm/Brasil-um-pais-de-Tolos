@@ -7,7 +7,15 @@
       a href=request.route_url("jogo",nome=sala) Iniciar Partida
       | :
       a href=request.route_url("sala_central") Sair dessa sala 
+      | :
+      #botao_pronto Pronto
   .p_participantes_sala
-    h5 Participantes
-  #participantes
+    table
+      tr
+        td
+          h5.col_nomes Participantes
+        td
+          h5.col_pronto Pronto
+  #participantes_sala
+  script src="/static/sala.js" type="text/javascript"
   -include chat.slim

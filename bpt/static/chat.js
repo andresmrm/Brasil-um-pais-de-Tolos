@@ -16,7 +16,6 @@ function atualizar_chat() {
     if(data!="0"){
       dic = JSON.parse(data);
       $('#msgs').html(dic["msgs"]);
-      $('#participantes').html(dic["participantes"]);
     }
   })
   .error(function(data) { alert("Erro ao Atualizar_Chat!"+data); });
