@@ -112,6 +112,7 @@ li {
 	border-radius: 0.3em;
 	text-align: center;
 	text-shadow: 0.05em 0.05em 0.1em #000;
+  font-weight:bold;
 	.sombra;
 	&.iniciar {
 		background-color: @roxo;
@@ -128,9 +129,9 @@ li {
 }
 
 .divisao_esq {
-	width: 25%;
-	height: 100%;
-    float:left;
+  width: 25%;
+  height: 100%;
+  float:left;
 }
 .divisao_dir {
 	width: 75%;
@@ -217,7 +218,7 @@ li {
 	.submenu(@vermelho);
 	overflow-y: scroll;
 	color: @preto;
-	height: 55%; 
+	height: 50%; 
 	h5 {
 		margin: 0em;
 	}
@@ -226,7 +227,7 @@ li {
 	.submenu(@vermelho);
 	overflow-y: scroll;
 	color: @preto;
-	height: 25%; 
+	height: 10em; 
 	h5 {
 		margin: 0em;
 	}
@@ -240,6 +241,31 @@ li {
     width: 40%;
     text-align: center;
   }
+}
+.topo_sala {
+  height: 15em;
+}
+.topo_sala_esq {
+  width: 50%;
+  float: left;
+}
+.topo_sala_dir {
+  width: 50%;
+  float: left;
+}
+.titulo_sala {
+  .azul_arredondado;
+  text-align: center;
+  margin-top: 1em;
+}
+.link_sala_sair {
+  .link_inicial;
+  background-color: @vermelho;
+}
+#botao_pronto {
+  .link_inicial;
+  margin-top: 2em;
+  background-color: @amarelo;
 }
 
 .rolo {

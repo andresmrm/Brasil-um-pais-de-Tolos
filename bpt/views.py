@@ -156,7 +156,7 @@ def incial(request):
     return {'logado': logado,
            }
 
-@view_config(route_name='sala_central', renderer='salas.slim', permission='jogar')
+@view_config(route_name='sala_central', renderer='central.slim', permission='jogar')
 def salas_central(request):
     logado = authenticated_userid(request)
     if 'criar_sala' in request.POST:

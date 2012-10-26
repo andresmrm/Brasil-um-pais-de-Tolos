@@ -1,21 +1,20 @@
 -inherit base.slim
 
 -block central
-  #sala
-    h3.nome_sala =sala 
-      | :
-      a href=request.route_url("jogo",nome=sala) Iniciar Partida
-      | :
-      a href=request.route_url("sala_central") Sair dessa sala 
-      | :
+  .topo_sala
+    .topo_sala_esq
+      .titulo_sala
+        h1.nome_sala =sala 
       #botao_pronto Pronto
-  .p_participantes_sala
-    table
-      tr
-        td
-          h5.col_nomes Participantes
-        td
-          h5.col_pronto Pronto
-  #participantes_sala
+      a.link_sala_sair href=request.route_url("sala_central") Sair
+    .topo_sala_dir
+      .p_participantes_sala
+        table
+          tr
+            td
+              h5.col_nomes Participantes
+            td
+              h5.col_pronto Pronto
+      #participantes_sala
   script src="/static/sala.js" type="text/javascript"
   -include chat.slim

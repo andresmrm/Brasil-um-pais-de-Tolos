@@ -152,6 +152,7 @@ class SistemaPreJogo():
                 self.rem_jogador(j.jogo.nome, j)
                 s.adi_jogador(j)
                 j.trocar_jogo(s)
+                j.pronto = False
         return True
 
     def rem_jogador(self, nome_jogo, nome_jogador):
@@ -376,7 +377,7 @@ class Jogo():
             #DELETE ESSE FOR DEPOIS DE TESTAR
             for i in range(50):
                 self.monte = self.monte + list(self.baralho.keys())
-            self.monte = self.monte[:3]
+            #self.monte = self.monte[:3]
 
 
             random.shuffle(self.monte)
