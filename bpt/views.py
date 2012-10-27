@@ -220,6 +220,14 @@ def atualizar_sala(request):
         }
         return Response(json.dumps(ret))
     else:
+        PREJOGO.iniciar_jogo(nome_sala)
+        dbsession = DBSession()
+        #bd_jogadores = dbsession.query.filter(BdJogador.nome.in_(jogs))
+        #bd_jogadores = dbsession.query(BdJogador).filter(BdJogador.nome.in_(jogs))
+        nome_jogs = [j.nome for j in jogs]
+        bd_jogadores = dbsession.query(BdJogador).filter(BdJogador.nome.in_(nome_jogs)).all()
+        for j in bd_jogadores:
+            j.partidas += 1
         ret = {'link': request.route_url('jogo', nome=nome_sala)}
         return Response(json.dumps(ret))
 

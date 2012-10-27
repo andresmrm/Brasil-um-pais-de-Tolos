@@ -212,12 +212,6 @@ class SistemaPreJogo():
             return resposta
         jog = self.jogadores[nome_jog]
         jogo = jog.jogo
-        try:
-            if jogada[0] == 'R':
-                jogo.iniciar()
-                return "Ok"
-        except:
-            pass
 
         if jog.nome != jogo.jogador_atual:
             return "ERRO: Nao e a sua vez de jogar!"
@@ -243,7 +237,7 @@ class SistemaPreJogo():
         jogador = self.jogadores.get(nome_jogador)
         if jogador:
             jogo = jogador.jogo
-            jogo.iniciar()
+            #jogo.iniciar()
             jogadores = self.ret_jogadores_dicio(jogo)
             descarte = jogo.descarte
             baralho = jogo.baralho
@@ -283,7 +277,7 @@ class Jogo():
 
     def __init__(self, nome, sist_chat):
         self.nome = nome
-        self. iniciado = False
+        self.iniciado = False
         self.sist_chat = sist_chat
         self.sist_chat.criar_sala(nome)
 
