@@ -24,15 +24,15 @@
         tr
           td.posicao
             =j.posicao
-          td
+          td.nome
             a href=request.route_url("ver_perfil", nome=j.nome) =j.nome
-          td
+          td.partidas
             =j.partidas
-          td
+          td.saidas
             =j.saidas
-          td
+          td.vitorias
             =j.vitorias
-          td
+          td.pontos
             =j.pontos
   -if logado
     ul
