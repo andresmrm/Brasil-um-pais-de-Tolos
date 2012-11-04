@@ -78,10 +78,7 @@ class Magica():
                     dono.adi_carta(carta)
 
 
-
-
 M = Magica()
-
 
 
 class SistemaPreJogo():
@@ -104,22 +101,25 @@ class SistemaPreJogo():
         """Retorna mensagens do jogo 'nome_jogo'"""
         return self.sist_chat.ret_msgs(nome_jogo)
 
-    def criar_jogo(self, nome, jog):
+    def criar_jogo(self, nome_jogo, nome_jogador):
+        """Cria um jogo 'nome_jogo' e adiciona o jogador 'nome_jogador'"""
         r = False
         # Caso jogo não exista
-        if self.jogos.get(nome) == None:
-            s = Jogo(nome, self.sist_chat)
-            self.jogos[nome] = s
+        if self.jogos.get(nome_jogo) == None:
+            s = Jogo(nome_jogo, self.sist_chat)
+            self.jogos[nome_jogo] = s
             r = True
         # Caso deve colocar um jogador dentro da sala
-        if jog:
-            r = self.colocar_jogador_jogo(nome, jog)
+        if nome_jogador:
+            r = self.colocar_jogador_jogo(nome_jogo, nome_jogador)
         return r
 
     def ret_jogo(self, nome_jogo):
+        """Retorna o jogo de nome 'nome_jogo'"""
         return self.jogos.get(nome_jogo)
 
     def ret_jogos(self):
+        """Retorna os jogos abertos"""
         r = []
         for s in self.jogos.values():
             if s.nome != 'central':
@@ -156,6 +156,7 @@ class SistemaPreJogo():
         return True
 
     def rem_jogador(self, nome_jogo, nome_jogador):
+        """Remove um jogador de uma sala"""
         s = self.jogos.get(nome_jogo)
         if s:
             s.rem_jogador(nome_jogador)
@@ -163,9 +164,11 @@ class SistemaPreJogo():
                 self.fechar_jogo(nome_jogo)
 
     def ret_jogador(self, nome):
+        """Retorna uma jogador pelo nome"""
         return self.jogadores.get(nome)
 
     def ret_jogadores(self, nome_jogo):
+        """Retorna os jogadores de um jogo"""
         return self.jogos[nome_jogo].ret_jogadores()
 
     def ret_jogadores_dicio(self, jogo):
@@ -176,6 +179,7 @@ class SistemaPreJogo():
         return jogs
 
     def ret_todos_jogadores(self):
+        """Retorna todos os jogadores"""
         return self.jogadores.values()
 
     def validar_jogador(self, nome_jog):
@@ -190,6 +194,7 @@ class SistemaPreJogo():
         return True
 
     def fechar_jogo(self, nome):
+        """Fecha um jogo"""
         s = self.jogos[nome]
         jogadores = s.ret_jogadores()
         for jog in jogadores:
@@ -198,6 +203,7 @@ class SistemaPreJogo():
         self.sist_chat.fechar_sala(nome)
 
     def iniciar_jogo(self, nome_jogo):
+        """Inicia o jogo de nome 'nome_jogo'"""
         j = self.jogos.get(nome_jogo)
         if j:
             j.iniciar()
@@ -234,10 +240,10 @@ class SistemaPreJogo():
         return "ERRO: Jogada nao identificada!" 
 
     def nova_pagina(self, nome_jogador):
+        """Prepara dados para a visualização da página de jogo"""
         jogador = self.jogadores.get(nome_jogador)
         if jogador:
             jogo = jogador.jogo
-            #jogo.iniciar()
             jogadores = self.ret_jogadores_dicio(jogo)
             descarte = jogo.descarte
             baralho = jogo.baralho
@@ -291,25 +297,26 @@ class Jogo():
         self.jogador_atual = None
         self.max_num_jogadores = 5
 
-    def vazio(self):
-        return len(self.jogadores)
-
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
         self.jogadores[jog.nome] = jog
 
     def rem_jogador(self, jog):
+        """Remove um jogador do jogo"""
         if jog.nome in self.jogadores:
             self.jogadores.pop(jog.nome)
 
     def ret_jogadores(self):
+        """Retorna jogadores no jogo"""
         return self.jogadores.values()
 
     def ret_ganhador(self):
+        """Retorna o ganhador do jogo"""
         ordenado = sorted(self.jogadores.values(),key=lambda j: j.pontos)
         return ordenado[0]
 
     def vazio(self):
+        """Se o jogo está vazio ou não"""
         if len(self.jogadores) == 0:
             return True
         return False
@@ -434,8 +441,6 @@ class Jogo():
             j.jogada_automatica()
 
 
-
-
 class Jogador():
     """Um jogador"""
 
@@ -447,9 +452,11 @@ class Jogador():
         self.pronto = False
 
     def novo_contato(self):
+        """Avisa que o jogador ainda está online"""
         self.ult_contato = time.time()
 
     def trocar_jogo(self, jogo):
+        """Troca esse jogador de jogo"""
         self.jogo = jogo
         self.dinheiro = DINHEIRO_INICIAL
         self.mao = []
@@ -621,5 +628,6 @@ class Carta():
         self.efeito = efeito
 
     def executar(self, dono):
+        """Executa o efeito dessa carta"""
         if self.efeito != None:
             self.efeito(self.efeito_dados, dono)

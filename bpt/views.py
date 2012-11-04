@@ -24,88 +24,14 @@ from pyramid.response import Response
 from pyramid.renderers import render_to_response
 from pyramid.httpexceptions import HTTPFound, HTTPForbidden
 from pyramid.view import view_config, forbidden_view_config
-from pyramid.security import (
-    remember,
-    forget,
-    authenticated_userid,
-    )
-
-from sqlalchemy.exc import DBAPIError
-
-
-
-from .models import (
-    DBSession,
-    BdJogador,
-    )
-
-from jogo import *
-
-
+from pyramid.security import remember, forget, authenticated_userid
 import deform
-import colander
-from deform import Form
 
+from .models import DBSession, BdJogador
+from jogo import *
+from forms import *
 
 PREJOGO = SistemaPreJogo()
-
-
-def record_to_appstruct(self):
-    form =  formulador(FormRegistrar,('Registrar',))
-    return dict([(k, self.__dict__[k]) for k in sorted(self.__dict__) if '_sa_' != k[:4]])
-
-def merge_session_with_post(session, post):
-    for key,value in post:
-        setattr(session, key, value)
-    return session
-
-
-def formulador(form, botoes):
-    f = {"form":Form(form(),buttons=botoes).render()}
-    return f
-
-def verif_nome_unico(nome):
-    dbsession = DBSession()
-    j = dbsession.query(BdJogador).filter_by(nome=nome).first()
-    if j == None:
-        return True
-    else:
-        return False
-
-
-
-class FormLogin(colander.MappingSchema):
-    nome = colander.SchemaNode(colander.String(),
-                        description='Digite seu nome de usuário')
-    senha = colander.SchemaNode(
-                        colander.String(),
-                        validator=colander.Length(min=5, max=100),
-                        widget=deform.widget.PasswordWidget(size=20),
-                        description='Digite sua senha')
-
-class FormRegistrar(colander.MappingSchema):
-    nome = colander.SchemaNode(colander.String(),
-                        validator=colander.Function(verif_nome_unico,"Nome existe"),
-                        description='Digite seu nome de usuário')
-    senha = colander.SchemaNode(
-                colander.String(),
-                validator=colander.Length(min=5),
-                widget=deform.widget.CheckedPasswordWidget(size=20),
-                description='Digite sua senha e a confirme')
-    #email = colander.SchemaNode(
-                #colander.String(),
-                #validator=colander.Email('Email inválido'))
-
-class FormEditar(colander.MappingSchema):
-    senha = colander.SchemaNode(
-                colander.String(),
-                validator=colander.Length(min=5),
-                widget=deform.widget.CheckedPasswordWidget(size=20),
-                description='Digite sua senha e a confirme')
-#    email = colander.SchemaNode(
-#                colander.String(),
-#                validator=colander.Email('Email inválido'))
-
 
 
 # PREPARACAO

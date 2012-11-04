@@ -14,4 +14,3 @@ Instalação do Servidor
 - $venv/bin/populate_bpt development.ini
 
 - $venv/bin/pserve development.ini
-
