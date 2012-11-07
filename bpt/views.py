@@ -32,7 +32,8 @@ from jogo import *
 from forms import *
 
 PREJOGO = SistemaPreJogo()
-
+PREJOGO.colocar_jogador_jogo("central","1")
+PREJOGO.iniciar_jogo("central")
 
 # PREPARACAO
 

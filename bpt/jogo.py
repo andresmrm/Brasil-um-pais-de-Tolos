@@ -33,16 +33,19 @@ class Magica():
 
     def __init__(self):
         self.efeitos = {
-            "Nada acontece" : None,
-            "Jogador que tiver mais cartas (?P<tipo>\w+) (?P<naipe>\w+) baixadas na mesa (?P<acao>\w+) (?P<quant>\w+)\$" : self.dinheiro_maioria,
-            "(?P<acao>\w+) (?P<quant>\w+)\$" : self.altera_dinheiro,
-            "Recebe (?P<quant>\w+) cartas do monte" : self.recebe_cartas_monte,
+            "^Nada acontece$" : None,
+            "^Jogador que tiver mais cartas (?P<tipo>\w+) (?P<naipe>\w+) baixadas na mesa (?P<acao>\w+) (?P<quant>\w+)\$$" : self.dinheiro_maioria,
+            "^(?P<acao>\w+) (?P<quant>\w+)\$$" : self.altera_dinheiro,
+            "^Recebe (?P<quant>\w+) cartas do monte$" : self.recebe_cartas_monte,
         }
 
     def interpretar(self, texto):
+        if texto[-1] == ".":
+            texto = texto[:-1]
         for e in self.efeitos.keys():
-            exp = re.search(e, texto)
+            exp = re.match(e, texto)
             if exp:
+                print texto, "||||", e
                 return (self.efeitos[e], exp.groupdict())
         return (None, None)
 
@@ -338,14 +341,15 @@ class Jogo():
                                 c = Carta(nome=nome,
                                           naipe=naipe[0:3].lower(),
                                           imagem=str(imagem+".png"),
-                                            valor=int(valor),
-                                            custo=int(custo),
-                                            tipo=tipo,
-                                            frase=frase.encode('ascii','xmlcharrefreplace'),
-                                            efeito_texto=efeito.encode('ascii','xmlcharrefreplace'),
-                                            efeito_dados=d,
-                                            efeito=e)
+                                          valor=int(valor),
+                                          custo=int(custo),
+                                          tipo=tipo,
+                                          frase=frase.encode('ascii','xmlcharrefreplace'),
+                                          efeito_texto=efeito.encode('ascii','xmlcharrefreplace'),
+                                          efeito_dados=d,
+                                          efeito=e)
                                 self.baralho[len(self.baralho)] = c
+                                #print c.efeito, c.frase
                             except:
                                 raise
                                 print("Carta nao pode ser lida: "+linha)
@@ -376,8 +380,8 @@ class Jogo():
 
 
             #DELETE ESSE FOR DEPOIS DE TESTAR
-            for i in range(50):
-                self.monte = self.monte + list(self.baralho.keys())
+            #for i in range(50):
+            #    self.monte = self.monte + list(self.baralho.keys())
             #self.monte = self.monte[:3]
 
 
