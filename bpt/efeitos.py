@@ -54,6 +54,19 @@ class AlterarDinheiro(Efeito):
         alteracao = int(sinal*int(dados["quant"]))
         dono.dinheiro += alteracao
 
+class JogadorComMaisDinheiro(Efeito):
+    exp = "^Caso seja o jogador com mais dinheiro, (?P<acao>\w+) (?P<quant>\w+)\$$"
+    @staticmethod
+    def executar(dados, dono):
+        """Altera a quantidade de dinheiro do dono da carta"""
+        if dono.dinheiro == dono.jogo.ret_jog_mais_dinheiro().dinheiro:
+            if dados["acao"] == "perde":
+                sinal = -1
+            else:
+                sinal = 1
+            alteracao = int(sinal*int(dados["quant"]))
+            dono.dinheiro += alteracao
+
 class RecebeCartasMonte(Efeito):
     exp = "^Recebe (?P<quant>\w+) cartas do monte$"
     @staticmethod
@@ -64,7 +77,3 @@ class RecebeCartasMonte(Efeito):
                 carta = dono.jogo.pegar_carta_monte()
                 if carta != None:
                     dono.adi_carta(carta)
-
-
-
-print Efeito.__subclasses__()

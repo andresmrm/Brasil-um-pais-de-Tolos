@@ -21,6 +21,7 @@
 import os, random, re, time
 
 from chat import SistemaChat
+from efeitos import *
 
 
 DIR_CARTAS = "bpt/cartas"
@@ -31,54 +32,55 @@ DINHEIRO_INICIAL = 5
 
 class Magica():
 
-    def __init__(self):
-        self.efeitos = {
-            "^Nada acontece$" : None,
-            "^Jogador que tiver mais cartas (?P<tipo>\w+) (?P<naipe>\w+) baixadas na mesa (?P<acao>\w+) (?P<quant>\w+)\$$" : self.dinheiro_maioria,
-            "^(?P<acao>\w+) (?P<quant>\w+)\$$" : self.altera_dinheiro,
-            "^Recebe (?P<quant>\w+) cartas do monte$" : self.recebe_cartas_monte,
-        }
+    #def __init__(self):
+#        self.efeitos = {
+#            "^Nada acontece$" : None,
+#            "^Jogador que tiver mais cartas (?P<tipo>\w+) (?P<naipe>\w+) baixadas na mesa (?P<acao>\w+) (?P<quant>\w+)\$$" : self.dinheiro_maioria,
+#            "^(?P<acao>\w+) (?P<quant>\w+)\$$" : self.altera_dinheiro,
+#            "^Recebe (?P<quant>\w+) cartas do monte$" : self.recebe_cartas_monte,
+#        }
 
     def interpretar(self, texto):
         if texto[-1] == ".":
             texto = texto[:-1]
-        for e in self.efeitos.keys():
-            exp = re.match(e, texto)
+        for e in Efeito.__subclasses__():
+            print texto, "||||", e.exp
+            exp = re.match(e.exp, texto)
             if exp:
-                print texto, "||||", e
-                return (self.efeitos[e], exp.groupdict())
+                print "ACHO"
+                return (e.executar, exp.groupdict())
         return (None, None)
 
-    def dinheiro_maioria(self, dados, dono):
-        """Da dinheiro para jogador com uma determinada maioria"""
-        nome_jog = dono.jogo.maiorias.get(dados["naipe"].lower())
-        if nome_jog != None:
-            if dados["acao"] == "perde":
-                sinal = -1
-            else:
-                sinal = 1
-            nomes = nome_jog[1]
-            for nome in nomes:
-                jog = dono.jogo.jogadores[nome]
-                alteracao = int(sinal*int(dados["quant"])/len(nomes))
-                jog.dinheiro += alteracao
-
-    def altera_dinheiro(self, dados, dono):
-        """Altera a quantidade de dinheiro do dono da carta"""
-        if dados["acao"] == "perde":
-            sinal = -1
-        else:
-            sinal = 1
-        alteracao = int(sinal*int(dados["quant"]))
-        dono.dinheiro += alteracao
-
-    def recebe_cartas_monte(self, dados, dono):
-        """Dono da carta pega X cartas do monte"""
-        for i in range(int(dados["quant"])):
-            if len(dono.mao) < MAX_CARTAS_MAO:
-                carta = dono.jogo.pegar_carta_monte()
-                if carta != None:
-                    dono.adi_carta(carta)
+#    def dinheiro_maioria(self, dados, dono):
+#        """Da dinheiro para jogador com uma determinada maioria"""
+#        nome_jog = dono.jogo.maiorias.get(dados["naipe"].lower())
+#        if nome_jog != None:
+#            if dados["acao"] == "perde":
+#                sinal = -1
+#            else:
+#                sinal = 1
+#            nomes = nome_jog[1]
+#            for nome in nomes:
+#                jog = dono.jogo.jogadores[nome]
+#                alteracao = int(sinal*int(dados["quant"])/len(nomes))
+#                jog.dinheiro += alteracao
+#
+#    def altera_dinheiro(self, dados, dono):
+#        """Altera a quantidade de dinheiro do dono da carta"""
+#        if dados["acao"] == "perde":
+#            sinal = -1
+#        else:
+#            sinal = 1
+#        alteracao = int(sinal*int(dados["quant"]))
+#        dono.dinheiro += alteracao
+#
+#    def recebe_cartas_monte(self, dados, dono):
+#        """Dono da carta pega X cartas do monte"""
+#        for i in range(int(dados["quant"])):
+#            if len(dono.mao) < MAX_CARTAS_MAO:
+#                carta = dono.jogo.pegar_carta_monte()
+#                if carta != None:
+#                    dono.adi_carta(carta)
 
 
 M = Magica()
@@ -138,6 +140,7 @@ class SistemaPreJogo():
         s = self.jogos.get(nome_jogo)
         # Verifica se a sala existe
         if not s:
+            print "ADICIONA"
             return False
             return "ERRO: Sala nao existe!"
         # Verifica se jogo tem espaço para mais um jogador
@@ -252,6 +255,7 @@ class SistemaPreJogo():
             baralho = jogo.baralho
             return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho, 'jogo':jogo.nome}
         else:
+            print "NOOOOOOOOOOO", nome_jogador, self.jogadores
             return {}
 
     def nova_atualizacao(self, nome_jogador, num):
@@ -443,6 +447,11 @@ class Jogo():
         j = self.jogadores[self.jogador_atual]
         if j.automatico == True:
             j.jogada_automatica()
+
+    def ret_jog_mais_dinheiro(self):
+        """Retorna o jogador com mais dinheiro"""
+        ordenado = sorted(self.jogadores.values(), key=lambda j: j.dinheiro)
+        return ordenado[-1]
 
 
 class Jogador():
