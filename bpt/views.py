@@ -31,8 +31,11 @@ from .models import DBSession, BdJogador
 from jogo import *
 from forms import *
 
+
 PREJOGO = SistemaPreJogo()
 PREJOGO.criar_jogo("a","1")
+PREJOGO.colocar_jogador_jogo("a","2")
+PREJOGO.ret_jogador("2").automatico = True
 PREJOGO.iniciar_jogo("a")
 
 # PREPARACAO

@@ -22,13 +22,7 @@ import os, random, re, time
 
 from chat import SistemaChat
 from efeitos import *
-
-
-DIR_CARTAS = "bpt/cartas"
-MAX_CARTAS_MAO = 5
-NUM_CARTAS_INICIAIS = 2
-DINHEIRO_INICIAL = 5
-
+from contantes import *
 
 class Magica():
 
@@ -44,11 +38,11 @@ class Magica():
         if texto[-1] == ".":
             texto = texto[:-1]
         for e in Efeito.__subclasses__():
-            print texto, "||||", e.exp
-            exp = re.match(e.exp, texto)
+            exp = re.match(e.exp, texto, flags=re.UNICODE)
+            #print texto, "---------------", e.exp
             if exp:
-                print "ACHO"
-                return (e.executar, exp.groupdict())
+                print texto, "||||", e.exp
+                return (e, exp.groupdict())
         return (None, None)
 
 #    def dinheiro_maioria(self, dados, dono):
@@ -140,7 +134,6 @@ class SistemaPreJogo():
         s = self.jogos.get(nome_jogo)
         # Verifica se a sala existe
         if not s:
-            print "ADICIONA"
             return False
             return "ERRO: Sala nao existe!"
         # Verifica se jogo tem espaço para mais um jogador
@@ -255,7 +248,6 @@ class SistemaPreJogo():
             baralho = jogo.baralho
             return {'jogadores':jogadores, 'descarte':descarte, 'baralho':baralho, 'jogo':jogo.nome}
         else:
-            print "NOOOOOOOOOOO", nome_jogador, self.jogadores
             return {}
 
     def nova_atualizacao(self, nome_jogador, num):
@@ -400,6 +392,10 @@ class Jogo():
         for j in self.jogadores.values():
             for naipe in j.mesa.keys():
                 quant = len(j.mesa[naipe])
+                dados = {"naipe":naipe,
+                         "quant":quant}
+                j.ativar_especial("calculo_maioria", dados)
+                quant = dados["quant"]
                 atual = self.maiorias.get(naipe)
                 if atual == None or atual[0] < quant:
                     self.maiorias[naipe] = (quant, [j.nome])
@@ -415,7 +411,7 @@ class Jogo():
     def calc_pontos(self):
         """Calcula os pontos de cada jogador"""
         for j in self.jogadores.values():
-            j.calc_pontos()
+            j.calc_pontos(final=self.fim)
 
     def pegar_carta_monte(self):
         """Tira uma carta no monte"""
@@ -476,6 +472,7 @@ class Jogador():
         self.mesa = {}
         self.pontos = 0
         self.maiorias = []
+        self.especiais = []
         self.novo_contato()
 
     def adi_carta(self, carta):
@@ -483,8 +480,9 @@ class Jogador():
         if len(self.mao) < MAX_CARTAS_MAO:
             self.mao.append(carta)
 
-    def calc_pontos(self):
+    def calc_pontos(self, final=False):
         """Calcula os pontos desse jogador"""
+        final = True
         self.pontos = 0
         for naipe in self.mesa.values():
             pontos_naipe = 0
@@ -499,6 +497,11 @@ class Jogador():
                 self.pontos += 20
         # Pontos pelas maiorias CALCULO SIMPLIFICADO!!!!!!!!!!
         self.pontos += len(self.maiorias)*10
+        
+        if final:
+            dados = {"pontos":self.pontos}
+            self.ativar_especial("calculo_pontos_finais", dados)
+            self.pontos = dados["pontos"]
 
     def identificar_carta(self, iden, verif_mao=True):
         """Identifica uma carta na mao do jogador"""
@@ -541,7 +544,7 @@ class Jogador():
 
         self.mesa[carta.naipe] += [iden]
         self.mesa[carta.naipe].sort(key=lambda id: self.jogo.baralho.get(id).valor)
-        carta.executar(self)
+        carta.descer(self)
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
 
@@ -577,6 +580,8 @@ class Jogador():
     def perder_carta_mesa(self, iden, carta):
         """Joga fora uma carta da mesa"""
         self.mesa[carta.naipe].remove(iden)
+        if carta.efeito:
+            carta.efeito.perder(self, carta)
         self.jogo.receber_descarte(iden, carta)
 
 
@@ -605,6 +610,7 @@ class Jogador():
         carta = self.jogo.pegar_carta_monte()
         if carta == None:
             if self.jogo.fim:
+                self.jogo.calc_pontos()
                 return "O monte acabou!"
             else:
                 self.jogo.fim = True
@@ -623,6 +629,17 @@ class Jogador():
         else:
             self.jogar_carta(self.mao[0])
 
+    def adi_especial(self, especial, carta):
+        self.especiais.append((especial, carta))
+
+    def rem_especial(self, especial, carta):
+        self.especiais.remove((especial, carta))
+
+    def ativar_especial(self, especial, dados):
+        for texto, carta in self.especiais:
+            if texto == especial:
+                carta.efeito.executar(dados, self, carta)
+
 
 class Carta():
     """Uma carta"""
@@ -640,7 +657,12 @@ class Carta():
         self.efeito_dados = efeito_dados
         self.efeito = efeito
 
-    def executar(self, dono):
-        """Executa o efeito dessa carta"""
+    def descer(self, dono):
+        """Executa o efeito dessa carta ao descê-la"""
         if self.efeito != None:
-            self.efeito(self.efeito_dados, dono)
+            self.efeito.descer(self.efeito_dados, dono, self)
+
+    def executar(self, dono):
+        """Executa o efeito permanente dessa carta"""
+        if self.efeito != None:
+            self.efeito.executar(self.efeito_dados, dono, self)

@@ -18,17 +18,32 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 #-----------------------------------------------------------------------------
 
+from contantes import *
+from random import choice, randint
+
+
 class Efeito(object):
     exp = "^Nada acontece$"
-    @staticmethod
-    def executar(self, dados, dono):
+    @classmethod
+    def descer(cls, dados, dono, carta):
         pass
+    @classmethod
+    def perder(cls, dono, carta):
+        pass
+
+class Permanente(object):
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        dono.adi_especial(cls.especial, carta)
+    @classmethod
+    def perder(cls, dono, carta):
+        dono.rem_especial(cls.especial, carta)
 
 
 class DinheiroMaioria(Efeito):
     exp = "^Jogador que tiver mais cartas (?P<tipo>\w+) (?P<naipe>\w+) baixadas na mesa (?P<acao>\w+) (?P<quant>\w+)\$$"
-    @staticmethod
-    def executar(dados, dono):
+    @classmethod
+    def descer(cls, dados, dono, carta):
         """Da dinheiro para jogador com uma determinada maioria"""
         nome_jog = dono.jogo.maiorias.get(dados["naipe"].lower())
         if nome_jog != None:
@@ -44,8 +59,8 @@ class DinheiroMaioria(Efeito):
 
 class AlterarDinheiro(Efeito):
     exp = "^(?P<acao>\w+) (?P<quant>\w+)\$$"
-    @staticmethod
-    def executar(dados, dono):
+    @classmethod
+    def descer(cls, dados, dono, carta):
         """Altera a quantidade de dinheiro do dono da carta"""
         if dados["acao"] == "perde":
             sinal = -1
@@ -56,8 +71,8 @@ class AlterarDinheiro(Efeito):
 
 class JogadorComMaisDinheiro(Efeito):
     exp = "^Caso seja o jogador com mais dinheiro, (?P<acao>\w+) (?P<quant>\w+)\$$"
-    @staticmethod
-    def executar(dados, dono):
+    @classmethod
+    def descer(cls, dados, dono, carta):
         """Altera a quantidade de dinheiro do dono da carta"""
         if dono.dinheiro == dono.jogo.ret_jog_mais_dinheiro().dinheiro:
             if dados["acao"] == "perde":
@@ -69,11 +84,65 @@ class JogadorComMaisDinheiro(Efeito):
 
 class RecebeCartasMonte(Efeito):
     exp = "^Recebe (?P<quant>\w+) cartas do monte$"
-    @staticmethod
-    def executar(dados, dono):
+    @classmethod
+    def descer(cls, dados, dono, carta):
         """Dono da carta pega X cartas do monte"""
         for i in range(int(dados["quant"])):
             if len(dono.mao) < MAX_CARTAS_MAO:
                 carta = dono.jogo.pegar_carta_monte()
                 if carta != None:
                     dono.adi_carta(carta)
+
+class VantagemEmpateNaipe(Permanente, Efeito):
+    exp = "^Vantagem na maioria em caso de empate de cartas deste naipe$"
+    especial = "calculo_maioria"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        if dados["naipe"] == carta.naipe:
+            dados["quant"] += 0.5
+
+class RecebeDinheiroPorMaiorias(Efeito):
+    exp = "^Recebe (?P<quant>\w+)\$ pra cada naipe que tiver maioria na mesa$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        dono.dinheiro += int(carta.efeito_dados["quant"]) * len(dono.maiorias)
+
+class RecebeNaipesDiferentes(Efeito):
+    exp = "^Recebe (?P<quant>\w+)\$ para cada 2 naipes diferentes que tiver cartas na mesa$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        dono.dinheiro += int(carta.efeito_dados["quant"]) * int(len(dono.mesa)/2)
+
+class ExcluiAleatoriamenteCartasDosOutros(Efeito):
+    exp = "^O jogador exclui aleatoriamente uma carta na m\wo de todos os outros jogadores$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        for j in dono.jogo.jogadores.values():
+            if j != dono:
+                escolha = choice(j.mao)
+                if escolha:
+                    j.mao.remove(escolha)
+
+class DinheiroDado(Efeito):
+    exp = "^Joga-se um dado, o jogador ganha dinheiro equivalente a (?P<quant>\w+) vezes o valor, caso saia 6 n\wo ganha nada$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        dado = randint(1, 6)
+        if dado != 6:
+            dono.dinheiro += int(carta.efeito_dados["quant"]) * dado
+
+class PontosPorCartaFinal(Permanente, Efeito):
+    exp = "^Jogador recebe (?P<quant>\w+) ponto\w? por carta (?P<tipo>\w+) (?P<naipe>\w+) ao final do jogo$"
+    especial = "calculo_pontos_finais"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        naipe = carta.efeito_dados["naipe"].lower()
+        num = len(dono.mesa[naipe])
+        dados["pontos"] += int(carta.efeito_dados["quant"]) * num
+
+class PontosFinal(Permanente, Efeito):
+    exp = "^A carta vale mais (?P<quant>\w+) ponto\w? ao final do jogo$"
+    especial = "calculo_pontos_finais"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        dados["pontos"] += int(carta.efeito_dados["quant"])

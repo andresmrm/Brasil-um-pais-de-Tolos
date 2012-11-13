@@ -5,7 +5,7 @@ Esporte	esporte6	3	4	Normal	Eurico Miranda	Não tenho nada contra homossexual, e
 Esporte	esporte5	5	6	Normal	Zagallo	Vocês vão ter que me engolir!	Entrega uma carta qualquer da mão a um outro jogador e recebe em troca 8$
 Esporte	esporte4	5	6	Normal	Renato Gaúcho	Quando tem agito aqui em casa até o Cristo Redentor tapa os olhos	PODE trocar todas as cartas da mão por cartas do monte.
 Esporte	esporte9	7	8	Normal	Dadá Maravilha	Só tem três coisas que param no ar: helicóptero, beija-flor e Dadá	PODER FIXO: Quando selecionar comprar cartas, compra duas de uma vez
-Esporte	esporte12	7	8	Normal	Vicente Matheus	Jogador tem que ser completo como o pato, que é um bicho aquático e gramático.	Jogador recebe 3$ para cada dois naipes diferentes que  ele tiver cartas na mesa
+Esporte	esporte12	7	8	Normal	Vicente Matheus	Jogador tem que ser completo como o pato, que é um bicho aquático e gramático.	Recebe 3$ para cada 2 naipes diferentes que tiver cartas na mesa
 Esporte	esporte10	9	10	Normal	Ayrton Senna	Vencer é o que importa, o resto é consequência!	Caso tenha 15 pts a mais do que qualquer um dos demais jogadores, o jogo termina e você vence
 Esporte	esporte8	9	10	Normal	Romário	Deus apontou um dedo pra mim e disse: esse é o cara!	Recebe 4 cartas do monte
 Esporte	curinga4	2	0	Curinga	Rubens Barrichello	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
@@ -29,7 +29,7 @@ Política	curinga14	6	0	Curinga	José Sarney	+2$ ao adicionar POL (vl:1 a 5); +3
 Política	politica6	8	3	Evento	Festa da democracia	Jogador com mais POL ganha 8$	Jogador que tiver mais cartas normal POL baixadas na mesa recebe 8$
 Política	curinga15	10	6	Curinga	Lula	+3 Pts por carta normal POL ao final do jogo	Jogador recebe 3 pontos por carta normal POL ao final do jogo
 Entretenimento	entretenimento1	1	2	Normal	Adriane Galisteu	Minha vida deu um giro de 360 graus.	Nada acontece.
-Entretenimento	entretenimento3	1	2	Normal	Nelson Rubens	Eu aumento, mas não invento	A carta vale mais dois pontos ao final do jogo
+Entretenimento	entretenimento3	1	2	Normal	Nelson Rubens	Eu aumento, mas não invento	A carta vale mais 2 pontos ao final do jogo
 Entretenimento	entretenimento6	3	4	Normal	Galvão Bueno	Eu vou dar com a marreta na cabeça dele (Pelé) pô	Escolhe um jogador. Este perde 1$ pra cada carta ESP que o mesmo tiver baixado na mesa
 Entretenimento	entretenimento2	3	4	Normal	Caetano Veloso	Eu votaria no Lula, no Ciro, no Serra!	Recebe 1$ pra cada carta normal POL de outros jogadores que tiver baixada na mesa.
 Entretenimento	entretenimento4	5	6	Normal	Tom Jobim	Nenhuma situação é tão complicada que uma mulher não possa piorar.	Escolhe um jogador. Este perde 1$ pra cada mulher q tiver baixada na mesa.
@@ -62,7 +62,7 @@ Ficção	ficcao1	1	2	Normal	Macabéia	Desculpa mas acho que não sou muito gente
 Ficção	ficcao2	1	2	Normal	Arlete	Caguei pras suas imunidade, não vai me comer não!	O próximo poder usado contra um jogador não pode ser usado contra você.
 Ficção	ficcao3	3	4	Normal	Sinhozinho Malta	Tô certo ou tô errado?	Joga uma moeda, escolhe cara ou coroa, se acertar ganha 5$, se errar perde 2$.
 Ficção	ficcao6	3	4	Normal	Odette Roitman	Nunca vi gostar tanto de fazer hora extra como trabalhador brasileiro.	Escolhe um jogador. Este perde 1$ pra cada carta SOC que o mesmo tiver baixado na mesa
-Ficção	ficcao5	5	6	Normal	Zé Pequeno	Dadinho é o caralho!	Joga-se um dado, o jogador ganha dinheiro equivalente 2 vezes o valor, caso saia 6 não ganha nada
+Ficção	ficcao5	5	6	Normal	Zé Pequeno	Dadinho é o caralho!	Joga-se um dado, o jogador ganha dinheiro equivalente a 2 vezes o valor, caso saia 6 não ganha nada
 Ficção	ficcao4	5	6	Normal	Don Lázaro	Eu prefiro melão!	Recebe 2$ pra cada carta normal ENT que o jogador tiver baixado na mesa.
 Ficção	ficcao7	7	8	Normal	Beto Carneiro	Minha vingança sará maligna!	Recebe 5$ do último jogador que usou poder contra você.
 Ficção	ficcao10	7	8	Normal	Bia Falcão	Pobreza pega! Pega! Pega como sarna! Pega!	PODER FIXO: jogador pode descartar qualquer carta
@@ -82,7 +82,7 @@ Literatura	literatura2	5	6	Normal	Mário Quintana	Eles passarão, eu passarinho	
 Literatura	literatura10	7	8	Normal	Nelson Rodrigues	A mulher mais bonita é a cunhada bonita	Trocauma carta normal da sua mesa por outra normal do mesmo naipe da mesa de um outro jogador.
 Literatura	literatura1	7	8	Normal	Monteiro Lobato	A consciência do homem comum mora no bolso, eis tudo.	PODER FIXO: quando escolher receber dinheiro, recebe 1$ a mais.
 Literatura	literatura3	9	10	Normal	Vinícius de Moraes	A vida é a arte do encontro, embora haja tanto desencontro pela vida.	Pode pergar duas cartas quaisquer do descarte.
-Literatura	literatura6	9	10	Normal	Jorge Amado	Eu continuo firmemente pensando em modificar o mundo e acho que a literatura tem uma grande importância.	jogador recebe +1 pt para cada carta LIT que tiver ao final do jogo.
+Literatura	literatura6	9	10	Normal	Jorge Amado	Eu continuo firmemente pensando em modificar o mundo e acho que a literatura tem uma grande importância.	Jogador recebe 1 ponto por carta qualquer LIT ao final do jogo.
 Literatura	curinga7	2	0	Curinga	Jô Soares	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
 Literatura	literatura5	4	0	Evento	Micareta	Jogador com mais cartas normal LIT perde 4$	Jogador que tiver mais cartas normal LIT baixadas na mesa perde 4$
 Literatura	curinga8	6	0	Curinga	Paulo Coelho	+2$ ao adicionar LIT (vl:1 a 5); +3$ ao adicionar LIT (vl:7 a 9);	Jogador ganha +2$ ao baixar carta normal de LIT de valor 1,3,5 e +3$ de valor 7 e 9
