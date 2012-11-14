@@ -45,14 +45,14 @@ Entretenimento	entretenimento12	8	3	Evento	Criançá Esperança!	Jogador com mai
 Entretenimento	curinga3	10	6	Curinga	Roberto Carlos	+3 Pts por carta normal ENT ao final do jogo	Jogador recebe 3 pontos por carta normal ENT ao final do jogo
 Sociedade	sociedade7	1	2	Normal	Dona Guiomar	Quequeré	Nada acontece.
 Sociedade	sociedade8	1	2	Normal	Millôr Fernandes	Chato, indivíduo que tem mais interesse em nós do que nós temos nele.	Pode ver as cartas da mão de um outro jogador.
-Sociedade	sociedade9	3	4	Normal	Georgia Massa	Eu acho uma puta falta de sacanagem	O jogador anterior e posterior a você ficam uma rodada sem jogar.
-Sociedade	sociedade12	3	4	Normal	Jeremias Muito Louco	Se eu pudesse eu matava mil!	Escolhe um jogador. Este perde 1$ pra cada carta ENT que o mesmo tiver baixado na mesa
+Sociedade	sociedade9	3	4	Normal	Georgia Massa	Eu acho uma puta falta de sacanagem	Escolhe um jogador. Este perde 1$ pra cada carta ENT que o mesmo tiver baixado na mesa
+Sociedade	sociedade12	3	4	Normal	Jeremias Muito Louco	Se eu pudesse eu matava mil!	O jogador anterior e posterior a você ficam uma rodada sem jogar.
 Sociedade	sociedade11	5	6	Normal	Luísa Marilac	Se isso é tar na pior, pooooorra, que que é dizer tá bem né?	Caso seja o jogador com mais dinheiro, recebe 5$
 Sociedade	sociedade10	5	6	Normal	Paulo Francis	A ignorância é a maior multinacional do mundo.	Escolhe a ação de cada jogador nesta rodada
 Sociedade	sociedade1	7	8	Normal	Xico Sá	Só a esquerda festiva salva	PODER FIXO: Adiciona curingas sem ter necessedidade de pagar.
 Sociedade	sociedade2	7	8	Normal	Betinho	No Brasil não existe filantropia, o que existe é pilantropia.	Recebe uma carta aleatóriada mão de um jogador e 4$ de outro.
-Sociedade	sociedade3	9	10	Normal	Roniquito de Chevalier	General, você tem fogo?	Pode baixar uma carta na mesa sem pagar o custo da mesma
-Sociedade	sociedade6	9	10	Normal	Vitinho Avassalador	Sou foda!	Recebe duas cartas aleatórias da mão do jogador com mais pontos.
+Sociedade	sociedade3	9	10	Normal	Roniquito de Chevalier	General, você tem fogo?	Recebe 2 cartas aleatórias da mão do jogador com mais pontos.
+Sociedade	sociedade6	9	10	Normal	Vitinho Avassalador	Sou foda!	Pode baixar uma carta na mesa sem pagar o custo da mesma
 Sociedade	curinga16	2	0	Curinga	Narcisa Tamborindeguy	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
 Sociedade	sociedade5	4	0	Evento	Ônibus 174	Jogador com mais cartas normal SOC perde 4$	Jogador que tiver mais cartas normal SOC baixadas na mesa perde 4$
 Sociedade	curinga17	6	0	Curinga	Daniel Dantas	+2$ ao adicionar SOC (vl:1 a 5); +3$ ao adicionar SOC (vl:7 a 9);	Jogador ganha +2$ ao baixar carta normal de SOC de valor 1,3,5 e +3$ de valor 7 e 9
@@ -78,7 +78,7 @@ Literatura	literatura8	1	2	Normal	Carlos Drummond	Vai Carlos, ser gaúche na vid
 Literatura	literatura9	3	4	Normal	Machado de Assis	O amor é o egoísmo duplicado	Você e outro jogador que escolher recebem 3$
 Literatura	literatura12	3	4	Normal	Clarice Lispector	Brasília, uma prisão ao ar livre!	Escolhe um jogador. Este perde 1$ pra cada carta POL que o mesmo tiver baixado na mesa
 Literatura	literatura11	5	6	Normal	Paulo Leminski	Isso de ser exatamente o que se é ainda vai nos levar além	Recebe 2$ pra cada naipe que tiver maioria na mesa
-Literatura	literatura2	5	6	Normal	Mário Quintana	Eles passarão, eu passarinho	Jogador joga mais duas vezes.
+Literatura	literatura2	5	6	Normal	Mário Quintana	Eles passarão, eu passarinho	Jogador joga mais 2 vezes.
 Literatura	literatura10	7	8	Normal	Nelson Rodrigues	A mulher mais bonita é a cunhada bonita	Trocauma carta normal da sua mesa por outra normal do mesmo naipe da mesa de um outro jogador.
 Literatura	literatura1	7	8	Normal	Monteiro Lobato	A consciência do homem comum mora no bolso, eis tudo.	PODER FIXO: quando escolher receber dinheiro, recebe 1$ a mais.
 Literatura	literatura3	9	10	Normal	Vinícius de Moraes	A vida é a arte do encontro, embora haja tanto desencontro pela vida.	Pode pergar duas cartas quaisquer do descarte.

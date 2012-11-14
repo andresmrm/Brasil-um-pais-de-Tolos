@@ -18,7 +18,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 #-----------------------------------------------------------------------------
 
-from contantes import *
+from constantes import *
 from random import choice, randint
 
 
@@ -143,6 +143,23 @@ class DinheiroDado(Efeito):
         if dado != 6:
             dono.dinheiro += int(carta.efeito_dados["quant"]) * dado
 
+class ExcluiCartasJogadorMenosPontos(Efeito):
+    exp = "^Excluir todas as cartas do jogador com menos pontos$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        jogador_menos_pontos = None
+        pontos = 1000
+        for j in dono.jogo.jogadores.values():
+            if j.pontos < pontos:
+                jogador_menos_pontos = j
+                pontos = j.pontos
+        jogador_menos_pontos.mao = []
+        for naipe in jogador_menos_pontos.mesa.values():
+            for iden in naipe:
+                c = dono.jogo.baralho.get(iden)
+                naipe.remove(iden)
+                c.efeito.perder(dono, c)
+
 class OutrosPerdemDinheiro(Efeito):
     exp = "^Caso tenha (?P<quant>\w+) pts a mais do que qualquer um dos demais jogadores, o jogo termina e voc\w vence$"
     @classmethod
@@ -161,6 +178,37 @@ class OutrosPerdemDinheiro(Efeito):
         for j in dono.jogo.jogadores.values():
             if j != dono:
                 j.dinheiro = 0
+
+class InverteOrdemJogo(Efeito):
+    exp = "^Inverte a ordem do jogo$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        dono.jogo.inverter_ordem_jogadas()
+
+class VizinhosNaoJogam(Efeito):
+    exp = "^O jogador anterior e posterior a voc\w ficam uma rodada sem jogar$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        vizinhos = dono.jogo.ret_vizinhos(dono)
+        for j in vizinhos:
+            j.jogadas_extras = -1
+
+class JogaMaisDuasVezes(Efeito):
+    exp = "^Jogador joga mais (?P<quant>\w+) vezes$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        dono.jogadas_extras += int(carta.efeito_dados["quant"])
+
+class RecebeCartasJogadorComMaisPontos(Efeito):
+    exp = "^Recebe (?P<quant>\w+) cartas aleat\wrias da m\wo do jogador com mais pontos$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        j = dono.jogo.ret_jog_mais_pontos()
+        for i in range(int(carta.efeito_dados["quant"])):
+            if len(j.mao) and len(dono.mao) < MAX_CARTAS_MAO:
+                escolha = choice(j.mao)
+                j.mao.remove(escolha)
+                dono.mao.append(escolha)
 
 class PontosPorCartaFinal(Permanente, Efeito):
     exp = "^Jogador recebe (?P<quant>\w+) ponto\w? por carta (?P<tipo>\w+) (?P<naipe>\w+) ao final do jogo$"

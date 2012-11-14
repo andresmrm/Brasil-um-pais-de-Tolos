@@ -115,7 +115,7 @@ def fim(request):
     nome_jogo = request.matchdict['nome']
     jogo = PREJOGO.ret_jogo(nome_jogo)
     jogadores = jogo.ret_jogadores()
-    ganhador = jogo.ret_ganhador().nome
+    ganhador = jogo.ret_jog_mais_pontos().nome
     return {'logado': logado,
             'ganhador': ganhador,
             'jogadores': jogadores,
@@ -266,7 +266,7 @@ def nova_jogada(request):
     msg = PREJOGO.executar(nome_jogador, jogada)
     if msg[:3] == "FIM":
         jogo = PREJOGO.ret_jogo(nome_jogo)
-        ganhador = jogo.ret_ganhador()
+        ganhador = jogo.ret_jog_mais_pontos()
         dbsession = DBSession()
         j = dbsession.query(BdJogador).filter_by(nome=ganhador.nome).first()
         j.vitorias += 1

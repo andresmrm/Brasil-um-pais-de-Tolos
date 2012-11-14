@@ -22,7 +22,7 @@ import os, random, re, time
 
 from chat import SistemaChat
 from efeitos import *
-from contantes import *
+from constantes import *
 
 class Magica():
 
@@ -218,7 +218,7 @@ class SistemaPreJogo():
         jog = self.jogadores[nome_jog]
         jogo = jog.jogo
 
-        if jog.nome != jogo.jogador_atual:
+        if jog.nome != jogo.nome_jogador_atual:
             return "ERRO: Nao e a sua vez de jogar!"
 
         if len(jogada) < 2:
@@ -293,8 +293,9 @@ class Jogo():
         self.jogadores = {}
         self.fim = False
         self.num_jogada = 0
-        self.jogador_atual = None
+        self.nome_jogador_atual = None
         self.max_num_jogadores = 5
+        self.ordem_invertida = False
 
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
@@ -309,10 +310,10 @@ class Jogo():
         """Retorna jogadores no jogo"""
         return self.jogadores.values()
 
-    def ret_ganhador(self):
+    def ret_jog_mais_pontos(self):
         """Retorna o ganhador do jogo"""
         ordenado = sorted(self.jogadores.values(),key=lambda j: j.pontos)
-        return ordenado[0]
+        return ordenado[-1]
 
     def vazio(self):
         """Se o jogo está vazio ou não"""
@@ -383,7 +384,7 @@ class Jogo():
 
             random.shuffle(self.monte)
             self.distribuir_cartas()
-            self.jogador_atual = self.jogadores.keys()[0]
+            self.nome_jogador_atual = self.jogadores.keys()[0]
             self.iniciado = True
 
     def verificar_maiorias(self):
@@ -392,16 +393,19 @@ class Jogo():
         for j in self.jogadores.values():
             for naipe in j.mesa.keys():
                 quant = len(j.mesa[naipe])
-                dados = {"naipe":naipe,
-                         "quant":quant}
-                j.aplicar_especial("calculo_maioria", dados)
-                quant = dados["quant"]
-                atual = self.maiorias.get(naipe)
-                if atual == None or atual[0] < quant:
-                    self.maiorias[naipe] = (quant, [j.nome])
-                # Em caso de empate de numero de cartas de um naipe
-                elif atual[0] == quant:
-                    atual[1].append(j.nome)
+                if quant:
+                    # Aplica especial
+                    dados = {"naipe":naipe,
+                             "quant":quant}
+                    j.aplicar_especial("calculo_maioria", dados)
+                    quant = dados["quant"]
+
+                    atual = self.maiorias.get(naipe)
+                    if atual == None or atual[0] < quant:
+                        self.maiorias[naipe] = (quant, [j.nome])
+                    # Em caso de empate de numero de cartas de um naipe
+                    elif atual[0] == quant:
+                        atual[1].append(j.nome)
         for j in self.jogadores.values():
             j.maiorias = []
         for naipe in self.maiorias.keys():
@@ -427,20 +431,59 @@ class Jogo():
         else:
             self.descarte[carta.naipe] = [iden]
 
-    def prox_jogador(self):
-        """Passa a vez de jogar para o proximo jogador"""
+    def ret_vizinhos(self, jogador):
+        """Retorna os vizinhos de um jogador"""
         nomes = self.jogadores.keys()
-        if self.jogador_atual == nomes[-1]:
-            self.jogador_atual = nomes[0]
+        num = nomes.index(jogador.nome)
+        anterior = num-1
+        posterior = num+1
+        if anterior < 0:
+            anterior = len(nomes)-1
+        if posterior > len(nomes)-1:
+            posterior = 0
+        j1 = self.jogadores[nomes[anterior]]
+        j2 = self.jogadores[nomes[posterior]]
+
+        # Caso so tenha 2 ou 1 jogador
+        if anterior == posterior:
+            # Caso so tenha 1 jogador
+            if anterior == num:
+                return []
+            return [j1]
         else:
-            num = nomes.index(self.jogador_atual)
-            self.jogador_atual = nomes[num+1]
+            return [j1, j2]
+
+
+    def prox_jogador(self):
+        """Passa a vez de jogar para o próximo jogador"""
+        jogador_atual = self.jogadores[self.nome_jogador_atual]
+        if jogador_atual.jogadas_extras <= 0:
+            nomes = self.jogadores.keys()
+            if not self.ordem_invertida:
+                if self.nome_jogador_atual == nomes[-1]:
+                    self.nome_jogador_atual = nomes[0]
+                else:
+                    num = nomes.index(self.nome_jogador_atual)
+                    self.nome_jogador_atual = nomes[num+1]
+            else:
+                if self.nome_jogador_atual == nomes[0]:
+                    self.nome_jogador_atual = nomes[-1]
+                else:
+                    num = nomes.index(self.nome_jogador_atual)
+                    self.nome_jogador_atual = nomes[num-1]
+            jogador_atual = self.jogadores[self.nome_jogador_atual]
+            if jogador_atual.jogadas_extras < 0:
+                jogador_atual.jogadas_extras += 1
+                self.prox_jogador()
+        else:
+            jogador_atual.jogadas_extras -= 1
+
         self.verificar_maiorias()
         self.calc_pontos()
         self.num_jogada += 1
 
         # Roda IA caso jogador esteja em modo automatico
-        j = self.jogadores[self.jogador_atual]
+        j = self.jogadores[self.nome_jogador_atual]
         if j.automatico == True:
             j.jogada_automatica()
 
@@ -448,6 +491,9 @@ class Jogo():
         """Retorna o jogador com mais dinheiro"""
         ordenado = sorted(self.jogadores.values(), key=lambda j: j.dinheiro)
         return ordenado[-1]
+
+    def inverter_ordem_jogadas(self):
+        self.ordem_invertida = not self.ordem_invertida
 
 
 class Jogador():
@@ -473,6 +519,7 @@ class Jogador():
         self.pontos = 0
         self.maiorias = []
         self.especiais = []
+        self.jogadas_extras = 0
         self.novo_contato()
 
     def adi_carta(self, carta):
@@ -482,7 +529,10 @@ class Jogador():
 
     def calc_pontos(self, final=False):
         """Calcula os pontos desse jogador"""
+
+        #REMOVER ESSA LINHA ABAIXO!!!!!!!!!!!
         final = True
+
         self.pontos = 0
         for naipe in self.mesa.values():
             pontos_naipe = 0
@@ -502,6 +552,9 @@ class Jogador():
             dados = {"pontos":self.pontos}
             self.aplicar_especial("calculo_pontos_finais", dados)
             self.pontos = dados["pontos"]
+
+        #if self.nome == "2":
+        #    self.pontos = 100
 
     def identificar_carta(self, iden, verif_mao=True):
         """Identifica uma carta na mao do jogador"""
