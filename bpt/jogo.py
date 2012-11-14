@@ -394,7 +394,7 @@ class Jogo():
                 quant = len(j.mesa[naipe])
                 dados = {"naipe":naipe,
                          "quant":quant}
-                j.ativar_especial("calculo_maioria", dados)
+                j.aplicar_especial("calculo_maioria", dados)
                 quant = dados["quant"]
                 atual = self.maiorias.get(naipe)
                 if atual == None or atual[0] < quant:
@@ -500,7 +500,7 @@ class Jogador():
         
         if final:
             dados = {"pontos":self.pontos}
-            self.ativar_especial("calculo_pontos_finais", dados)
+            self.aplicar_especial("calculo_pontos_finais", dados)
             self.pontos = dados["pontos"]
 
     def identificar_carta(self, iden, verif_mao=True):
@@ -545,6 +545,14 @@ class Jogador():
         self.mesa[carta.naipe] += [iden]
         self.mesa[carta.naipe].sort(key=lambda id: self.jogo.baralho.get(id).valor)
         carta.descer(self)
+
+        # Aplica especial
+        dados = {"dinheiro":self.dinheiro,
+                 "carta":carta,
+                }
+        self.aplicar_especial("ao_descer_carta", dados)
+        self.dinheiro = dados["dinheiro"]
+
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
 
@@ -574,6 +582,13 @@ class Jogador():
     def pegar_dinheiro(self):
         """Pega dinheiro da banca"""
         self.dinheiro += 2
+
+        # Aplica especial
+        dados = {"dinheiro":self.dinheiro,
+                }
+        self.aplicar_especial("ao_pegar_dinheiro", dados)
+        self.dinheiro = dados["dinheiro"]
+
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
 
@@ -635,7 +650,7 @@ class Jogador():
     def rem_especial(self, especial, carta):
         self.especiais.remove((especial, carta))
 
-    def ativar_especial(self, especial, dados):
+    def aplicar_especial(self, especial, dados):
         for texto, carta in self.especiais:
             if texto == especial:
                 carta.efeito.executar(dados, self, carta)

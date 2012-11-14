@@ -123,6 +123,18 @@ class ExcluiAleatoriamenteCartasDosOutros(Efeito):
                 if escolha:
                     j.mao.remove(escolha)
 
+class DinheiroMoeda(Efeito):
+    exp = "^Joga uma moeda, escolhe cara ou coroa, se acertar ganha (?P<quant1>\w+)\$, se errar perde (?P<quant2>\w+)\$$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        moeda = randint(0, 1)
+        if moeda:
+            dono.dinheiro += int(carta.efeito_dados["quant1"])
+        else:
+            dono.dinheiro -= int(carta.efeito_dados["quant2"])
+        if dono.dinheiro < 0:
+            dono.dinheiro = 0
+
 class DinheiroDado(Efeito):
     exp = "^Joga-se um dado, o jogador ganha dinheiro equivalente a (?P<quant>\w+) vezes o valor, caso saia 6 n\wo ganha nada$"
     @classmethod
@@ -130,6 +142,25 @@ class DinheiroDado(Efeito):
         dado = randint(1, 6)
         if dado != 6:
             dono.dinheiro += int(carta.efeito_dados["quant"]) * dado
+
+class OutrosPerdemDinheiro(Efeito):
+    exp = "^Caso tenha (?P<quant>\w+) pts a mais do que qualquer um dos demais jogadores, o jogo termina e voc\w vence$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        vencer = True
+        for j in dono.jogo.jogadores.values():
+            if j != dono and (dono.pontos-j.pontos) < carta.efeito_dados["quant"]:
+                vencer = False
+        if vencer:
+            dono.jogo.fim = True
+
+class OutrosPerdemDinheiro(Efeito):
+    exp = "^Todos os demais jogadores perdem todo seu dinheiro$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        for j in dono.jogo.jogadores.values():
+            if j != dono:
+                j.dinheiro = 0
 
 class PontosPorCartaFinal(Permanente, Efeito):
     exp = "^Jogador recebe (?P<quant>\w+) ponto\w? por carta (?P<tipo>\w+) (?P<naipe>\w+) ao final do jogo$"
@@ -146,3 +177,22 @@ class PontosFinal(Permanente, Efeito):
     @classmethod
     def executar(cls, dados, dono, carta):
         dados["pontos"] += int(carta.efeito_dados["quant"])
+
+class DinheiroAoBaixar(Permanente, Efeito):
+    exp = "^Jogador ganha \+(?P<quant1>\w+)\$ ao baixar carta (?P<tipo>\w+) de (?P<naipe>\w+) de valor 1,3,5 e \+(?P<quant2>\w+)\$ de valor 7 e 9$"
+    especial = "ao_descer_carta"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        carta_baixada = dados["carta"]
+        if carta_baixada.naipe == carta.efeito_dados["naipe"].lower():
+            if carta_baixada.valor in [1, 3, 5]:
+                dados["dinheiro"] += int(carta.efeito_dados["quant1"])
+            elif carta_baixada.valor in [7, 9]:
+                dados["dinheiro"] += int(carta.efeito_dados["quant2"])
+
+class ReceberMaisDinheiro(Permanente, Efeito):
+    exp = "^PODER FIXO: quando escolher receber dinheiro, recebe (?P<quant>\w+)\$ a mais$"
+    especial = "ao_pegar_dinheiro"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        dados["dinheiro"] += int(carta.efeito_dados["quant"])
