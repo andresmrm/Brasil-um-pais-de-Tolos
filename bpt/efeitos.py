@@ -57,6 +57,28 @@ class DinheiroMaioria(Efeito):
                 alteracao = int(sinal*int(dados["quant"])/len(nomes))
                 jog.dinheiro += alteracao
 
+class DinheiroPorCarta(Efeito):
+    exp = "^Recebe (?P<quant>\w+)\$ pra cada carta (?P<tipo>\w+) (?P<naipe>\w+) que o jogador tiver baixado na mesa$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        naipe = carta.efeito_dados["naipe"].lower()
+        l = dono.mesa.get(naipe)
+        if l:
+            num = len(l)
+            dono.dinheiro += int(carta.efeito_dados["quant"]) * num
+
+class DinheiroPorCartaAlheia(Efeito):
+    exp = "^Recebe (?P<quant>\w+)\$ pra cada carta (?P<tipo>\w+) (?P<naipe>\w+) que outros jogadores tiverem na mesa$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        num = 0
+        naipe = carta.efeito_dados["naipe"].lower()
+        for j in dono.jogo.jogadores.values():
+            l = j.mesa.get(naipe)
+            if l:
+                num += len(l)
+        dono.dinheiro += int(carta.efeito_dados["quant"]) * num
+
 class AlterarDinheiro(Efeito):
     exp = "^(?P<acao>\w+) (?P<quant>\w+)\$$"
     @classmethod
@@ -216,8 +238,10 @@ class PontosPorCartaFinal(Permanente, Efeito):
     @classmethod
     def executar(cls, dados, dono, carta):
         naipe = carta.efeito_dados["naipe"].lower()
-        num = len(dono.mesa[naipe])
-        dados["pontos"] += int(carta.efeito_dados["quant"]) * num
+        l = dono.masa.get(naipe)
+        if l:
+            num = len(l)
+            dados["pontos"] += int(carta.efeito_dados["quant"]) * num
 
 class PontosFinal(Permanente, Efeito):
     exp = "^A carta vale mais (?P<quant>\w+) ponto\w? ao final do jogo$"
@@ -244,3 +268,18 @@ class ReceberMaisDinheiro(Permanente, Efeito):
     @classmethod
     def executar(cls, dados, dono, carta):
         dados["dinheiro"] += int(carta.efeito_dados["quant"])
+
+class AlteraCustoCompraDescarte(Permanente, Efeito):
+    exp = "^PODER FIXO: Compra do descarte pagando (?P<quant>\w+)\$$"
+    especial = "altera_custo_compra_descarte"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        dados["custo"] = int(carta.efeito_dados["quant"])
+
+class AlteraValorMinDescarte(Permanente, Efeito):
+    exp = "^PODER FIXO: jogador pode descartar qualquer carta$"
+    especial = "altera_valor_min_descarte"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        #dados["custo"] = int(carta.efeito_dados["quant"])
+        dados["custo"] = -1

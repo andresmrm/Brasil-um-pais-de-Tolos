@@ -1,6 +1,6 @@
 Esporte	esporte2	1	2	Normal	Dunga	Puto cagão, tu é cagão!	Escolhe um jogador. Este fica impossibilitado de poder baixar cartas durante 3 rodadas.
 Esporte	esporte1	1	2	Normal	Jardel	Clássico é clássico, e vice-versa!	Nada acontece.
-Esporte	esporte3	3	4	Normal	Josimar	A moto eu vou vender e o rádio dar pra minha mãe.	PODE descartar duas cartas quaisquer e receber 8$ pelos descartes
+Esporte	esporte3	3	4	Normal	Josimar	A moto eu vou vender e o rádio dar pra minha mãe.	Pode descartar duas cartas quaisquer e receber 8$ pelos descartes
 Esporte	esporte6	3	4	Normal	Eurico Miranda	Não tenho nada contra homossexual, eu só não gosto de viado!	Escolhe um jogador. Este perde 1$ pra cada carta LIT que o mesmo tiver baixado na mesa
 Esporte	esporte5	5	6	Normal	Zagallo	Vocês vão ter que me engolir!	Entrega uma carta qualquer da mão a um outro jogador e recebe em troca 8$
 Esporte	esporte4	5	6	Normal	Renato Gaúcho	Quando tem agito aqui em casa até o Cristo Redentor tapa os olhos	PODE trocar todas as cartas da mão por cartas do monte.
@@ -31,11 +31,11 @@ Política	curinga15	10	6	Curinga	Lula	+3 Pts por carta normal POL ao final do jo
 Entretenimento	entretenimento1	1	2	Normal	Adriane Galisteu	Minha vida deu um giro de 360 graus.	Nada acontece.
 Entretenimento	entretenimento3	1	2	Normal	Nelson Rubens	Eu aumento, mas não invento	A carta vale mais 2 pontos ao final do jogo
 Entretenimento	entretenimento6	3	4	Normal	Galvão Bueno	Eu vou dar com a marreta na cabeça dele (Pelé) pô	Escolhe um jogador. Este perde 1$ pra cada carta ESP que o mesmo tiver baixado na mesa
-Entretenimento	entretenimento2	3	4	Normal	Caetano Veloso	Eu votaria no Lula, no Ciro, no Serra!	Recebe 1$ pra cada carta normal POL de outros jogadores que tiver baixada na mesa.
+Entretenimento	entretenimento2	3	4	Normal	Caetano Veloso	Eu votaria no Lula, no Ciro, no Serra!	Recebe 1$ pra cada carta normal POL que outros jogadores tiverem na mesa.
 Entretenimento	entretenimento4	5	6	Normal	Tom Jobim	Nenhuma situação é tão complicada que uma mulher não possa piorar.	Escolhe um jogador. Este perde 1$ pra cada mulher q tiver baixada na mesa.
 Entretenimento	entretenimento5	5	6	Normal	Sílvio Santos	Má vem pra cá, vem pra cá	Recebe 2 cartas do monte.
 Entretenimento	entretenimento8	7	8	Normal	Regina Duarte	Eu tenho medo!	O jogador exclui aleatoriamente uma carta na mão de todos os outros jogadores.
-Entretenimento	entretenimento7	7	8	Normal	Cazuza	Raspas e restos me interessam	PODER FIXO: Quando selicionar pegar carta do descarte não necessita pagar
+Entretenimento	entretenimento7	7	8	Normal	Cazuza	Raspas e restos me interessam	PODER FIXO: Compra do descarte pagando 0$
 Entretenimento	entretenimento9	9	10	Normal	Tim Maia	O mundo só será bom no dia que todo o dinheiro acabar, mas que não me falte nenhum enquanto isso não acontece.	Todos os demais jogadores perdem todo seu dinheiro.
 Entretenimento	entretenimento10	9	10	Normal	Alexandre Frota	O negócio é comer cu e buceta.	Excluir a menor carta e o menor curinga (do mesmo naipe) da mesa de um outro jogador.
 Entretenimento	curinga1	2	0	Curinga	Serginho Mallandro	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
@@ -75,7 +75,7 @@ Ficção	ficcao11	8	3	Evento	Vale Tudo	Jogador com mais FCÇ ganha 8$	Jogador qu
 Ficção	curinga12	10	6	Curinga	Iracema	+3 Pts por carta normal FCÇ ao final do jogo	Jogador recebe 3 pontos por carta normal FCÇ ao final do jogo
 Literatura	literatura7	1	2	Normal	Rachel de Queiroz	Quando não se tem aquilo que se gosta é necessario gostar-se daquilo que se tem	Nada acontece.
 Literatura	literatura8	1	2	Normal	Carlos Drummond	Vai Carlos, ser gaúche na vida!	Inverte a ordem do jogo.
-Literatura	literatura9	3	4	Normal	Machado de Assis	O amor é o egoísmo duplicado	Você e outro jogador que escolher recebem 3$
+Literatura	literatura9	3	4	Normal	Machado de Assis	O amor é o egoísmo duplicado	Escolhe um jogador. Você e o escolhido recebem 3$
 Literatura	literatura12	3	4	Normal	Clarice Lispector	Brasília, uma prisão ao ar livre!	Escolhe um jogador. Este perde 1$ pra cada carta POL que o mesmo tiver baixado na mesa
 Literatura	literatura11	5	6	Normal	Paulo Leminski	Isso de ser exatamente o que se é ainda vai nos levar além	Recebe 2$ pra cada naipe que tiver maioria na mesa
 Literatura	literatura2	5	6	Normal	Mário Quintana	Eles passarão, eu passarinho	Jogador joga mais 2 vezes.

@@ -611,8 +611,15 @@ class Jogador():
 
     def comprar_carta(self, str_iden):
         """Compra uma carta do monte de descarte"""
-        if self.dinheiro < 3:
-            return "ERRO: Comprar uma carta gasta 3 de dinheiro!"
+        custo = CUSTO_COMPRA_DESCARTE
+
+        # Aplica especial
+        dados = {"custo":custo}
+        self.aplicar_especial("altera_custo_compra_descarte", dados)
+        custo = dados["custo"]
+
+        if self.dinheiro < custo:
+            return "ERRO: Comprar uma carta gasta %s de dinheiro!" % custo
 
         if len(self.mao) >= MAX_CARTAS_MAO:
             return "ERRO: Mao cheia!"
@@ -628,7 +635,7 @@ class Jogador():
 
         self.jogo.descarte[carta.naipe].remove(iden)
         self.mao.append(iden)
-        self.dinheiro -= 3
+        self.dinheiro -= custo
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
             
@@ -661,7 +668,14 @@ class Jogador():
         else:
             carta, iden = ret
 
-        if carta.custo <= 5:
+        custo = CUSTO_MINIMO_PARA_DESCARTE
+
+        # Aplica especial
+        dados = {"custo":custo}
+        self.aplicar_especial("altera_valor_min_descarte", dados)
+        custo = dados["custo"]
+
+        if carta.custo <= custo:
             return "ERRO: A carta deve valer mais do que 5!"
 
         self.mao.remove(iden)
