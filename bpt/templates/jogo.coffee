@@ -3,7 +3,7 @@
 	modo = 0
 	num_jogada = -1
 	cartas = {}
-	$.getJSON "baralho", (data) -> cartas = data
+	#$.getJSON "baralho", (data) -> cartas = data
 
 	tratar_erro = (msg) =>
 		if msg.split(":")[0] == "ERRO"

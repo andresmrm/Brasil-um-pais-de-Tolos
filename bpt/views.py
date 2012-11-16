@@ -304,6 +304,7 @@ def enviar_baralho(request):
             cartas[c] = dict(baralho[c].__dict__)
             cartas[c].pop("efeito")
             cartas[c].pop("efeito_dados")
+        print("LA VAI!!!!!!!!!!!!!!!!!!!!!!!")
         return Response(json.dumps(cartas))
     else:
         Response()
