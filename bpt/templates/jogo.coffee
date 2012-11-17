@@ -4,8 +4,8 @@
 	num_jogada = -1
 	cartas = {}
 	jogando_carta = null
-	aguardando_param_carta = false
-	param_carta = null
+	aguardando_param_carta = 0
+	params_acumulados = []
 	#$.getJSON "baralho", (data) -> cartas = data
 
 	tratar_erro = (msg) =>
@@ -23,15 +23,20 @@
 	carta_clicada = () ->
 		id = $(this).attr('id')
 		if not aguardando_param_carta
+			param_carta = []
 			parametros = $(this).attr('param')
 			if parseInt(parametros[0]) > 0
 				jogando_carta = id
+				aguardando_param_carta = parametros[0]
 				if parametros[1] == "j"
 					selecionar_jogador()
 				if parametros[1] == "c"
 					selecionar_carta(parametros[2])
 			else
-				p = $.post("jogada", {"jogada":modo+id})
+				codigo = modo+id
+				for param in params_acumulados
+					codigo += "-"+param
+				p = $.post("jogada", {"jogada":codigo})
 				#.success(function(data) { alert("sucesso!"+data); })
 				p.success(tratar_erro)
 				p.error (data) -> alert("erro!"+data)

@@ -36,7 +36,7 @@ class Magica():
         for e in Efeito.__subclasses__():
             exp = re.match(e.exp, texto, flags=re.UNICODE)
             if exp:
-                #print texto, "||||", e.exp
+                print texto, "||||", e.exp
                 possiveis_param = [ "Escolhe (?P<quant>\d+) (?P<objeto>\w+)(\ (?P<complemento>\w+))*\.",
                                   ]
                 for exp_param in possiveis_param:

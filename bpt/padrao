@@ -80,7 +80,7 @@ Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER
 Sociedade	sociedade10	5	6	Normal	"Paulo Francis"	"A ignorância é a maior multinacional do mundo."	"Escolhe a ação de cada jogador nesta rodada"
 Sociedade	sociedade11	5	6	Normal	"Luísa Marilac"	"Se isso é tar na pior, pooooorra, que que é dizer tá bem né?"	"Caso seja o jogador com mais dinheiro, recebe 5$"
 Sociedade	sociedade12	3	4	Normal	"Jeremias Muito Louco"	"Se eu pudesse eu matava mil!"	"O jogador anterior e posterior a você ficam uma rodada sem jogar."
-Sociedade	sociedade2	7	8	Normal	Betinho	"No Brasil não existe filantropia, o que existe é pilantropia."	"Escolhe 2 jogadores. Recebe uma carta aleatóriada mão de um e 4$ do outro."
+Sociedade	sociedade2	7	8	Normal	Betinho	"No Brasil não existe filantropia, o que existe é pilantropia."	"Escolhe 2 jogadores. Recebe uma carta aleatória da mão de um e 4$ do outro."
 Sociedade	sociedade3	9	10	Normal	"Roniquito de Chevalier"	"General, você tem fogo?"	"Recebe 2 cartas aleatórias da mão do jogador com mais pontos."
 Sociedade	sociedade4	8	3	Evento	"Passeata na rua"	"Jogador com mais SOC ganha 8$"	"Jogador que tiver mais cartas normal SOC baixadas na mesa recebe 8$"
 Sociedade	sociedade5	4	0	Evento	"Ônibus 174"	"Jogador com mais cartas normal SOC perde 4$"	"Jogador que tiver mais cartas normal SOC baixadas na mesa perde 4$"
