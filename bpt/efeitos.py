@@ -232,6 +232,18 @@ class RecebeCartasJogadorComMaisPontos(Efeito):
                 j.mao.remove(escolha)
                 dono.mao.append(escolha)
 
+# NAO TERMINADO
+class RecebeCartaDeUmDinheiroDoOutro(Efeito):
+    exp = "Recebe uma carta aleat\wriada m\wo de um e (?P<quant>\w+)\$ do outro$"
+    @classmethod
+    def descer(cls, dados, dono, carta):
+        j = dono.jogo.ret_jog_mais_pontos()
+        for i in range(int(carta.efeito_dados["quant"])):
+            if len(j.mao) and len(dono.mao) < MAX_CARTAS_MAO:
+                escolha = choice(j.mao)
+                j.mao.remove(escolha)
+                dono.mao.append(escolha)
+
 class PontosPorCartaFinal(Permanente, Efeito):
     exp = "^Jogador recebe (?P<quant>\w+) ponto\w? por carta (?P<tipo>\w+) (?P<naipe>\w+) ao final do jogo$"
     especial = "calculo_pontos_finais"
