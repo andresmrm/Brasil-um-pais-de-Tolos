@@ -3,19 +3,41 @@
 	modo = 0
 	num_jogada = -1
 	cartas = {}
+	jogando_carta = null
+	aguardando_param_carta = false
+	param_carta = null
 	#$.getJSON "baralho", (data) -> cartas = data
 
 	tratar_erro = (msg) =>
 		if msg.split(":")[0] == "ERRO"
 			alert(msg)
 
+	selecionar_jogador = () =>
+		$("#escolha_jogador").show()
+
+	selecionar_carta = (local) =>
+		param_carta = null
+		aguardando_param_carta = true
+		$("#escolha_carta").show()
+
 	carta_clicada = () ->
 		id = $(this).attr('id')
-		p = $.post("jogada", {"jogada":modo+id})
-		#.success(function(data) { alert("sucesso!"+data); })
-		p.success(tratar_erro)
-		p.error (data) -> alert("erro!"+data)
-		atualizar()
+		if not aguardando_param_carta
+			parametros = $(this).attr('param')
+			if parseInt(parametros[0]) > 0
+				jogando_carta = id
+				if parametros[1] == "j"
+					selecionar_jogador()
+				if parametros[1] == "c"
+					selecionar_carta(parametros[2])
+			else
+				p = $.post("jogada", {"jogada":modo+id})
+				#.success(function(data) { alert("sucesso!"+data); })
+				p.success(tratar_erro)
+				p.error (data) -> alert("erro!"+data)
+				atualizar()
+		else
+			param_carta = id
 
 	$("#jogar_carta").click () -> modo = "J"
 	$("#descartar_carta").click () -> modo = "D"

@@ -15,7 +15,7 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program.  If not, see <http://www.gnu.org/licenses/>
+# along with this program. If not, see <http://www.gnu.org/licenses/>
 #-----------------------------------------------------------------------------
 
 import os, random, re, time
@@ -24,57 +24,35 @@ from chat import SistemaChat
 from efeitos import *
 from constantes import *
 
+
 class Magica():
-
-    #def __init__(self):
-#        self.efeitos = {
-#            "^Nada acontece$" : None,
-#            "^Jogador que tiver mais cartas (?P<tipo>\w+) (?P<naipe>\w+) baixadas na mesa (?P<acao>\w+) (?P<quant>\w+)\$$" : self.dinheiro_maioria,
-#            "^(?P<acao>\w+) (?P<quant>\w+)\$$" : self.altera_dinheiro,
-#            "^Recebe (?P<quant>\w+) cartas do monte$" : self.recebe_cartas_monte,
-#        }
-
     def interpretar(self, texto):
+        if texto[0] == '"':
+            texto = texto[1:]
+        if texto[-1] == '"':
+            texto = texto[:-1]
         if texto[-1] == ".":
             texto = texto[:-1]
         for e in Efeito.__subclasses__():
             exp = re.match(e.exp, texto, flags=re.UNICODE)
-            #print texto, "---------------", e.exp
             if exp:
-                print texto, "||||", e.exp
-                return (e, exp.groupdict())
-        return (None, None)
-
-#    def dinheiro_maioria(self, dados, dono):
-#        """Da dinheiro para jogador com uma determinada maioria"""
-#        nome_jog = dono.jogo.maiorias.get(dados["naipe"].lower())
-#        if nome_jog != None:
-#            if dados["acao"] == "perde":
-#                sinal = -1
-#            else:
-#                sinal = 1
-#            nomes = nome_jog[1]
-#            for nome in nomes:
-#                jog = dono.jogo.jogadores[nome]
-#                alteracao = int(sinal*int(dados["quant"])/len(nomes))
-#                jog.dinheiro += alteracao
-#
-#    def altera_dinheiro(self, dados, dono):
-#        """Altera a quantidade de dinheiro do dono da carta"""
-#        if dados["acao"] == "perde":
-#            sinal = -1
-#        else:
-#            sinal = 1
-#        alteracao = int(sinal*int(dados["quant"]))
-#        dono.dinheiro += alteracao
-#
-#    def recebe_cartas_monte(self, dados, dono):
-#        """Dono da carta pega X cartas do monte"""
-#        for i in range(int(dados["quant"])):
-#            if len(dono.mao) < MAX_CARTAS_MAO:
-#                carta = dono.jogo.pegar_carta_monte()
-#                if carta != None:
-#                    dono.adi_carta(carta)
+                #print texto, "||||", e.exp
+                possiveis_param = [ "Escolhe (?P<quant>\d+) (?P<objeto>\w+)(\ (?P<complemento>\w+))*\.",
+                                  ]
+                for exp_param in possiveis_param:
+                    achou_param = re.search(exp_param, texto, flags=re.UNICODE)
+                    if achou_param:
+                        quant = achou_param.groupdict()['quant']
+                        objeto = achou_param.groupdict()['objeto']
+                        complemento = achou_param.groupdict()['complemento']
+                        parametros = quant+objeto[0]
+                        if complemento:
+                            parametros += complemento[0]
+                        print parametros
+                        return (e, exp.groupdict(), parametros)
+                return (e, exp.groupdict(), 1)
+        print texto, "---------------"
+        return (None, None, "1ca")
 
 
 M = Magica()
@@ -224,17 +202,25 @@ class SistemaPreJogo():
         if len(jogada) < 2:
             return "ERRO: Jogada muito curta para processar!"
 
-        tipo, iden = jogada[0], jogada[1:]
-        if tipo == 'J':
-            return jog.jogar_carta(iden)
-        elif tipo == 'C':
-            return jog.comprar_carta(iden)
-        elif tipo == 'D':
-            return jog.descartar_carta(iden)
-        elif tipo == 'G':
-            return jog.pegar_dinheiro()
-        elif tipo == 'M':
-            return jog.mais_carta()
+        #exp = "^(?P<tipo>\w)(?P<iden>\d+)(\-(?P<param>\d+))*$"
+        exp = "^(\w)(\d+)(?:\-(\d+))?(?:\-(\d+))?(?:\-(\d+))?(?:\-(\d+))?$"
+        bateu = re.match(exp, jogada)
+        if bateu:
+            tipo, iden = bateu.groups()[:2]
+            if tipo == 'J':
+                params = []
+                for p in bateu.groups()[2:]:
+                    if p:
+                        params.append(p)
+                return jog.jogar_carta(iden, params)
+            elif tipo == 'C':
+                return jog.comprar_carta(iden)
+            elif tipo == 'D':
+                return jog.descartar_carta(iden)
+            elif tipo == 'G':
+                return jog.pegar_dinheiro()
+            elif tipo == 'M':
+                return jog.mais_carta()
 
         return "ERRO: Jogada nao identificada!" 
 
@@ -334,7 +320,7 @@ class Jogo():
                             try:
                                 atribs = linha.split('\t')
                                 naipe,imagem,valor,custo,tipo,nome,frase,efeito = atribs
-                                e, d = M.interpretar(efeito)
+                                e, d, p = M.interpretar(efeito)
                                 c = Carta(nome=nome,
                                           naipe=naipe[0:3].lower(),
                                           imagem=str(imagem+".png"),
@@ -344,7 +330,8 @@ class Jogo():
                                           frase=frase.encode('ascii','xmlcharrefreplace'),
                                           efeito_texto=efeito.encode('ascii','xmlcharrefreplace'),
                                           efeito_dados=d,
-                                          efeito=e)
+                                          efeito=e,
+                                          parametros=p)
                                 self.baralho[len(self.baralho)] = c
                                 #print c.efeito, c.frase
                             except:
@@ -572,7 +559,7 @@ class Jogador():
             return "ERRO: Carta nao existe no baralho!"
         return carta, iden
 
-    def jogar_carta(self, str_iden):
+    def jogar_carta(self, str_iden, param):
         """Joga uma carta da mao para a mesa"""
         ret = self.identificar_carta(str_iden)
         if type(ret) == str:
@@ -727,7 +714,8 @@ class Carta():
     """Uma carta"""
 
     def __init__(self, nome="Boba", imagem="", valor=1, naipe="Azul", tipo="Normal",
-                 custo=1, frase="Ahhhhh", efeito_texto="Oh", efeito_dados={}, efeito=None):
+                 custo=1, frase="Ahhhhh", efeito_texto="Oh", efeito_dados={}, efeito=None,
+                 parametros=None):
         self.nome = nome
         self.imagem = imagem
         self.valor = valor
@@ -738,6 +726,7 @@ class Carta():
         self.efeito_texto = efeito_texto
         self.efeito_dados = efeito_dados
         self.efeito = efeito
+        self.parametros = parametros
 
     def descer(self, dono):
         """Executa o efeito dessa carta ao descê-la"""
