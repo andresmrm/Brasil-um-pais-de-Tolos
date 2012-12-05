@@ -1,10 +1,9 @@
 -coffee
-
 	modo = 0
 	num_jogada = -1
 	cartas = {}
 	jogando_carta = null
-	aguardando_param_carta = 0
+	num_params_faltantes = 0
 	params_acumulados = []
 	#$.getJSON "baralho", (data) -> cartas = data
 
@@ -16,33 +15,42 @@
 		$("#escolha_jogador").show()
 
 	selecionar_carta = (local) =>
-		param_carta = null
-		aguardando_param_carta = true
-		$("#escolha_carta").show()
+		#param_carta = null
+		#aguardando_param_carta = true
+		#$("#escolha_carta").show()
 
 	carta_clicada = () ->
 		id = $(this).attr('id')
-		if not aguardando_param_carta
-			param_carta = []
+
+		if num_params_faltantes
+			alert "1 "+num_params_faltantes
+			params_acumulados += [id]
+			num_params_faltantes -= 1
+		else
+			jogando_carta = id
+			params_acumulados = []
 			parametros = $(this).attr('param')
-			if parseInt(parametros[0]) > 0
-				jogando_carta = id
-				aguardando_param_carta = parametros[0]
+			num_params_faltantes = parseInt(parametros[0])
+			alert "2 "+num_params_faltantes
+
+			if num_params_faltantes
 				if parametros[1] == "j"
 					selecionar_jogador()
-				if parametros[1] == "c"
-					selecionar_carta(parametros[2])
-			else
-				codigo = modo+id
-				for param in params_acumulados
-					codigo += "-"+param
-				p = $.post("jogada", {"jogada":codigo})
-				#.success(function(data) { alert("sucesso!"+data); })
-				p.success(tratar_erro)
-				p.error (data) -> alert("erro!"+data)
-				atualizar()
-		else
-			param_carta = id
+				#if parametros[1] == "c"
+					#selecionar_carta(parametros[2])
+
+		if not num_params_faltantes
+			alert "3"
+			params_acumulados += [id]
+			codigo = modo+jogando_carta
+			for param in params_acumulados
+				codigo += "-"+param
+			p = $.post("jogada", {"jogada":codigo})
+			#.success(function(data) { alert("sucesso!"+data); })
+			p.success(tratar_erro)
+			p.error (data) -> alert("erro!"+data)
+			num_jogada -= 1
+			atualizar()
 
 	$("#jogar_carta").click () -> modo = "J"
 	$("#descartar_carta").click () -> modo = "D"
@@ -72,12 +80,18 @@
 	$("body").keypress (e) ->
 		if e.which == 122
 			$("#carta_zoom").toggle()
+
 	dar_zoom = (event, delta) ->
-    event.preventDefault()
-    if delta > 0
-      $("#carta_zoom").show()
-    else
-      $("#carta_zoom").hide()
+		event.preventDefault()
+		if delta > 0
+			$("#carta_zoom").show()
+		else
+			$("#carta_zoom").hide()
+
+	tirar_zoom = (event, delta) ->
+		event.preventDefault()
+		if delta < 0
+			$("#carta_zoom").hide()
 
 	atualizar = () ->
 		$.post "atualizar", {"num_jogada":num_jogada}, (data) ->
@@ -89,6 +103,7 @@
         $(".carta").click(carta_clicada)
         $(".carta").hover(carta_sobre)
         $(".carta").bind 'mousewheel', dar_zoom
+        $("body").bind 'mousewheel', tirar_zoom
         if dic["fim"]
           $("#msg_fim").show()
         else

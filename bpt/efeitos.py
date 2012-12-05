@@ -233,9 +233,17 @@ class RecebeCartasJogadorComMaisPontos(Efeito):
                 dono.mao.append(escolha)
 
 class RecebeCartaDeUmDinheiroDoOutro(Efeito):
-    exp = "\w+ \d+ \w+\. Recebe uma carta aleat\wria da m\wo de um e (?P<quant>\w+)\$ do outro"
+    exp = "^Recebe uma carta aleat\wria da m\wo de um e (?P<quant>\w+)\$ do outro$"
     @classmethod
     def descer(cls, dados, dono, carta):
+        # ALTERARRRRRRRRRRRRRRRRRRRRRRRRRR
+        pass
+
+class PegarCartasDescarte(Efeito):
+    exp = "^Elas v\wm para a sua m\wo$"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        # ALTERARRRRRRRRRRRRRRRRRRRRRRRRRR
         pass
 
 class PontosPorCartaFinal(Permanente, Efeito):

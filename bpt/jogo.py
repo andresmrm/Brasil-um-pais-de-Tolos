@@ -33,8 +33,11 @@ class Magica():
             texto = texto[:-1]
         if texto[-1] == ".":
             texto = texto[:-1]
+        # Procura em todos os efeitos implementados
+        ult_frase = texto.split(". ")[-1]
         for e in Efeito.__subclasses__():
-            exp = re.match(e.exp, texto, flags=re.UNICODE)
+            exp = re.match(e.exp, ult_frase, flags=re.UNICODE)
+            # Caso tenha achado um efeito que bate com o texto da carta
             if exp:
                 print texto, "||||", e.exp
                 possiveis_param = [ "Escolhe (?P<quant>\d+) (?P<objeto>\w+)(\ (?P<complemento>\w+))*\.",
@@ -50,9 +53,9 @@ class Magica():
                             parametros += complemento[0]
                         print parametros
                         return (e, exp.groupdict(), parametros)
-                return (e, exp.groupdict(), 1)
+                return (e, exp.groupdict(), 0)
         print texto, "---------------"
-        return (None, None, "1ca")
+        return (None, None, None)
 
 
 M = Magica()
@@ -696,7 +699,7 @@ class Jogador():
         elif len(self.mao) < 1:
             self.mais_carta()
         else:
-            self.jogar_carta(self.mao[0])
+            self.jogar_carta(self.mao[0],[])
 
     def adi_especial(self, especial, carta):
         self.especiais.append((especial, carta))
