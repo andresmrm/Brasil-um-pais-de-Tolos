@@ -562,7 +562,7 @@ class Jogador():
             return "ERRO: Carta nao existe no baralho!"
         return carta, iden
 
-    def jogar_carta(self, str_iden, param):
+    def jogar_carta(self, str_iden, params):
         """Joga uma carta da mao para a mesa"""
         ret = self.identificar_carta(str_iden)
         if type(ret) == str:
@@ -587,7 +587,7 @@ class Jogador():
 
         self.mesa[carta.naipe] += [iden]
         self.mesa[carta.naipe].sort(key=lambda id: self.jogo.baralho.get(id).valor)
-        carta.descer(self)
+        carta.descer(self, params)
 
         # Aplica especial
         dados = {"dinheiro":self.dinheiro,
@@ -731,12 +731,12 @@ class Carta():
         self.efeito = efeito
         self.parametros = parametros
 
-    def descer(self, dono):
+    def descer(self, dono, params):
         """Executa o efeito dessa carta ao descê-la"""
         if self.efeito != None:
-            self.efeito.descer(self.efeito_dados, dono, self)
+            self.efeito.descer(self, dono)
 
     def executar(self, dono):
         """Executa o efeito permanente dessa carta"""
         if self.efeito != None:
-            self.efeito.executar(self.efeito_dados, dono, self)
+            self.efeito.executar(self, dono)
