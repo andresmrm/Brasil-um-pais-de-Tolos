@@ -239,10 +239,23 @@ class RecebeCartaDeUmDinheiroDoOutro(Efeito):
         # ALTERARRRRRRRRRRRRRRRRRRRRRRRRRR
         pass
 
+class AlteraDinheiroPorCartaDeNaipe(Efeito):
+    exp = "^Este (?P<acao>\w+) (?P<quant>\w+)\$ pra cada carta (?P<naipe>\w+) que o mesmo tiver baixado na mesa$"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        # ALTERARRRRRRRRRRRRRRRRRRRRRRRRRR
+        if dados["acao"] == "perde":
+            sinal = -1
+        else:
+            sinal = 1
+        num = 10
+        alteracao = int(sinal*int(dados["quant"])*num)
+        alvo.dinheiro += alteracao
+
 class PegarCartasDescarte(Efeito):
     exp = "^Elas v\wm para a sua m\wo$"
     @classmethod
-    def executar(cls, dados, dono, carta):
+    def descer(cls, dados, dono, carta):
         # ALTERARRRRRRRRRRRRRRRRRRRRRRRRRR
         pass
 

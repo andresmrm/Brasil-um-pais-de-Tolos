@@ -12,9 +12,11 @@
 			alert(msg)
 
 	selecionar_jogador = () =>
-		$("#escolha_jogador").show()
+		$("#titulo_escolha").html('Escolha '+1+' jogador.')
+		$("#msg_escolha").show()
 
 	selecionar_carta = (local) =>
+		$("#msg_escolha").show()
 		#param_carta = null
 		#aguardando_param_carta = true
 		#$("#escolha_carta").show()
@@ -76,6 +78,10 @@
   
 	carta_sobre = (carta) ->
 		$("#carta_zoom").css("background-image", $(@).css("background-image"))
+
+	$("#bot_escolha_cancelar").click () ->
+		$("#msg_escolha").hide()
+		num_params_faltantes = 0
 
 	$("body").keypress (e) ->
 		if e.which == 122
