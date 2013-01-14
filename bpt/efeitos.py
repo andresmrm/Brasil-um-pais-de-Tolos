@@ -243,6 +243,26 @@ class RecebeCartaDeUmDinheiroDoOutro(Efeito):
         # ALTERARRRRRRRRRRRRRRRRRRRRRRRRRR
         pass
 
+class EscolheJogadorFicaSemJogar(Efeito):
+    exp = "^Este fica uma rodada sem jogar$"
+    @classmethod
+    def descer(cls, carta, dono, params):
+        alvo = dono.jogo.ret_jog_num(params[0])
+        alvo.jogadas_extras -= 1
+
+class AlteraDinheiroSeuOutro(Efeito):
+    exp = "^Este e voc\w (?P<acao>\w+) (?P<quant>\w+)\$$"
+    @classmethod
+    def descer(cls, carta, dono, params):
+        if carta.efeito_dados["acao"] == "perdem":
+            sinal = -1
+        else:
+            sinal = 1
+        alvo = dono.jogo.ret_jog_num(params[0])
+        alteracao = int(sinal*int(carta.efeito_dados["quant"]))
+        alvo.dinheiro += alteracao
+        dono.dinheiro += alteracao
+
 class AlteraDinheiroPorCartaDeNaipe(Efeito):
     exp = "^Este (?P<acao>\w+) (?P<quant>\w+)\$ pra cada carta (?P<naipe>\w+) que o mesmo tiver baixado na mesa$"
     @classmethod
@@ -252,9 +272,7 @@ class AlteraDinheiroPorCartaDeNaipe(Efeito):
         else:
             sinal = 1
         naipe = carta.efeito_dados["naipe"].lower()
-        print(params,"aaaaaaaaaaaa")
         alvo = dono.jogo.ret_jog_num(params[0])
-        print alvo.nome
         l = alvo.mesa.get(naipe)
         if l:
             num = len(l)

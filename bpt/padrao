@@ -63,7 +63,7 @@ Literatura	literatura5	4	0	Evento	Micareta	"Jogador com mais cartas normal LIT p
 Literatura	literatura6	9	10	Normal	"Jorge Amado"	"Eu continuo firmemente pensando em modificar o mundo e acho que a literatura tem uma grande importância."	"Jogador recebe 1 ponto por carta qualquer LIT ao final do jogo."
 Literatura	literatura7	1	2	Normal	"Rachel de Queiroz"	"Quando não se tem aquilo que se gosta é necessario gostar-se daquilo que se tem"	"Nada acontece."
 Literatura	literatura8	1	2	Normal	"Carlos Drummond"	"Vai Carlos, ser gaúche na vida!"	"Inverte a ordem do jogo."
-Literatura	literatura9	3	4	Normal	"Machado de Assis"	"O amor é o egoísmo duplicado"	"Escolhe 1 jogador. Este e você recebem 3$"
+Literatura	literatura9	3	4	Normal	"Machado de Assis"	"O amor é o egoísmo duplicado"	"Escolhe 1 jogador. Este e você recebem 3$"
 Política	politica1	7	8	Normal	"Antônio Magri"	"O Fundo de Garantia para o trabalhador sempre foi imexível e continuará imexível"	"PODER FIXO: Não pode ser alvo de poderes que mexam com cartas baixadas na sua mesa"
 Política	politica10	3	4	Normal	"Mário Henrique Simonsen"	"Se só tem no Brasil e não é jabuticaba, é besteira!"	"Escolhe 1 jogador. Este perde 1$ pra cada carta FCÇ que o mesmo tiver baixado na mesa"
 Política	politica11	5	6	Normal	"Fernando Collor"	"Eu tenho aquilo roxo!"	"Recebe 2$ pra cada carta normal LIT que o jogador tiver baixado na mesa."
