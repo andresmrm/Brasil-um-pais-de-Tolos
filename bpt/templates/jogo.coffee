@@ -21,11 +21,27 @@
 		#aguardando_param_carta = true
 		#$("#escolha_carta").show()
 
+	jog_clicado = () ->
+    nome = $(this).attr('id')[3]
+    if num_params_faltantes
+      params_acumulados += [nome]
+      num_params_faltantes -= 1
+
+      if not num_params_faltantes
+        codigo = modo+jogando_carta
+        for param in params_acumulados
+          codigo += "-"+param
+        p = $.post("jogada", {"jogada":codigo})
+        $("#msg_escolha").hide()
+        p.success(tratar_erro)
+        p.error (data) -> alert("erro!"+data)
+        num_jogada -= 1
+        atualizar()
+
 	carta_clicada = () ->
 		id = $(this).attr('id')
 
 		if num_params_faltantes
-			alert "1 "+num_params_faltantes
 			params_acumulados += [id]
 			num_params_faltantes -= 1
 		else
@@ -33,16 +49,14 @@
 			params_acumulados = []
 			parametros = $(this).attr('param')
 			num_params_faltantes = parseInt(parametros[0])
-			alert "2 "+num_params_faltantes
 
 			if num_params_faltantes
 				if parametros[1] == "j"
 					selecionar_jogador()
-				#if parametros[1] == "c"
-					#selecionar_carta(parametros[2])
+        #if parametros[1] == "c"
+        #	selecionar_carta(parametros[2])
 
 		if not num_params_faltantes
-			alert "3"
 			params_acumulados += [id]
 			codigo = modo+jogando_carta
 			for param in params_acumulados
@@ -75,7 +89,7 @@
 	#		alert("erro!"+data)
 	#	num_jogada = -1
 	#	atualizar()
-  
+
 	carta_sobre = (carta) ->
 		$("#carta_zoom").css("background-image", $(@).css("background-image"))
 
@@ -108,6 +122,7 @@
         $('.mesas').html(dic["mesas"])
         $(".carta").click(carta_clicada)
         $(".carta").hover(carta_sobre)
+        $(".nome_jog").click(jog_clicado)
         $(".carta").bind 'mousewheel', dar_zoom
         $("body").bind 'mousewheel', tirar_zoom
         if dic["fim"]

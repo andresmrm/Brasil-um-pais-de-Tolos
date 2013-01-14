@@ -35,8 +35,11 @@ from forms import *
 # DELETAR ISSO!!!!!!!!!!!!
 PREJOGO = SistemaPreJogo()
 PREJOGO.criar_jogo("a","1")
-PREJOGO.colocar_jogador_jogo("a","2")
-PREJOGO.ret_jogador("2").automatico = True
+PREJOGO.colocar_jogador_jogo("a","olegal")
+PREJOGO.colocar_jogador_jogo("a","legalzao")
+PREJOGO.colocar_jogador_jogo("a","1")
+PREJOGO.ret_jogador("olegal").automatico = True
+PREJOGO.ret_jogador("legalzao").automatico = True
 PREJOGO.iniciar_jogo("a")
 
 # PREPARACAO

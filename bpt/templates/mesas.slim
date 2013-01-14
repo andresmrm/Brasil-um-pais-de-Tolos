@@ -1,15 +1,16 @@
 -for j in jogadores
   .jogador
-    h4 =j["nome"]
-      .infos 
-        -for naipe in j["maiorias"]
-          span class=("maioria "+naipe)
-        img.icone_jogo src='/static/imagens/palhaco.png'
-        p.num_painel_jogo ${j["pontos"]}
-        img.icone_jogo src='/static/imagens/mao.png'
-        p.num_painel_jogo ${j["tam_mao"]}
-        img.icone_jogo src='/static/imagens/cifrao.png'
-        p.num_painel_jogo ${j["dinheiro"]}
+    h4.nome_jog id=('jog'+j["num"]) =j["nome"]
+    
+    .infos 
+      -for naipe in j["maiorias"]
+        span class=("maioria "+naipe)
+      img.icone_jogo src='/static/imagens/palhaco.png'
+      p.num_painel_jogo ${j["pontos"]}
+      img.icone_jogo src='/static/imagens/mao.png'
+      p.num_painel_jogo ${j["tam_mao"]}
+      img.icone_jogo src='/static/imagens/cifrao.png'
+      p.num_painel_jogo ${j["dinheiro"]}
     .sub_jogador
       -for naipe in j["mesa"]
         .naipe

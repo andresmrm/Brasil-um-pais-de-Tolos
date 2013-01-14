@@ -39,7 +39,6 @@ class Magica():
             exp = re.match(e.exp, ult_frase, flags=re.UNICODE)
             # Caso tenha achado um efeito que bate com o texto da carta
             if exp:
-                print texto, "||||", e.exp
                 possiveis_param = [ "Escolhe (?P<quant>\d+) (?P<objeto>\w+)(\ (?P<complemento>\w+))*\.",
                                   ]
                 for exp_param in possiveis_param:
@@ -207,6 +206,7 @@ class SistemaPreJogo():
 
         #exp = "^(?P<tipo>\w)(?P<iden>\d+)(\-(?P<param>\d+))*$"
         exp = "^(\w)(\d+)(?:\-(\d+))?(?:\-(\d+))?(?:\-(\d+))?(?:\-(\d+))?$"
+        print(jogada)
         bateu = re.match(exp, jogada)
         if bateu:
             tipo, iden = bateu.groups()[:2]
@@ -288,6 +288,7 @@ class Jogo():
 
     def adi_jogador(self, jog): 
         """Adiciona um jogador a lista de jogadores do jogo"""
+        jog.num = str(len(self.jogadores))
         self.jogadores[jog.nome] = jog
 
     def rem_jogador(self, jog):
@@ -298,6 +299,15 @@ class Jogo():
     def ret_jogadores(self):
         """Retorna jogadores no jogo"""
         return self.jogadores.values()
+
+    def ret_jog_num(self, num):
+        """Retorna jogador de num 'num'"""
+        print("num",num)
+        for j in self.jogadores.values():
+            print j.num
+            if j.num == num:
+                return j
+        return None
 
     def ret_jog_mais_pontos(self):
         """Retorna o ganhador do jogo"""
@@ -495,6 +505,7 @@ class Jogador():
         self.ult_contato = 0
         self.trocar_jogo(jogo)
         self.pronto = False
+        self.num = 0
 
     def novo_contato(self):
         """Avisa que o jogador ainda está online"""
@@ -699,7 +710,7 @@ class Jogador():
         elif len(self.mao) < 1:
             self.mais_carta()
         else:
-            self.jogar_carta(self.mao[0],[])
+            self.jogar_carta(self.mao[0],[1,2,3])
 
     def adi_especial(self, especial, carta):
         self.especiais.append((especial, carta))
@@ -734,7 +745,7 @@ class Carta():
     def descer(self, dono, params):
         """Executa o efeito dessa carta ao descê-la"""
         if self.efeito != None:
-            self.efeito.descer(self, dono)
+            self.efeito.descer(self, dono, params)
 
     def executar(self, dono):
         """Executa o efeito permanente dessa carta"""
