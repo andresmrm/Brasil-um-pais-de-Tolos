@@ -302,10 +302,9 @@ class Jogo():
 
     def ret_jog_num(self, num):
         """Retorna jogador de num 'num'"""
-        print("num",num)
+        n = str(num)
         for j in self.jogadores.values():
-            print j.num
-            if j.num == num:
+            if j.num == n:
                 return j
         return None
 

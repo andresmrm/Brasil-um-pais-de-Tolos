@@ -250,6 +250,23 @@ class EscolheJogadorFicaSemJogar(Efeito):
         alvo = dono.jogo.ret_jog_num(params[0])
         alvo.jogadas_extras -= 1
 
+class ExcluiMenorCarta(Efeito):
+    exp = "^Este excluir a menor carta que tiver baixada na mesa$"
+    @classmethod
+    def descer(cls, carta, dono, params):
+        alvo = dono.jogo.ret_jog_num(params[0])
+        menor_valor = 1000
+        menor_carta = None
+        menor_iden = None
+        for naipe in alvo.mesa.values():
+            for iden in naipe:
+                c = dono.jogo.baralho.get(iden)
+                if c.valor < menor_valor:
+                    menor_carta = c
+                    menor_iden = iden
+        if menor_carta:
+            alvo.perder_carta_mesa(menor_iden, menor_carta)
+
 class AlteraDinheiroSeuOutro(Efeito):
     exp = "^Este e voc\w (?P<acao>\w+) (?P<quant>\w+)\$$"
     @classmethod
