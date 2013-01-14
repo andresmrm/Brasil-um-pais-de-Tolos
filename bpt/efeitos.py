@@ -240,8 +240,20 @@ class RecebeCartaDeUmDinheiroDoOutro(Efeito):
     exp = "^Recebe uma carta aleat\wria da m\wo de um e (?P<quant>\w+)\$ do outro$"
     @classmethod
     def descer(cls, carta, dono, params):
-        # ALTERARRRRRRRRRRRRRRRRRRRRRRRRRR
-        pass
+        alvo1 = dono.jogo.ret_jog_num(params[0])
+        alvo2 = dono.jogo.ret_jog_num(params[1])
+        if len(dono.mao) < MAX_CARTAS_MAO:
+            if len(alvo1.mao) > 0:
+                escolha = choice(alvo1.mao)
+                alvo1.mao.remove(escolha)
+                dono.mao.append(escolha)
+        alteracao = int(carta.efeito_dados["quant"])
+        if alvo2.dinheiro >= int(carta.efeito_dados["quant"]):
+            alvo2.dinheiro -= alteracao
+            dono.dinheiro += alteracao
+        else:
+            dono.dinheiro += alvo2.dinheiro
+            alvo2.dinheiro = 0
 
 class EscolheJogadorFicaSemJogar(Efeito):
     exp = "^Este fica uma rodada sem jogar$"
@@ -249,6 +261,24 @@ class EscolheJogadorFicaSemJogar(Efeito):
     def descer(cls, carta, dono, params):
         alvo = dono.jogo.ret_jog_num(params[0])
         alvo.jogadas_extras -= 1
+
+class ExcluiDuasMenoresCartas(Efeito):
+    exp = "^Este tem excluidas suas duas menores cartas$"
+    @classmethod
+    def descer(cls, carta, dono, params):
+        alvo = dono.jogo.ret_jog_num(params[0])
+        for i in range(2):
+            menor_valor = 1000
+            menor_carta = None
+            menor_iden = None
+            for naipe in alvo.mesa.values():
+                for iden in naipe:
+                    c = dono.jogo.baralho.get(iden)
+                    if c.valor < menor_valor:
+                        menor_carta = c
+                        menor_iden = iden
+            if menor_carta:
+                alvo.perder_carta_mesa(menor_iden, menor_carta)
 
 class ExcluiMenorCarta(Efeito):
     exp = "^Este excluir a menor carta que tiver baixada na mesa$"
@@ -266,6 +296,20 @@ class ExcluiMenorCarta(Efeito):
                     menor_iden = iden
         if menor_carta:
             alvo.perder_carta_mesa(menor_iden, menor_carta)
+
+class PerdeDinheiroPorCartasBaixas(Efeito):
+    exp = "^Este perde (?P<quant>\w+)\$ para cada carta de valor um ou 3 que tiver baixada na sua mesa$"
+    @classmethod
+    def descer(cls, carta, dono, params):
+        alvo = dono.jogo.ret_jog_num(params[0])
+        num = 0
+        for naipe in alvo.mesa.values():
+            for iden in naipe:
+                c = dono.jogo.baralho.get(iden)
+                if c.valor in [1,3]:
+                    num += 1
+        alteracao = int(num*int(carta.efeito_dados["quant"]))
+        alvo.dinheiro -= alteracao
 
 class AlteraDinheiroSeuOutro(Efeito):
     exp = "^Este e voc\w (?P<acao>\w+) (?P<quant>\w+)\$$"
