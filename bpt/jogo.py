@@ -39,6 +39,7 @@ class Magica():
             exp = re.match(e.exp, ult_frase, flags=re.UNICODE)
             # Caso tenha achado um efeito que bate com o texto da carta
             if exp:
+                print "ACHOU"
                 possiveis_param = [ "Escolhe (?P<quant>\d+) (?P<objeto>\w+)(\ (?P<complemento>\w+))*\.",
                                   ]
                 for exp_param in possiveis_param:
@@ -580,9 +581,18 @@ class Jogador():
         else:
             carta, iden = ret
 
-        if self.dinheiro < carta.custo:
+        custo = carta.custo
+        # Aplica especial
+        dados = {
+                 "custo":custo,
+                 "valor":carta.valor,
+                }
+        self.aplicar_especial("altera_custo_curingas", dados)
+        custo = dados["custo"]
+
+        if self.dinheiro < custo:
             return "ERRO: Dinheiro insuficiente para baixar carta!"
-        self.dinheiro -= carta.custo
+        self.dinheiro -= custo
 
         # Cria lista para o naipe caso nao exista
         self.mao.remove(iden)

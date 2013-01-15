@@ -123,9 +123,9 @@ class VantagemEmpateNaipe(Permanente, Efeito):
     exp = "^Vantagem na maioria em caso de empate de cartas deste naipe$"
     especial = "calculo_maioria"
     @classmethod
-    def executar(cls, carta, dono):
-        if carta.efeito_dados["naipe"] == carta.naipe:
-            carta.efeito_dados["quant"] += 0.5
+    def executar(cls, dados, dono, carta):
+        if dados["naipe"] == carta.naipe:
+            dados["quant"] += 0.5
 
 class RecebeDinheiroPorMaiorias(Efeito):
     exp = "^Recebe (?P<quant>\w+)\$ pra cada naipe que tiver maioria na mesa$"
@@ -353,50 +353,59 @@ class PontosPorCartaFinal(Permanente, Efeito):
     exp = "^Jogador recebe (?P<quant>\w+) ponto\w? por carta (?P<tipo>\w+) (?P<naipe>\w+) ao final do jogo$"
     especial = "calculo_pontos_finais"
     @classmethod
-    def executar(cls, carta, dono):
+    def executar(cls, dados, dono, carta):
         naipe = carta.efeito_dados["naipe"].lower()
         l = dono.mesa.get(naipe)
         if l:
             num = len(l)
-            carta.efeito_dados["pontos"] += int(carta.efeito_dados["quant"]) * num
+            dados["pontos"] += int(carta.efeito_dados["quant"]) * num
 
 class PontosFinal(Permanente, Efeito):
     exp = "^A carta vale mais (?P<quant>\w+) ponto\w? ao final do jogo$"
     especial = "calculo_pontos_finais"
     @classmethod
-    def executar(cls, carta, dono):
-        carta.efeito_dados["pontos"] += int(carta.efeito_dados["quant"])
+    def executar(cls, dados, dono, carta):
+        dados["pontos"] += int(carta.efeito_dados["quant"])
 
 class DinheiroAoBaixar(Permanente, Efeito):
     exp = "^Jogador ganha \+(?P<quant1>\w+)\$ ao baixar carta (?P<tipo>\w+) de (?P<naipe>\w+) de valor 1,3,5 e \+(?P<quant2>\w+)\$ de valor 7 e 9$"
     especial = "ao_descer_carta"
     @classmethod
-    def executar(cls, carta, dono):
-        carta_baixada = carta.efeito_dados["carta"]
+    def executar(cls, dados, dono, carta):
+        carta_baixada = dados["carta"]
         if carta_baixada.naipe == carta.efeito_dados["naipe"].lower():
             if carta_baixada.valor in [1, 3, 5]:
-                carta.efeito_dados["dinheiro"] += int(carta.efeito_dados["quant1"])
+                dados["dinheiro"] += int(carta.efeito_dados["quant1"])
             elif carta_baixada.valor in [7, 9]:
-                carta.efeito_dados["dinheiro"] += int(carta.efeito_dados["quant2"])
+                dados["dinheiro"] += int(carta.efeito_dados["quant2"])
 
 class ReceberMaisDinheiro(Permanente, Efeito):
     exp = "^PODER FIXO: quando escolher receber dinheiro, recebe (?P<quant>\w+)\$ a mais$"
     especial = "ao_pegar_dinheiro"
     @classmethod
-    def executar(cls, carta, dono):
-        carta.efeito_dados["dinheiro"] += int(carta.efeito_dados["quant"])
+    def executar(cls, dados, dono, carta):
+        dados["dinheiro"] += int(carta.efeito_dados["quant"])
 
 class AlteraCustoCompraDescarte(Permanente, Efeito):
     exp = "^PODER FIXO: Compra do descarte pagando (?P<quant>\w+)\$$"
     especial = "altera_custo_compra_descarte"
     @classmethod
-    def executar(cls, carta, dono):
-        carta.efeito_dados["custo"] = int(carta.efeito_dados["quant"])
+    def executar(cls, dados, dono, carta):
+        dados["custo"] = int(carta.efeito_dados["quant"])
 
 class AlteraValorMinDescarte(Permanente, Efeito):
     exp = "^PODER FIXO: jogador pode descartar qualquer carta$"
     especial = "altera_valor_min_descarte"
     @classmethod
-    def executar(cls, carta, dono):
+    def executar(cls, dados, dono, carta):
         #dados["custo"] = int(carta.efeito_dados["quant"])
-        carta.efeito_dados["custo"] = -1
+        dados["custo"] = -1
+
+class AlteraCustoCoringas(Permanente, Efeito):
+    exp = "^PODER FIXO: Adiciona curingas sem ter necessidade de pagar$"
+    especial = "altera_custo_curingas"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        print dados["valor"]
+        if dados["valor"] in [2,6,10]:
+            dados["custo"] = 0

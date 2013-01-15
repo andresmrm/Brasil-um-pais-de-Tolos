@@ -76,7 +76,7 @@ Política	politica6	8	3	Evento	"Festa da democracia"	"Jogador com mais POL ganha
 Política	politica7	1	2	Normal	"Marta Suplicy"	"Relaxa e Goza"	"Escolhe 1 jogador. Este fica uma rodada sem jogar."
 Política	politica8	1	2	Normal	Tiririca	"Vote em Tiririca. Pior que tá não fica."	"Nada acontece."
 Política	politica9	3	4	Normal	"João Figueiredo"	"Prefiro cheiro de cavalo a cheiro de povo"	"Escolhe 1 jogador. Este perde 1$ para cada carta de valor um ou 3 que tiver baixada na sua mesa."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessedidade de pagar."
+Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
 Sociedade	sociedade10	5	6	Normal	"Paulo Francis"	"A ignorância é a maior multinacional do mundo."	"Escolhe a ação de cada jogador nesta rodada"
 Sociedade	sociedade11	5	6	Normal	"Luísa Marilac"	"Se isso é tar na pior, pooooorra, que que é dizer tá bem né?"	"Caso seja o jogador com mais dinheiro, recebe 5$"
 Sociedade	sociedade12	3	4	Normal	"Jeremias Muito Louco"	"Se eu pudesse eu matava mil!"	"O jogador anterior e posterior a você ficam uma rodada sem jogar."
