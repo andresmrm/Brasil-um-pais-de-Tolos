@@ -1,28 +1,90 @@
-Ficção	curinga12	10	6	Curinga	Iracema	"+3 Pts por carta normal FCÇ ao final do jogo"	"Jogador recebe 3 pontos por carta normal FCÇ ao final do jogo"
-Política	curinga13	2	0	Curinga	Enéias	"Vantagem em caso de empate de cartas deste naipe."	"Vantagem na maioria em caso de empate de cartas deste naipe."
-Política	curinga14	6	0	Curinga	"José Sarney"	"+2$ ao adicionar POL (vl:1 a 5); +3$ ao adicionar POL (vl:7 a 9);"	"Jogador ganha +2$ ao baixar carta normal de POL de valor 1,3,5 e +3$ de valor 7 e 9"
-Política	curinga15	10	6	Curinga	Lula	"+3 Pts por carta normal POL ao final do jogo"	"Jogador recebe 3 pontos por carta normal POL ao final do jogo"
-Sociedade	curinga18	10	6	Curinga	"Eike Batista"	"+3 Pts por carta normal SOC ao final do jogo"	"Jogador recebe 3 pontos por carta normal SOC ao final do jogo"
-Entretenimento	curinga3	10	6	Curinga	"Roberto Carlos"	"+3 Pts por carta normal ENT ao final do jogo"	"Jogador recebe 3 pontos por carta normal ENT ao final do jogo"
-Esporte	curinga5	6	0	Curinga	"Ricardo Teixeira"	"+2$ ao adicionar ESP (vl:1 a 5); +3$ ao adicionar ESP (vl:7 a 9);"	"Jogador ganha +2$ ao baixar carta normal de ESP de valor 1,3,5 e +3$ de valor 7 e 9"
-Esporte	curinga6	10	6	Curinga	Pelé	"+3 Pts por carta normal ESP ao final do jogo"	"Jogador recebe 3 pontos por carta normal ESP ao final do jogo"
-Literatura	curinga7	2	0	Curinga	"Jô Soares"	"Vantagem em caso de empate de cartas deste naipe."	"Vantagem na maioria em caso de empate de cartas deste naipe."
-Literatura	curinga8	6	0	Curinga	"Paulo Coelho"	"+2$ ao adicionar LIT (vl:1 a 5); +3$ ao adicionar LIT (vl:7 a 9);"	"Jogador ganha +2$ ao baixar carta normal de LIT de valor 1,3,5 e +3$ de valor 7 e 9"
-Literatura	curinga9	10	6	Curinga	"Guimarães Rosa"	"+3 Pts por carta normal LIT ao final do jogo"	"Jogador recebe 3 pontos por carta normal LIT ao final do jogo"
-Entretenimento	entretenimento10	9	10	Normal	"Alexandre Frota"	"O negócio é comer cu e buceta."	"Escolhe 1 jogador. Este tem excluidas sua menor carta e menor curinga (do mesmo naipe) da mesa."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
-Sociedade	sociedade1	7	8	Normal	"Xico Sá"	"Só a esquerda festiva salva"	"PODER FIXO: Adiciona curingas sem ter necessidade de pagar."
+Entretenimento	curinga1	2	0	Curinga	Serginho Mallandro	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
+Ficção	curinga10	2	0	Curinga	Macunaíma	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
+Ficção	curinga11	6	3	Curinga	Zé Carioca	+2$ ao adicionar FCÇ (vl:1 a 5); +3$ ao adicionar FCÇ (vl:7 a 9);	Jogador ganha +2$ ao baixar carta normal de FCÇ de valor 1,3,5 e +3$ de valor 7 e 9
+Ficção	curinga12	10	6	Curinga	Iracema	+3 Pts por carta normal FCÇ ao final do jogo	Jogador recebe 3 pontos por carta normal FCÇ ao final do jogo
+Política	curinga13	2	0	Curinga	Enéias	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
+Política	curinga14	6	3	Curinga	José Sarney	+2$ ao adicionar POL (vl:1 a 5); +3$ ao adicionar POL (vl:7 a 9);	Jogador ganha +2$ ao baixar carta normal de POL de valor 1,3,5 e +3$ de valor 7 e 9
+Política	curinga15	10	6	Curinga	Lula	+3 Pts por carta normal POL ao final do jogo	Jogador recebe 3 pontos por carta normal POL ao final do jogo
+Sociedade	curinga16	2	0	Curinga	Narcisa Tamborindeguy	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
+Sociedade	curinga17	6	3	Curinga	Daniel Dantas	+2$ ao adicionar SOC (vl:1 a 5); +3$ ao adicionar SOC (vl:7 a 9);	Jogador ganha +2$ ao baixar carta normal de SOC de valor 1,3,5 e +3$ de valor 7 e 9
+Sociedade	curinga18	10	6	Curinga	Eike Batista	+3 Pts por carta normal SOC ao final do jogo	Jogador recebe 3 pontos por carta normal SOC ao final do jogo
+Entretenimento	curinga2	6	3	Curinga	Xuxa	+2$ ao adicionar ENT (vl:1 a 5); +3$ ao adicionar ENT (vl:7 a 9);	Jogador ganha +2$ ao baixar carta normal de ENT de valor 1,3,5 e +3$ de valor 7 e 9
+Entretenimento	curinga3	10	6	Curinga	Roberto Carlos	+3 Pts por carta normal ENT ao final do jogo	Jogador recebe 3 pontos por carta normal ENT ao final do jogo
+Esporte	curinga4	2	0	Curinga	Rubens Barrichello	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
+Esporte	curinga5	6	3	Curinga	Ricardo Teixeira	+2$ ao adicionar ESP (vl:1 a 5); +3$ ao adicionar ESP (vl:7 a 9);	Jogador ganha +2$ ao baixar carta normal de ESP de valor 1,3,5 e +3$ de valor 7 e 9
+Esporte	curinga6	10	6	Curinga	Pelé	+3 Pts por carta normal ESP ao final do jogo	Jogador recebe 3 pontos por carta normal ESP ao final do jogo
+Literatura	curinga7	2	0	Curinga	Jô Soares	Vantagem em caso de empate de cartas deste naipe.	Vantagem na maioria em caso de empate de cartas deste naipe.
+Literatura	curinga8	6	3	Curinga	Paulo Coelho	+2$ ao adicionar LIT (vl:1 a 5); +3$ ao adicionar LIT (vl:7 a 9);	Jogador ganha +2$ ao baixar carta normal de LIT de valor 1,3,5 e +3$ de valor 7 e 9
+Literatura	curinga9	10	6	Curinga	Guimarães Rosa	+3 Pts por carta normal LIT ao final do jogo	Jogador recebe 3 pontos por carta normal LIT ao final do jogo
+Entretenimento	entretenimento11	4	0	Evento	Desligue a TV e vá ler um livro!	Jogador com mais cartas normal ENT perde 4$	Jogador que tiver mais cartas normal ENT baixadas na mesa perde 4$
+Entretenimento	entretenimento12	8	0	Evento	Criançá Esperança!	Jogador com mais ENT ganha 8$	Jogador que tiver mais cartas normal ENT baixadas na mesa recebe 8$
+Esporte	esporte11	8	0	Evento	Tan! Tan! Tan!	Jogador com mais ESP ganha 8$	Jogador que tiver mais cartas normal ESP baixadas na mesa recebe 8$
+Esporte	esporte7	4	0	Evento	Ajeitando o meião!	Jogador com mais cartas normal ESP perde 4$	Jogador que tiver mais cartas normal ESP baixadas na mesa perde 4$
+Ficção	ficcao11	8	0	Evento	Vale Tudo	Jogador com mais FCÇ ganha 8$	Jogador que tiver mais cartas normal FCÇ baixadas na mesa recebe 8$
+Ficção	ficcao9	4	0	Evento	Faroeste Caboclo	Jogador com mais cartas normal FCÇ perde 4$	Jogador que tiver mais cartas normal FCÇ baixadas na mesa perde 4$
+Literatura	literatura4	8	0	Evento	FLIP	Jogador com mais LIT ganha 8$	Jogador que tiver mais cartas normal LIT baixadas na mesa recebe 8$
+Literatura	literatura5	4	0	Evento	Micareta	Jogador com mais cartas normal LIT perde 4$	Jogador que tiver mais cartas normal LIT baixadas na mesa perde 4$
+Política	politica5	4	0	Evento	Mensalão	Jogador com mais cartas normal POL perde 4$	Jogador que tiver mais cartas normal POL baixadas na mesa perde 4$
+Política	politica6	8	0	Evento	Festa da democracia	Jogador com mais POL ganha 8$	Jogador que tiver mais cartas normal POL baixadas na mesa recebe 8$
+Sociedade	sociedade4	8	0	Evento	Passeata na rua	Jogador com mais SOC ganha 8$	Jogador que tiver mais cartas normal SOC baixadas na mesa recebe 8$
+Sociedade	sociedade5	4	0	Evento	Ônibus 174	Jogador com mais cartas normal SOC perde 4$	Jogador que tiver mais cartas normal SOC baixadas na mesa perde 4$
+Entretenimento	entretenimento1	1	2	Normal	Adriane Galisteu	Minha vida deu um giro de 360 graus.	Nada acontece.
+Entretenimento	entretenimento10	9	10	Normal	Alexandre Frota	O negócio é comer cu e buceta.	Escolhe 1 jogador. Este tem excluidas sua menor carta e menor curinga (do mesmo naipe) da mesa.
+Entretenimento	entretenimento2	3	4	Normal	Caetano Veloso	Eu votaria no Lula, no Ciro, no Serra!	Recebe 1$ pra cada carta normal POL que outros jogadores tiverem na mesa.
+Entretenimento	entretenimento3	1	2	Normal	Nelson Rubens	Eu aumento, mas não invento	Vale mais 2 pontos ao final do jogo
+Entretenimento	entretenimento4	5	6	Normal	Tom Jobim	Nenhuma situação é tão complicada que uma mulher não possa piorar.	Escolhe 1 jogador. Este perde 1$ pra cada mulher q tiver baixada na mesa.
+Entretenimento	entretenimento5	5	6	Normal	Sílvio Santos	Má vem pra cá, vem pra cá	Recebe 2 cartas do monte.
+Entretenimento	entretenimento6	3	4	Normal	Galvão Bueno	Eu vou dar com a marreta na cabeça dele (Pelé) pô	Escolhe 1 jogador. Este perde 1$ pra cada carta ESP que o mesmo tiver baixado na mesa
+Entretenimento	entretenimento7	7	8	Normal	Cazuza	Raspas e restos me interessam	PODER FIXO: Compra do descarte pagando 0$
+Entretenimento	entretenimento8	7	8	Normal	Regina Duarte	Eu tenho medo!	O jogador exclui aleatoriamente uma carta na mão de todos os outros jogadores.
+Entretenimento	entretenimento9	9	10	Normal	Tim Maia	O mundo só será bom no dia que todo o dinheiro acabar, mas que não me falte nenhum enquanto isso não acontece.	Todos os demais jogadores perdem todo seu dinheiro.
+Esporte	esporte1	1	2	Normal	Jardel	Clássico é clássico, e vice-versa!	Nada acontece.
+Esporte	esporte10	9	10	Normal	Ayrton Senna	Vencer é o que importa, o resto é consequência!	Caso tenha 15 pts a mais do que qualquer um dos demais jogadores, o jogo termina e você vence
+Esporte	esporte12	7	8	Normal	Vicente Matheus	Jogador tem que ser completo como o pato, que é um bicho aquático e gramático.	Recebe 3$ para cada 2 naipes diferentes que tiver cartas na mesa
+Esporte	esporte2	1	2	Normal	Dunga	Puto cagão, tu é cagão!	Escolhe 1 jogador. Este fica impossibilitado de poder baixar cartas durante 3 rodadas.
+Esporte	esporte3	3	4	Normal	Josimar	A moto eu vou vender e o rádio dar pra minha mãe.	Escolhe 2 cartas de sua mão. Estas são descartas e você recebe 8$ pelos descartes
+Esporte	esporte4	5	6	Normal	Renato Gaúcho	Quando tem agito aqui em casa até o Cristo Redentor tapa os olhos	Escolhe quantas cartas quiser da sua mão. Pode troca-las por cartas do monte.
+Esporte	esporte5	5	6	Normal	Zagallo	Vocês vão ter que me engolir!	Escolhe 1 carta de sua mão. Entrega ela a um outro jogador e recebe em troca 8$.
+Esporte	esporte6	3	4	Normal	Eurico Miranda	Não tenho nada contra homossexual, eu só não gosto de viado!	Escolhe 1 jogador. Este perde 1$ pra cada carta LIT que o mesmo tiver baixado na mesa
+Esporte	esporte8	9	10	Normal	Romário	Deus apontou um dedo pra mim e disse: esse é o cara!	Recebe 4 cartas do monte
+Esporte	esporte9	7	8	Normal	Dadá Maravilha	Só tem três coisas que param no ar: helicóptero, beija-flor e Dadá	PODER FIXO: Quando selecionar comprar cartas, compra 2 de uma vez
+Ficção	ficcao1	1	2	Normal	Macabéia	Desculpa mas acho que não sou muito gente!	Nada acontece.
+Ficção	ficcao10	7	8	Normal	Bia Falcão	Pobreza pega! Pega! Pega como sarna! Pega!	PODER FIXO: jogador pode descartar qualquer carta
+Ficção	ficcao12	9	10	Normal	Malvados	Deus é o Papai Noel dos adultos	Escolhe 1 carta coringa do monte ou do descarte. Esta vai para a sua mão.
+Ficção	ficcao2	1	2	Normal	Arlete	Caguei pras suas imunidade, não vai me comer não!	O próximo poder usado contra um jogador não pode ser usado contra você.
+Ficção	ficcao3	3	4	Normal	Sinhozinho Malta	Tô certo ou tô errado?	Joga uma moeda, escolhe cara ou coroa, se acertar ganha 5$, se errar perde 2$.
+Ficção	ficcao4	5	6	Normal	Don Lázaro	Eu prefiro melão!	Recebe 2$ pra cada carta normal ENT que o jogador tiver baixado na mesa.
+Ficção	ficcao5	5	6	Normal	Zé Pequeno	Dadinho é o caralho!	Joga-se um dado, o jogador ganha dinheiro equivalente a 2 vezes o valor, caso saia 6 não ganha nada
+Ficção	ficcao6	3	4	Normal	Odette Roitman	Nunca vi gostar tanto de fazer hora extra como trabalhador brasileiro.	Escolhe 1 jogador. Este perde 1$ pra cada carta SOC que o mesmo tiver baixado na mesa
+Ficção	ficcao7	7	8	Normal	Beto Carneiro	Minha vingança sará maligna!	Recebe 5$ do último jogador que usou poder contra você.
+Ficção	ficcao8	9	10	Normal	Capitão Nascimento	Senta o dedo nessa porra!	Excluir todas as cartas do jogador com menos pontos.
+Literatura	literatura1	7	8	Normal	Monteiro Lobato	A consciência do homem comum mora no bolso, eis tudo.	PODER FIXO: quando escolher receber dinheiro, recebe 1$ a mais.
+Literatura	literatura10	7	8	Normal	Nelson Rodrigues	A mulher mais bonita é a cunhada bonita	Escolhe 1 jogador. Troca uma carta normal da sua mesa por outra normal do mesmo naipe da mesa do jogador escolhido.
+Literatura	literatura11	5	6	Normal	Paulo Leminski	Isso de ser exatamente o que se é ainda vai nos levar além	Recebe 2$ pra cada naipe que tiver maioria na mesa
+Literatura	literatura12	3	4	Normal	Clarice Lispector	Brasília, uma prisão ao ar livre!	Escolhe 1 jogador. Este perde 1$ pra cada carta POL que o mesmo tiver baixado na mesa
+Literatura	literatura2	5	6	Normal	Mário Quintana	Eles passarão, eu passarinho	Jogador joga mais 2 vezes.
+Literatura	literatura3	9	10	Normal	Vinícius de Moraes	A vida é a arte do encontro, embora haja tanto desencontro pela vida.	Escolhe 2 cartas do descarte. Elas vêm para a sua mão.
+Literatura	literatura6	9	10	Normal	Jorge Amado	Eu continuo firmemente pensando em modificar o mundo e acho que a literatura tem uma grande importância.	Jogador recebe 1 ponto por carta qualquer LIT ao final do jogo.
+Literatura	literatura7	1	2	Normal	Rachel de Queiroz	Quando não se tem aquilo que se gosta é necessario gostar-se daquilo que se tem	Nada acontece.
+Literatura	literatura8	1	2	Normal	Carlos Drummond	Vai Carlos, ser gaúche na vida!	Inverte a ordem do jogo.
+Literatura	literatura9	3	4	Normal	Machado de Assis	O amor é o egoísmo duplicado	Escolhe 1 jogador. Este e você recebem 3$
+Política	politica1	7	8	Normal	Antônio Magri	O Fundo de Garantia para o trabalhador sempre foi imexível e continuará imexível	PODER FIXO: Não pode ser alvo de poderes que mexam com cartas baixadas na sua mesa
+Política	politica10	3	4	Normal	Mário Henrique Simonsen	Se só tem no Brasil e não é jabuticaba, é besteira!	Escolhe 1 jogador. Este perde 1$ pra cada carta FCÇ que o mesmo tiver baixado na mesa
+Política	politica11	5	6	Normal	Fernando Collor	Eu tenho aquilo roxo!	Recebe 2$ pra cada carta normal LIT que o jogador tiver baixado na mesa.
+Política	politica12	5	6	Normal	FHC	Esqueçam tudo o que eu escrevi	Escolhe 1 jogador. Este excluir a menor carta que tiver baixada na mesa.
+Política	politica2	7	8	Normal	Getúlio Vargas	Saio da vida para entrar na história	Escolhe 2 cartas de sua mão. Baixa uma delas na mesa pagando com o descarta da outra.
+Política	politica3	9	10	Normal	Paulo Maluf	Quer estuprar, estupra, mas não mata	Escolhe 1 jogador. Este tem excluidas suas duas menores cartas.
+Política	politica4	9	10	Normal	João Alves	Deus me ajudou e eu ganhei dinheiro	Recebe 10$
+Política	politica7	1	2	Normal	Marta Suplicy	Relaxa e Goza	Escolhe 1 jogador. Este fica uma rodada sem jogar.
+Política	politica8	1	2	Normal	Tiririca	Vote em Tiririca. Pior que tá não fica.	Nada acontece.
+Política	politica9	3	4	Normal	João Figueiredo	Prefiro cheiro de cavalo a cheiro de povo	Escolhe 1 jogador. Este perde 1$ para cada carta de valor um ou 3 que tiver baixada na sua mesa.
+Sociedade	sociedade1	7	8	Normal	Xico Sá	Só a esquerda festiva salva	PODER FIXO: Adiciona curingas sem ter necessidade de pagar.
+Sociedade	sociedade10	5	6	Normal	Paulo Francis	A ignorância é a maior multinacional do mundo.	Escolhe a ação de cada jogador nesta rodada
+Sociedade	sociedade11	5	6	Normal	Luísa Marilac	Se isso é tar na pior, pooooorra, que que é dizer tá bem né?	Caso seja o jogador com mais dinheiro, recebe 5$
+Sociedade	sociedade12	3	4	Normal	Jeremias Muito Louco	Se eu pudesse eu matava mil!	O jogador anterior e posterior a você ficam uma rodada sem jogar.
+Sociedade	sociedade2	7	8	Normal	Betinho	No Brasil não existe filantropia, o que existe é pilantropia.	Escolhe 2 jogadores. Recebe uma carta aleatória da mão de um e 4$ do outro.
+Sociedade	sociedade3	9	10	Normal	Roniquito de Chevalier	General, você tem fogo?	Recebe 2 cartas aleatórias da mão do jogador com mais pontos.
+Sociedade	sociedade6	9	10	Normal	Vitinho Avassalador	Sou foda!	Escolhe 1 carta de sua mão. Pode baixa-la sem pagar nada.
+Sociedade	sociedade7	1	2	Normal	Dona Guiomar	Quequeré	Nada acontece.
+Sociedade	sociedade8	1	2	Normal	Millôr Fernandes	Chato, indivíduo que tem mais interesse em nós do que nós temos nele.	Escolhe 1 jogador. Este é obrigado a mostrar as cartas da mão a você.
+Sociedade	sociedade9	3	4	Normal	Georgia Massa	Eu acho uma puta falta de sacanagem	Escolhe 1 jogador. Este perde 1$ pra cada carta ENT que o mesmo tiver baixado na mesa

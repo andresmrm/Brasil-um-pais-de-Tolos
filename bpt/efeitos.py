@@ -357,7 +357,11 @@ class PontosPorCartaFinal(Permanente, Efeito):
         naipe = carta.efeito_dados["naipe"].lower()
         l = dono.mesa.get(naipe)
         if l:
-            num = len(l)
+            num = 0
+            for c in l:
+                # caso seja uma carta impar
+                if c.valor%2 == 1:
+                    num += 1
             dados["pontos"] += int(carta.efeito_dados["quant"]) * num
 
 class PontosFinal(Permanente, Efeito):
