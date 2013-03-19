@@ -156,6 +156,10 @@ class SistemaPreJogo():
         jogs = [ jog.__dict__ for jog in jogo.ret_jogadores()]
         for j in jogs:
             j["tam_mao"] = len(j["mao"])
+            if j["nome"] == jogo.nome_jogador_atual:
+                j["atual"] = True
+            else:
+                j["atual"] = False
         return jogs
 
     def ret_todos_jogadores(self):
@@ -678,14 +682,14 @@ class Jogador():
         else:
             carta, iden = ret
 
-        custo = CUSTO_MINIMO_PARA_DESCARTE
+        valor = VALOR_MINIMO_PARA_DESCARTE
 
         # Aplica especial
-        dados = {"custo":custo}
+        dados = {"valor":valor}
         self.aplicar_especial("altera_valor_min_descarte", dados)
-        custo = dados["custo"]
+        valor = dados["valor"]
 
-        if carta.custo <= custo:
+        if carta.valor <= valor:
             return "ERRO: A carta deve valer mais do que 5!"
 
         self.mao.remove(iden)

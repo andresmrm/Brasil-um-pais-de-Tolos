@@ -360,7 +360,7 @@ class PontosPorCartaFinal(Permanente, Efeito):
             num = 0
             for c in l:
                 # caso seja uma carta impar
-                if c.valor%2 == 1:
+                if dono.jogo.baralho.get(c).valor%2 == 1:
                     num += 1
             dados["pontos"] += int(carta.efeito_dados["quant"]) * num
 
@@ -403,7 +403,7 @@ class AlteraValorMinDescarte(Permanente, Efeito):
     @classmethod
     def executar(cls, dados, dono, carta):
         #dados["custo"] = int(carta.efeito_dados["quant"])
-        dados["custo"] = -1
+        dados["valor"] = -1
 
 class AlteraCustoCoringas(Permanente, Efeito):
     exp = "^PODER FIXO: Adiciona curingas sem ter necessidade de pagar$"

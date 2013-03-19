@@ -42,6 +42,13 @@ PREJOGO.ret_jogador("olegal").automatico = True
 PREJOGO.ret_jogador("legalzao").automatico = True
 PREJOGO.iniciar_jogo("a")
 
+j = PREJOGO.jogos["a"]
+j.jogadores["1"].mao.append(51)
+for i,c in j.baralho.items():
+    print(i,c.naipe, c.valor, c.nome)
+#j.jogadores["olegal"].mesa["fic"] = [1,2,3]
+#j.jogadores["olegal"].mesa["esp"] = [20,21,22]
+
 # PREPARACAO
 
 @forbidden_view_config(renderer='proibida.slim')
@@ -194,7 +201,8 @@ def criar_perfil(request):
         dbsession.merge(record)
         dbsession.flush()
         return {'sucesso': 'True'}
-    return {'form':form.render()}
+    appstruct = record_to_appstruct(record)
+    return {'form':form.render(appstruct=appstruct)}
 
 @view_config(route_name='ver_perfil', renderer='ver_perfil.slim')
 def ver_perfil(request):
