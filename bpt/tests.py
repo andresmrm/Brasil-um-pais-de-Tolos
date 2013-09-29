@@ -30,3 +30,4 @@ class TestMyView(unittest.TestCase):
         info = my_view(request)
         self.assertEqual(info['one'].name, 'one')
         self.assertEqual(info['project'], 'bpt')
+
