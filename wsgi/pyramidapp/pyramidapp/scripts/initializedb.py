@@ -9,11 +9,7 @@ from pyramid.paster import (
     setup_logging,
     )
 
-from ..models import (
-    DBSession,
-    BdJogador,
-    Base,
-    )
+from .. import models
 
 def usage(argv):
     cmd = os.path.basename(argv[0])
@@ -28,8 +24,8 @@ def main(argv=sys.argv):
     setup_logging(config_uri)
     settings = get_appsettings(config_uri)
     engine = engine_from_config(settings, 'sqlalchemy.')
-    DBSession.configure(bind=engine)
-    Base.metadata.create_all(engine)
+    models.DBSession.configure(bind=engine)
+    models.Base.metadata.create_all(engine)
     with transaction.manager:
-        model = BdJogador(nome='1',senha='11111')
-        DBSession.add(model)
+        model = models.BdJogador(nome='1',senha='11111')
+        models.DBSession.add(model)
