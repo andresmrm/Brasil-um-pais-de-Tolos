@@ -18,7 +18,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>
 #-----------------------------------------------------------------------------
 
-DIR_CARTAS = "bpt/cartas"
+
+from pyramid.path import AssetResolver
+
+asset = AssetResolver('pyramidapp')
+resolver = asset.resolve("cartas")
+
+DIR_CARTAS = resolver.abspath()
 MAX_CARTAS_MAO = 5
 DINHEIRO_INICIAL = 5
 NUM_CARTAS_INICIAIS = 2

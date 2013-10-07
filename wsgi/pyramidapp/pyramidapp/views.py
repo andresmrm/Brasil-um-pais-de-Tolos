@@ -201,6 +201,7 @@ def criar_perfil(request):
         dbsession.merge(record)
         dbsession.flush()
         return {'sucesso': 'True'}
+    record = BdJogador("", "")
     appstruct = record_to_appstruct(record)
     return {'form':form.render(appstruct=appstruct)}
 

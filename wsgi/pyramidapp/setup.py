@@ -3,12 +3,15 @@ import os
 from setuptools import setup, find_packages
 
 here = os.path.abspath(os.path.dirname(__file__))
-README = open(os.path.join(here, 'README.md')).read()
+README = open(os.path.join(here, 'README.txt')).read()
 CHANGES = open(os.path.join(here, 'CHANGES.txt')).read()
 
 requires = [
     'pyramid',
-    'SQLAlchemy',
+    'repoze.tm2>=1.0b1', # default_commit_veto
+    'sqlalchemy',
+    'zope.sqlalchemy',
+    'WebError',
     'transaction',
     'pyramid_tm',
     'pyramid_debugtoolbar',
@@ -18,9 +21,10 @@ requires = [
     'deform',
     ]
 
-setup(name='bpt',
+
+setup(name='pyramidapp',
       version='0.0',
-      description='bpt',
+      description='pyramidapp',
       long_description=README + '\n\n' +  CHANGES,
       classifiers=[
         "Programming Language :: Python",
@@ -31,17 +35,19 @@ setup(name='bpt',
       author='',
       author_email='',
       url='',
-      keywords='web wsgi bfg pylons pyramid',
+      keywords='web pylons pyramid',
       packages=find_packages(),
       include_package_data=True,
       zip_safe=False,
-      test_suite='bpt',
-      install_requires=requires,
-      entry_points="""\
+      install_requires = requires,
+      tests_require = requires,
+      test_suite="pyramidapp",
+      entry_points = """\
       [paste.app_factory]
-      main = bpt:main
-      [console_scripts]
-      initialize_bpt_db = bpt.scripts.initializedb:main
+      main = pyramidapp:main
       """,
+  #    [console_scripts]
+#      initialize_bpt_db = bpt.scripts.initializedb:main
+      paster_plugins=['pyramid'],
       )
 

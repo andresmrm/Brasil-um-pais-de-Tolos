@@ -54,7 +54,7 @@ class Magica():
                         print parametros
                         return (e, exp.groupdict(), parametros)
                 return (e, exp.groupdict(), 0)
-        print texto, "---------------"
+        #print texto, "---------------"
         return (None, None, None)
 
 
