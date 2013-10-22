@@ -2,7 +2,7 @@ Brasil um País de Tolos
 =======================
 
 Jogo de cartas utilizando elementos da cultura brasileira desenvolvido pela [Quequere](http://quequere.com.br).
-Mais informações pode ser encontradas na [página do jogo](http://quequere.com.br/jogos/#brasil-um-pais-de-tolos), inclusive o [manual](http://quequere.com.br/wp-content/uploads/2013/05/Manual_Brasil_Um_Pais_de_Tolos.pdf). 
+Mais informações podem ser encontradas na [página do jogo](http://quequere.com.br/jogos/#brasil-um-pais-de-tolos), inclusive o [manual](http://quequere.com.br/wp-content/uploads/2013/05/Manual_Brasil_Um_Pais_de_Tolos.pdf). 
 
 Online
 ------
