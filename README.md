@@ -1,3 +1,10 @@
-The OpenShift `python` cartridge documentation can be found at:
+Brasil um País de Tolos
+=======================
 
-https://github.com/openshift/origin-server/tree/master/cartridges/openshift-origin-cartridge-python/README.md
+Jogo de cartas utilizando elementos da cultura brasileira desenvolvido pela [Quequere](http://quequere.com.br)
+Mais informações pode ser encontradas na [página do jogo](http://quequere.com.br/jogos/#brasil-um-pais-de-tolos), inclusive o [manual](http://quequere.com.br/wp-content/uploads/2013/05/Manual_Brasil_Um_Pais_de_Tolos.pdf). 
+
+Licença
+-------
+
+Todo o código está sob a licença [GPL](http://www.gnu.org/copyleft/gpl.html).
