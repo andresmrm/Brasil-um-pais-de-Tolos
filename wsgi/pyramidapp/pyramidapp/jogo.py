@@ -396,7 +396,9 @@ class Jogo():
         self.maiorias = {}
         for j in self.jogadores.values():
             for naipe in j.mesa.keys():
-                quant = len(j.mesa[naipe])
+                quant = 0
+                for carta in j.mesa[naipe]:
+                    quant += self.baralho[carta].valor
                 if quant:
                     # Aplica especial
                     dados = {"naipe":naipe,
@@ -535,9 +537,6 @@ class Jogador():
     def calc_pontos(self, final=False):
         """Calcula os pontos desse jogador"""
 
-        #REMOVER ESSA LINHA ABAIXO!!!!!!!!!!!
-        final = True
-
         self.pontos = 0
         for naipe in self.mesa.values():
             pontos_naipe = 0
@@ -550,16 +549,14 @@ class Jogador():
             # Verifica se tem todas as cartas de um naipe
             if pontos_naipe == 55:
                 self.pontos += 20
-        # Pontos pelas maiorias CALCULO SIMPLIFICADO!!!!!!!!!!
-        self.pontos += len(self.maiorias)*10
         
         if final:
             dados = {"pontos":self.pontos}
             self.aplicar_especial("calculo_pontos_finais", dados)
             self.pontos = dados["pontos"]
 
-        #if self.nome == "2":
-        #    self.pontos = 100
+            # Pontos pelas maiorias CALCULO SIMPLIFICADO!!!!!!!!!!
+            self.pontos += len(self.maiorias)*10
 
     def identificar_carta(self, iden, verif_mao=True):
         """Identifica uma carta na mao do jogador"""

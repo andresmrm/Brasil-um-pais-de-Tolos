@@ -295,7 +295,7 @@ li {
 
 .infos {
 	position: relative;
-	top: -23.5em;
+	top: -0.8em;
 	left: 18em;
 	height: 1.5em;
 	width: 20em;
@@ -362,6 +362,10 @@ li {
   margin: 0.2em;
   background-size:100% 100%;
   &:hover {
+	border-color: @preto;
+	border-style: solid;
+	border-width: 2px;
+	border-radius: 1em;
   }
   
   &#mais_din {
@@ -424,7 +428,7 @@ li {
 	//background-repeat:no-repeat;
 
 	&:hover {
-		border-color: #000;
+		border-color: @preto;
 		border-style: solid;
 		border-width: 2px;
 		border-radius: 0.5em;
@@ -633,5 +637,18 @@ table.final {
   }
   td.nome {
     width: 20%;
+  }
+}
+
+.modo-atual {
+	border-color: @preto;
+	border-style: solid;
+	border-width: 4px;
+	border-radius: 1em;
+  &:hover {
+	border-color: @preto;
+	border-style: solid;
+	border-width: 4px;
+	border-radius: 1em;
   }
 }

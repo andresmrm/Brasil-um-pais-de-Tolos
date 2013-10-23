@@ -1,5 +1,6 @@
 -coffee
 	modo = 0
+	modoObj = 0
 	num_jogada = -1
 	cartas = {}
 	jogando_carta = null
@@ -68,9 +69,21 @@
 			num_jogada -= 1
 			atualizar()
 
-	$("#jogar_carta").click () -> modo = "J"
-	$("#descartar_carta").click () -> modo = "D"
-	$("#comprar_carta").click () -> modo = "C"
+	$("#jogar_carta").click () ->
+		modo = "J"
+		$(modoObj).removeClass("modo-atual")
+		modoObj = "#jogar_carta"
+		$(modoObj).addClass("modo-atual")
+	$("#descartar_carta").click () ->
+		modo = "D"
+		$(modoObj).removeClass("modo-atual")
+		modoObj = "#descartar_carta"
+		$(modoObj).addClass("modo-atual")
+	$("#comprar_carta").click () ->
+		modo = "C"
+		$(modoObj).removeClass("modo-atual")
+		modoObj = "#comprar_carta"
+		$(modoObj).addClass("modo-atual")
 
 	$("#mais_din").click () ->
 		p = $.post("jogada", {"jogada":"G1"})

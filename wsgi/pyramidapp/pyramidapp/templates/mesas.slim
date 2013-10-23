@@ -3,7 +3,18 @@
     <div class="jogador jogador_atual">
   -else
     <div class="jogador">
+
+
   h4.nome_jog id=('jog'+j["num"]) =j["nome"]
+    .infos 
+      -for naipe in j["maiorias"]
+        span class=("maioria "+naipe)
+      img.icone_jogo src='/static/imagens/palhaco.png'
+      p.num_painel_jogo ${j["pontos"]}
+      img.icone_jogo src='/static/imagens/mao.png'
+      p.num_painel_jogo ${j["tam_mao"]}
+      img.icone_jogo src='/static/imagens/cifrao.png'
+      p.num_painel_jogo ${j["dinheiro"]}
 
   .sub_jogador
     -for naipe in j["mesa"]
@@ -11,15 +22,6 @@
         -for carta in j["mesa"][naipe]
           span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")
   
-  .infos 
-    -for naipe in j["maiorias"]
-      span class=("maioria "+naipe)
-    img.icone_jogo src='/static/imagens/palhaco.png'
-    p.num_painel_jogo ${j["pontos"]}
-    img.icone_jogo src='/static/imagens/mao.png'
-    p.num_painel_jogo ${j["tam_mao"]}
-    img.icone_jogo src='/static/imagens/cifrao.png'
-    p.num_painel_jogo ${j["dinheiro"]}
   </div>
 
 .jogador
