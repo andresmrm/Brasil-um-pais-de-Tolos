@@ -23,10 +23,20 @@ from pyramid.path import AssetResolver
 
 asset = AssetResolver('pyramidapp')
 resolver = asset.resolve("cartas")
-
+# Diretório onde estão as informações das cartas
 DIR_CARTAS = resolver.abspath()
+
+# Número de cartas máximo na mão de cada jogador
 MAX_CARTAS_MAO = 5
+
+# Quantidade inicial de dinheiro para cada jogador
 DINHEIRO_INICIAL = 5
+
+# Número de cartas inicial para cada jogador
 NUM_CARTAS_INICIAIS = 2
+
+# Custo para comprar uma carta do monte de descerte
 CUSTO_COMPRA_DESCARTE = 3
+
+# Valor mínimo de uma carta para que ela possa ser descartada
 VALOR_MINIMO_PARA_DESCARTE = 5
