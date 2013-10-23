@@ -14,8 +14,8 @@ $("#entrada_msg").keypress(function(event) {
 function atualizar_chat() {
   $.post("ret_msgs", {"num":num_msgs}, function(data){
     if(data!="0"){
-      dic = JSON.parse(data);
-      $('#msgs').html(dic["msgs"]);
+      dic = jQuery.parseJSON(data);
+      $("#msgs").html(dic.msgs);
     }
   })
   .error(function(data) { alert("Erro ao Atualizar_Chat!"+data); });

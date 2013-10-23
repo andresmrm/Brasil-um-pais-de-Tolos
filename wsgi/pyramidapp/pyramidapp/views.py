@@ -262,6 +262,7 @@ def ret_msgs(request):
     #jogs = PREJOGO.ret_jogadores(nome_sala)
     #pa = render_to_response('participantes.slim',{'jogs':jogs})
     #ret["participantes"] = pa.body
+    print(json.dumps(ret))
     return Response(json.dumps(ret))
 
 

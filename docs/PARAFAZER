@@ -1,3 +1,19 @@
+botoes piscar e rollover
+nao contar maiorias durante
+fechar jogo se jogador sair
+descartar olhar pontos
+marcar acao escolhida
+ver maiorias por pontos
+quando sem dinheiro, pedir para descartar
+nunca sumir com a carta, ir pro descarte
+quando terminar disparar ultima rodada
+mostrar quantas cartas tem no monte
+comprar descartes
+separar impares embaixo, pares em cima
+
+capitao nascimento - nao excluir de si mesmo
+
+
 - mensagens de erros
 - limitar jogadores por sala
 - mostrar jogos que estão rodando atualmente
@@ -20,7 +36,7 @@ Otimizar tudo
 Criar testes
 Segurança?
 
-- brilhar cartaz que podem ser jogadas, descartadas
+- brilhar cartas que podem ser jogadas, descartadas
 
 
 
