@@ -4,6 +4,12 @@
   -else
     <div class="jogador">
   h4.nome_jog id=('jog'+j["num"]) =j["nome"]
+
+  .sub_jogador
+    -for naipe in j["mesa"]
+      .naipe
+        -for carta in j["mesa"][naipe]
+          span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")
   
   .infos 
     -for naipe in j["maiorias"]
@@ -14,16 +20,11 @@
     p.num_painel_jogo ${j["tam_mao"]}
     img.icone_jogo src='/static/imagens/cifrao.png'
     p.num_painel_jogo ${j["dinheiro"]}
-  .sub_jogador
-    -for naipe in j["mesa"]
-      .naipe
-        -for carta in j["mesa"][naipe]
-          span id=carta class=("carta "+baralho[carta].naipe) style=("background-image:url(/static/cartas/"+baralho[carta].imagem+")")
   </div>
 
 .jogador
   h4 Descarte
-  .sub_jogador
+  .sub_jogador.sub_descarte
     -for naipe in descarte
       .naipe
         -for carta in descarte[naipe]
