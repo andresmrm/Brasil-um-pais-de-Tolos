@@ -429,8 +429,10 @@ class Jogo():
             return None
         return self.monte.pop()
 
-    def receber_descarte(self, iden, carta):
+    def receber_descarte(self, iden, carta=None):
         """Recebe uma carta e a coloca no monte de descartadas"""
+        if not carta:
+            carta = self.baralho[iden]
         naipe = self.descarte.get(carta.naipe)
         if naipe:
             naipe.append(iden)

@@ -148,6 +148,7 @@ class ExcluiAleatoriamenteCartasDosOutros(Efeito):
                 escolha = choice(j.mao)
                 if escolha:
                     j.mao.remove(escolha)
+                    #j.jogo.receber_descarte(escolha)
 
 class DinheiroMoeda(Efeito):
     exp = "^Joga uma moeda, escolhe cara ou coroa, se acertar ganha (?P<quant1>\w+)\$, se errar perde (?P<quant2>\w+)\$$"
