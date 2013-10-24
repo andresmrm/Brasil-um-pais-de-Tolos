@@ -20,6 +20,7 @@ requires = [
     'plim',
     'deform',
     'nose',
+    'coverage',
     ]
 
 
