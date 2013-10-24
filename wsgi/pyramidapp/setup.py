@@ -19,6 +19,7 @@ requires = [
     'waitress',
     'plim',
     'deform',
+    'nose',
     ]
 
 

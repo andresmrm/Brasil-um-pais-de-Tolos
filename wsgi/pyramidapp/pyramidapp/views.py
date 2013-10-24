@@ -262,7 +262,6 @@ def ret_msgs(request):
     #jogs = PREJOGO.ret_jogadores(nome_sala)
     #pa = render_to_response('participantes.slim',{'jogs':jogs})
     #ret["participantes"] = pa.body
-    print(json.dumps(ret))
     return Response(json.dumps(ret))
 
 
@@ -318,7 +317,6 @@ def enviar_baralho(request):
             cartas[c] = dict(baralho[c].__dict__)
             cartas[c].pop("efeito")
             cartas[c].pop("efeito_dados")
-        print("LA VAI!!!!!!!!!!!!!!!!!!!!!!!")
         return Response(json.dumps(cartas))
     else:
         Response()

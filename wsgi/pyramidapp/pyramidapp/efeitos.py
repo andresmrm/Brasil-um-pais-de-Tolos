@@ -411,6 +411,12 @@ class AlteraCustoCoringas(Permanente, Efeito):
     especial = "altera_custo_curingas"
     @classmethod
     def executar(cls, dados, dono, carta):
-        print dados["valor"]
         if dados["valor"] in [2,6,10]:
             dados["custo"] = 0
+
+class PegaMaisCartas(Permanente, Efeito):
+    exp = "^PODER FIXO: Quando selecionar comprar cartas, compra (?P<quant>\w+) de uma vez$"
+    especial = "pega_mais_cartas"
+    @classmethod
+    def executar(cls, dados, dono, carta):
+        dados["quant"] = 2

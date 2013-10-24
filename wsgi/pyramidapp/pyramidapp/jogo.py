@@ -39,7 +39,7 @@ class Magica():
             exp = re.match(e.exp, ult_frase, flags=re.UNICODE)
             # Caso tenha achado um efeito que bate com o texto da carta
             if exp:
-                print "ACHOU"
+                #print "ACHOU"
                 possiveis_param = [ "Escolhe (?P<quant>\d+) (?P<objeto>\w+)(\ (?P<complemento>\w+))*\.",
                                   ]
                 for exp_param in possiveis_param:
@@ -51,7 +51,7 @@ class Magica():
                         parametros = quant+objeto[0]
                         if complemento:
                             parametros += complemento[0]
-                        print parametros
+                        #print parametros
                         return (e, exp.groupdict(), parametros)
                 return (e, exp.groupdict(), 0)
         #print texto, "---------------"
@@ -702,16 +702,24 @@ class Jogador():
         if len(self.mao) >= MAX_CARTAS_MAO:
             return "ERRO: Mao cheia!"
 
-        carta = self.jogo.pegar_carta_monte()
-        if carta == None:
-            if self.jogo.fim:
-                self.jogo.calc_pontos()
-                return "O monte acabou!"
-            else:
-                self.jogo.fim = True
-                return "FIM: O monte acabou!"
+        quant = 1
+        # Aplica especial
+        dados = {"quant":quant}
+        self.aplicar_especial("pega_mais_cartas", dados)
+        quant = dados["quant"]
 
-        self.mao.append(carta)
+        while quant and (len(self.mao) <= MAX_CARTAS_MAO):
+            carta = self.jogo.pegar_carta_monte()
+            if carta == None:
+                if self.jogo.fim:
+                    self.jogo.calc_pontos()
+                    return "O monte acabou!"
+                else:
+                    self.jogo.fim = True
+                    return "FIM: O monte acabou!"
+            self.mao.append(carta)
+            quant -= 1
+
         self.jogo.prox_jogador()
         return "Ok! Jogada feita!"
 
